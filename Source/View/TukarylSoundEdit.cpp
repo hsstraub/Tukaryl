@@ -93,6 +93,13 @@ void TukarylSoundEdit::resized()
 
 
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
+
+void TukarylSoundEdit::addChangeListener (juce::ChangeListener* const listener)
+{
+    osc1->addChangeListener(listener);
+    osc2->addChangeListener(listener);
+}
+
 //[/MiscUserCode]
 
 

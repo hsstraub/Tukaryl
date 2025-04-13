@@ -34,6 +34,7 @@
                                                                     //[/Comments]
 */
 class OscSubComponent  : public juce::Component,
+                         public juce::ChangeBroadcaster,
                          public juce::Slider::Listener
 {
 public:
@@ -53,7 +54,7 @@ public:
 
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
-    unsigned short levelVariable;
+    unsigned short& levelVariable;
     //[/UserVariables]
 
     //==============================================================================

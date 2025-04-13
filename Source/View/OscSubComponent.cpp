@@ -123,6 +123,7 @@ void OscSubComponent::sliderValueChanged (juce::Slider* sliderThatWasMoved)
     {
         //[UserSliderCode_levelSlider] -- add your slider handling code here..
         levelVariable = sliderThatWasMoved->getValue();
+        // sendChangeMessage();
         //[/UserSliderCode_levelSlider]
     }
 
@@ -146,7 +147,8 @@ void OscSubComponent::sliderValueChanged (juce::Slider* sliderThatWasMoved)
 BEGIN_JUCER_METADATA
 
 <JUCER_COMPONENT documentType="Component" className="OscSubComponent" componentName=""
-                 parentClasses="public juce::Component" constructorParams="juce::String labelText, unsigned short&amp; injectedLevelVariable"
+                 parentClasses="public juce::Component, public juce::ChangeBroadcaster"
+                 constructorParams="juce::String labelText, unsigned short&amp; injectedLevelVariable"
                  variableInitialisers="levelVariable(injectedLevelVariable)" snapPixels="8"
                  snapActive="1" snapShown="1" overlayOpacity="0.330" fixedSize="0"
                  initialWidth="32" initialHeight="216">

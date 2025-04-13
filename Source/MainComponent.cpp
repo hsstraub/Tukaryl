@@ -15,6 +15,7 @@ MainComponent::MainComponent()
     soundEditComponent.reset (new TukarylSoundEdit(theInstrument));
     addAndMakeVisible(soundEditComponent.get());
     soundEditComponent->setBounds(0, 40, 600, 400);
+    soundEditComponent->addChangeListener(this);
 
     setSize (800, 600);
 
@@ -48,18 +49,24 @@ void MainComponent::prepareToPlay (int samplesPerBlockExpected, double sampleRat
     // but be careful - it will be called on the audio thread, not the GUI thread.
 
     // For more details, see the help for AudioProcessor::prepareToPlay()
+    currentSampleRate = sampleRate;
+    changeListenerCallback(nullptr);
 }
 
 void MainComponent::getNextAudioBlock (const juce::AudioSourceChannelInfo& bufferToFill)
 {
-    // Your audio-processing code goes here!
+        auto level = ((float)theInstrument.baseOscLevel)/1000.0f;
+        auto* leftBuffer  = bufferToFill.buffer->getWritePointer (0, bufferToFill.startSample);
+        auto* rightBuffer = bufferToFill.buffer->getWritePointer (1, bufferToFill.startSample);
 
-    // For more details, see the help for AudioProcessor::getNextAudioBlock()
-
-    // Right now we are not producing any data, in which case we need to clear the buffer
-    // (to prevent the output of random noise)
-    bufferToFill.clearActiveBufferRegion();
-}
+        for (auto sample = 0; sample < bufferToFill.numSamples; ++sample)
+        {
+            auto currentSample = (float) std::sin (currentAngle);
+            currentAngle += angleDelta;
+            leftBuffer[sample]  = currentSample * level;
+            rightBuffer[sample] = currentSample * level;
+        }
+ }
 
 void MainComponent::releaseResources()
 {
@@ -84,3 +91,13 @@ void MainComponent::resized()
     // If you add any child components, this is where you should
     // update their positions.
 }
+
+void MainComponent::changeListenerCallback(juce::ChangeBroadcaster *source)
+{
+    if (currentSampleRate > 0.0)
+    {
+        auto cyclesPerSample = 440.0 / currentSampleRate;   // Ad hoc frequency fix 440 Hz
+        angleDelta = cyclesPerSample * 2.0 * juce::MathConstants<double>::pi;
+    }
+}
+
