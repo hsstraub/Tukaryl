@@ -33,7 +33,10 @@ public:
 private:
     //==============================================================================
     // Your private member variables go here...
-    double currentSampleRate = 0.0, currentAngle = 0.0, angleDelta = 0.0;
+    double currentSampleRate = 0.0;
+    double currentAngle1 = 0.0, angleDelta1 = 0.0;
+    double currentAngle2 = 0.0, angleDelta2 = 0.0;
+
 
     std::unique_ptr<TukarylSoundEdit> soundEditComponent;
 

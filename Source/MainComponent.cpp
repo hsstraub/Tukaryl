@@ -55,16 +55,22 @@ void MainComponent::prepareToPlay (int samplesPerBlockExpected, double sampleRat
 
 void MainComponent::getNextAudioBlock (const juce::AudioSourceChannelInfo& bufferToFill)
 {
-        auto level = ((float)theInstrument.baseOscLevel)/1000.0f;
+        auto level1 = ((float)theInstrument.baseOscLevel)/1000.0f;
+        auto level2 = ((float)theInstrument.partial1Level)/1000.0f;
+
         auto* leftBuffer  = bufferToFill.buffer->getWritePointer (0, bufferToFill.startSample);
         auto* rightBuffer = bufferToFill.buffer->getWritePointer (1, bufferToFill.startSample);
 
         for (auto sample = 0; sample < bufferToFill.numSamples; ++sample)
         {
-            auto currentSample = (float) std::sin (currentAngle);
-            currentAngle += angleDelta;
-            leftBuffer[sample]  = currentSample * level;
-            rightBuffer[sample] = currentSample * level;
+            auto currentSample1 = (float) std::sin (currentAngle1);
+            currentAngle1 += angleDelta1;
+
+            auto currentSample2 = (float) std::sin (currentAngle2);
+            currentAngle2 += angleDelta2;
+
+            leftBuffer[sample]  = currentSample1 * level1 + currentSample2 * level2;
+            rightBuffer[sample] = currentSample1 * level1 + currentSample2 * level2;
         }
  }
 
@@ -96,8 +102,13 @@ void MainComponent::changeListenerCallback(juce::ChangeBroadcaster *source)
 {
     if (currentSampleRate > 0.0)
     {
-        auto cyclesPerSample = 440.0 / currentSampleRate;   // Ad hoc frequency fix 440 Hz
-        angleDelta = cyclesPerSample * 2.0 * juce::MathConstants<double>::pi;
-    }
+        auto basefrequency = 440.0;   // Ad hoc frequency fix 440 Hz
+
+        auto cyclesPerSample1 = basefrequency / currentSampleRate;
+        angleDelta1 = cyclesPerSample1 * 2.0 * juce::MathConstants<double>::pi;
+
+        auto cyclesPerSample2 = basefrequency * theInstrument.partial1Frequency / currentSampleRate;
+        angleDelta2 = cyclesPerSample2 * 2.0 * juce::MathConstants<double>::pi;
+   }
 }
 
