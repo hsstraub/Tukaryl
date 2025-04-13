@@ -27,18 +27,19 @@
 //[/MiscUserDefs]
 
 //==============================================================================
-TukarylSoundEdit::TukarylSoundEdit ()
+TukarylSoundEdit::TukarylSoundEdit (TukarylInstrument& injectedInstrument)
+    : theInstrument(injectedInstrument)
 {
     //[Constructor_pre] You can add your own custom stuff here..
     //[/Constructor_pre]
 
-    osc1.reset (new OscSubComponent ("Base"));
+    osc1.reset (new OscSubComponent ("Base", theInstrument.baseOscLevel));
     addAndMakeVisible (osc1.get());
     osc1->setName ("osc1");
 
     osc1->setBounds (8, 24, 70, 224);
 
-    osc2.reset (new OscSubComponent ("Partial 1"));
+    osc2.reset (new OscSubComponent ("Partial 1", theInstrument.partial1Level));
     addAndMakeVisible (osc2.get());
     osc2->setName ("osc2");
 
@@ -105,16 +106,17 @@ void TukarylSoundEdit::resized()
 BEGIN_JUCER_METADATA
 
 <JUCER_COMPONENT documentType="Component" className="TukarylSoundEdit" componentName=""
-                 parentClasses="public juce::Component" constructorParams="" variableInitialisers=""
-                 snapPixels="8" snapActive="1" snapShown="1" overlayOpacity="0.330"
-                 fixedSize="0" initialWidth="600" initialHeight="400">
+                 parentClasses="public juce::Component" constructorParams="TukarylInstrument&amp; injectedInstrument"
+                 variableInitialisers="theInstrument(injectedInstrument)" snapPixels="8"
+                 snapActive="1" snapShown="1" overlayOpacity="0.330" fixedSize="0"
+                 initialWidth="600" initialHeight="400">
   <BACKGROUND backgroundColour="ff323e44"/>
   <GENERICCOMPONENT name="osc1" id="5752b2c7ddf48ad8" memberName="osc1" virtualName="OscSubComponent"
                     explicitFocusOrder="0" pos="8 24 70 224" class="OscSubComponent"
-                    params="&quot;Base&quot;"/>
+                    params="&quot;Base&quot;, theInstrument.baseOscLevel"/>
   <GENERICCOMPONENT name="osc2" id="8b807cc720421151" memberName="osc2" virtualName="OscSubComponent"
                     explicitFocusOrder="0" pos="96 24 70 224" class="OscSubComponent"
-                    params="&quot;Partial 1&quot;"/>
+                    params="&quot;Partial 1&quot;, theInstrument.partial1Level"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

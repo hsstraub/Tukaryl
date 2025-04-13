@@ -23,6 +23,7 @@
 #include <JuceHeader.h>
 
 #include "OscSubComponent.h"
+#include "../Model/TukarylInstrument.h"
 //[/Headers]
 
 
@@ -39,7 +40,7 @@ class TukarylSoundEdit  : public juce::Component
 {
 public:
     //==============================================================================
-    TukarylSoundEdit ();
+    TukarylSoundEdit (TukarylInstrument& injectedInstrument);
     ~TukarylSoundEdit() override;
 
     //==============================================================================
@@ -53,6 +54,7 @@ public:
 
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
+    TukarylInstrument& theInstrument;
     //[/UserVariables]
 
     //==============================================================================

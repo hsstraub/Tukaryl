@@ -3,10 +3,16 @@
 //==============================================================================
 MainComponent::MainComponent()
 {
+    theInstrument = TukarylInstrument {
+        63,
+        2.0,
+        31,
+    };
+
     // Make sure you set the size of the component after
     // you add any child components.
 
-    soundEditComponent.reset (new TukarylSoundEdit());
+    soundEditComponent.reset (new TukarylSoundEdit(theInstrument));
     addAndMakeVisible(soundEditComponent.get());
     soundEditComponent->setBounds(0, 40, 600, 400);
 

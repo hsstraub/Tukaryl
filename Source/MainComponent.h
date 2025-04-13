@@ -3,6 +3,7 @@
 #include <JuceHeader.h>
 
 #include "View/TukarylSoundEdit.h"
+#include "Model/TukarylInstrument.h"
 
 //==============================================================================
 /*
@@ -24,6 +25,8 @@ public:
     //==============================================================================
     void paint (juce::Graphics& g) override;
     void resized() override;
+
+    TukarylInstrument theInstrument;
 
 private:
     //==============================================================================

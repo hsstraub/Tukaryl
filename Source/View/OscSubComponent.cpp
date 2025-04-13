@@ -27,7 +27,8 @@
 //[/MiscUserDefs]
 
 //==============================================================================
-OscSubComponent::OscSubComponent (juce::String labelText)
+OscSubComponent::OscSubComponent (juce::String labelText, unsigned short& injectedLevelVariable)
+    : levelVariable(injectedLevelVariable)
 {
     //[Constructor_pre] You can add your own custom stuff here..
     //[/Constructor_pre]
@@ -59,6 +60,7 @@ OscSubComponent::OscSubComponent (juce::String labelText)
 
 
     //[UserPreSize]
+    levelSlider->setValue(levelVariable);
     //[/UserPreSize]
 
     setSize (32, 216);
@@ -120,6 +122,7 @@ void OscSubComponent::sliderValueChanged (juce::Slider* sliderThatWasMoved)
     if (sliderThatWasMoved == levelSlider.get())
     {
         //[UserSliderCode_levelSlider] -- add your slider handling code here..
+        levelVariable = sliderThatWasMoved->getValue();
         //[/UserSliderCode_levelSlider]
     }
 
@@ -143,9 +146,10 @@ void OscSubComponent::sliderValueChanged (juce::Slider* sliderThatWasMoved)
 BEGIN_JUCER_METADATA
 
 <JUCER_COMPONENT documentType="Component" className="OscSubComponent" componentName=""
-                 parentClasses="public juce::Component" constructorParams="juce::String labelText"
-                 variableInitialisers="" snapPixels="8" snapActive="1" snapShown="1"
-                 overlayOpacity="0.330" fixedSize="0" initialWidth="32" initialHeight="216">
+                 parentClasses="public juce::Component" constructorParams="juce::String labelText, unsigned short&amp; injectedLevelVariable"
+                 variableInitialisers="levelVariable(injectedLevelVariable)" snapPixels="8"
+                 snapActive="1" snapShown="1" overlayOpacity="0.330" fixedSize="0"
+                 initialWidth="32" initialHeight="216">
   <BACKGROUND backgroundColour="ff323e44">
     <PATH pos="0 0 100 100" fill="solid: ff2aa583" hasStroke="0" nonZeroWinding="1">s 40 4 l 72 24 l 8 24 x</PATH>
   </BACKGROUND>

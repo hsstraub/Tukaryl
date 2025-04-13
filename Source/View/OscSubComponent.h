@@ -38,7 +38,7 @@ class OscSubComponent  : public juce::Component,
 {
 public:
     //==============================================================================
-    OscSubComponent (juce::String labelText);
+    OscSubComponent (juce::String labelText, unsigned short& injectedLevelVariable);
     ~OscSubComponent() override;
 
     //==============================================================================
@@ -53,6 +53,7 @@ public:
 
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
+    unsigned short levelVariable;
     //[/UserVariables]
 
     //==============================================================================
