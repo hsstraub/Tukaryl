@@ -55,12 +55,13 @@ public:
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
     unsigned short& levelVariable;
+    
+    juce::Path thePointer;
     //[/UserVariables]
 
     //==============================================================================
     std::unique_ptr<juce::Slider> levelSlider;
     std::unique_ptr<juce::Label> descriptionLabel;
-    juce::Path internalPath1;
 
 
     //==============================================================================

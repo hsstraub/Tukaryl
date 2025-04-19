@@ -18,6 +18,7 @@
 */
 
 //[Headers] You can add your own extra header files here...
+#include "ViewConstants.h" 
 //[/Headers]
 
 #include "OscSubComponent.h"
@@ -53,12 +54,6 @@ OscSubComponent::OscSubComponent (juce::String labelText, unsigned short& inject
 
     descriptionLabel->setBounds (8, 32, 62, 24);
 
-    internalPath1.startNewSubPath (40.0f, 4.0f);
-    internalPath1.lineTo (72.0f, 24.0f);
-    internalPath1.lineTo (8.0f, 24.0f);
-    internalPath1.closeSubPath();
-
-
     //[UserPreSize]
     levelSlider->setValue(levelVariable);
     //[/UserPreSize]
@@ -92,16 +87,19 @@ void OscSubComponent::paint (juce::Graphics& g)
 
     g.fillAll (juce::Colour (0xff323e44));
 
-    {
-        float x = 0, y = 0;
-        juce::Colour fillColour = juce::Colour (0xff2aa583);
-        //[UserPaintCustomArguments] Customize the painting arguments here..
-        //[/UserPaintCustomArguments]
-        g.setColour (fillColour);
-        g.fillPath (internalPath1, juce::AffineTransform::translation (x, y));
-    }
-
     //[UserPaint] Add your own custom painting code here..
+    juce::Colour fillColour = juce::Colour(0xff2aa583);
+    
+    auto width = getWidth();
+
+    thePointer.clear();
+    thePointer.startNewSubPath(0, POINTERHEIGHT);
+    thePointer.lineTo(width, POINTERHEIGHT);
+    thePointer.lineTo(width/2, 0);
+    thePointer.closeSubPath();
+    
+    g.setColour(fillColour);
+    g.fillPath(thePointer, juce::AffineTransform::translation(0, 0));
     //[/UserPaint]
 }
 
@@ -153,7 +151,6 @@ BEGIN_JUCER_METADATA
                  snapActive="1" snapShown="1" overlayOpacity="0.330" fixedSize="0"
                  initialWidth="32" initialHeight="216">
   <BACKGROUND backgroundColour="ff323e44">
-    <PATH pos="0 0 100 100" fill="solid: ff2aa583" hasStroke="0" nonZeroWinding="1">s 40 4 l 72 24 l 8 24 x</PATH>
   </BACKGROUND>
   <SLIDER name="levelSlider" id="a347fb19da583b72" memberName="levelSlider"
           virtualName="" explicitFocusOrder="0" pos="16 64 38 152" min="0.0"

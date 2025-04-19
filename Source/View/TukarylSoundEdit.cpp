@@ -18,6 +18,7 @@
 */
 
 //[Headers] You can add your own extra header files here...
+#include "ViewConstants.h"
 //[/Headers]
 
 #include "TukarylSoundEdit.h"
@@ -78,6 +79,7 @@ void TukarylSoundEdit::paint (juce::Graphics& g)
     g.fillAll (juce::Colour (0xff323e44));
 
     //[UserPaint] Add your own custom painting code here..
+    paintRuler(g);
     //[/UserPaint]
 }
 
@@ -87,6 +89,8 @@ void TukarylSoundEdit::resized()
     //[/UserPreResize]
 
     //[UserResized] Add your own custom resize handling here..
+    osc1->setTopLeftPosition(getXPosOfFrequency(1.0) - osc1->getWidth()/2, OSCTOP);
+    osc2->setTopLeftPosition(getXPosOfFrequency(theInstrument.partial1Frequency) - osc2->getWidth() / 2, OSCTOP);
     //[/UserResized]
 }
 
@@ -98,6 +102,36 @@ void TukarylSoundEdit::addChangeListener (juce::ChangeListener* const listener)
 {
     osc1->addChangeListener(listener);
     osc2->addChangeListener(listener);
+}
+
+void TukarylSoundEdit::paintRuler(juce::Graphics& g)
+{
+    g.setColour(getLookAndFeel().findColour(juce::TextEditor::textColourId));
+    g.drawLine(0, RULERYPOS, getRight(), RULERYPOS);
+
+    paintRulerMark(g, 1.0);
+    paintRulerMark(g, 2.0);
+    paintRulerMark(g, 4.0);
+}
+
+void TukarylSoundEdit::paintRulerMark(juce::Graphics& g, double frequency)
+{
+    auto xPos = getXPosOfFrequency(frequency);
+    if (xPos >= 0 && xPos <= getWidth())
+    {
+        g.setColour(getLookAndFeel().findColour(juce::TextEditor::textColourId));
+        g.setFont(RULERTEXTSIZE);
+
+        auto oscWidth = osc2->getWidth();
+
+        g.drawLine(xPos, RULERYPOS, xPos, RULERYPOS - RULERMARKHEIGHT);
+        g.drawText(juce::String(frequency), xPos - oscWidth/2, RULERYPOS - RULERMARKHEIGHT- RULERTEXTSIZE - 1, oscWidth, RULERTEXTSIZE, juce::Justification::centred);
+    }
+}
+
+int TukarylSoundEdit::getXPosOfFrequency(double frequency)
+{
+    return OSCHORIZMARGIN + std::log2(frequency) / std::log2(maxFrequency) * (getWidth() - 2 * OSCHORIZMARGIN);
 }
 
 //[/MiscUserCode]

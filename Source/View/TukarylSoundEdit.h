@@ -46,6 +46,15 @@ public:
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
     void addChangeListener (juce::ChangeListener* const listener);
+
+private:
+    void paintRuler(juce::Graphics& g);
+    void paintRulerMark(juce::Graphics& g, double frequency);
+
+    int getXPosOfFrequency(double frequency);
+
+
+public:
     //[/UserMethods]
 
     void paint (juce::Graphics& g) override;
@@ -56,6 +65,8 @@ public:
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
     TukarylInstrument& theInstrument;
+
+    const double maxFrequency = 4.0;
     //[/UserVariables]
 
     //==============================================================================
