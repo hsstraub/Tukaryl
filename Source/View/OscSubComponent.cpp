@@ -28,8 +28,10 @@
 //[/MiscUserDefs]
 
 //==============================================================================
-OscSubComponent::OscSubComponent (juce::String labelText, unsigned short& injectedLevelVariable)
+OscSubComponent::OscSubComponent (juce::String labelText, unsigned short& injectedLevelVariable, bool isDraggable)
     : levelVariable(injectedLevelVariable)
+    , draggingEnabled(isDraggable)
+    , isDragging(false)
 {
     //[Constructor_pre] You can add your own custom stuff here..
     //[/Constructor_pre]
@@ -129,9 +131,53 @@ void OscSubComponent::sliderValueChanged (juce::Slider* sliderThatWasMoved)
     //[/UsersliderValueChanged_Post]
 }
 
+void OscSubComponent::mouseDown(const juce::MouseEvent& event)
+{
+    if (draggingEnabled)
+    {
+		juce::Point<float> localPoint = getLocalPoint(event.eventComponent, event.position);
+        if (thePointer.contains(localPoint))
+        {
+            dragStart = event.position;
+            dragEnd = event.position;
+            isDragging = true;
+        }
+
+    }
+}
+
+void OscSubComponent::mouseDrag(const juce::MouseEvent& event)
+{
+    if (isDragging)
+    {
+        dragEnd = event.position;
+
+        this->listeners.call(&Listener::OnDrag, this);
+    }
+
+}
+
+void OscSubComponent::mouseUp(const juce::MouseEvent& event)
+{
+    if (isDragging)
+    {
+        isDragging = false;
+    }
+}
 
 
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
+
+void OscSubComponent::addListener(OscSubComponent::Listener* listener)
+{
+    listeners.add(listener);
+}
+
+void OscSubComponent::removeListener(OscSubComponent::Listener* listener)
+{
+    listeners.remove(listener);
+}
+
 //[/MiscUserCode]
 
 

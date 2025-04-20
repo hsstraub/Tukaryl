@@ -34,17 +34,19 @@ TukarylSoundEdit::TukarylSoundEdit (TukarylInstrument& injectedInstrument)
     //[Constructor_pre] You can add your own custom stuff here..
     //[/Constructor_pre]
 
-    osc1.reset (new OscSubComponent ("Base", theInstrument.baseOscLevel));
+    osc1.reset (new OscSubComponent ("Base", theInstrument.baseOscLevel, false));
     addAndMakeVisible (osc1.get());
     osc1->setName ("osc1");
 
     osc1->setBounds (8, 24, 70, 224);
 
-    osc2.reset (new OscSubComponent ("Partial 1", theInstrument.partial1Level));
+    osc2.reset (new OscSubComponent ("Partial 1", theInstrument.partial1Level, true));
     addAndMakeVisible (osc2.get());
     osc2->setName ("osc2");
 
     osc2->setBounds (96, 24, 70, 224);
+
+    osc2->addListener(this);
 
 
     //[UserPreSize]
@@ -80,6 +82,9 @@ void TukarylSoundEdit::paint (juce::Graphics& g)
 
     //[UserPaint] Add your own custom painting code here..
     paintRuler(g);
+
+    osc1->setTopLeftPosition(getXPosOfFrequency(1.0) - osc1->getWidth() / 2, OSCTOP);
+    osc2->setTopLeftPosition(getXPosOfFrequency(theInstrument.partial1Frequency) - osc2->getWidth() / 2, OSCTOP);
     //[/UserPaint]
 }
 
@@ -89,8 +94,6 @@ void TukarylSoundEdit::resized()
     //[/UserPreResize]
 
     //[UserResized] Add your own custom resize handling here..
-    osc1->setTopLeftPosition(getXPosOfFrequency(1.0) - osc1->getWidth()/2, OSCTOP);
-    osc2->setTopLeftPosition(getXPosOfFrequency(theInstrument.partial1Frequency) - osc2->getWidth() / 2, OSCTOP);
     //[/UserResized]
 }
 
@@ -102,6 +105,33 @@ void TukarylSoundEdit::addChangeListener (juce::ChangeListener* const listener)
 {
     osc1->addChangeListener(listener);
     osc2->addChangeListener(listener);
+}
+
+void TukarylSoundEdit::OnDrag(OscSubComponent* component)
+{
+    if (component == osc2.get())
+    {
+        auto dragStart = getLocalPoint(this, component->getDragStart());
+        auto dragEnd = getLocalPoint(this, component->getDragEnd());
+        auto displacement = dragEnd.getX() - dragStart.getX();
+
+        auto thisWidth = getWidth();
+        auto oscWidth = osc2->getWidth();
+
+        double newLeftPos = osc2->getX() + displacement;
+        if (newLeftPos <= osc1->getRight())
+        {
+            newLeftPos = osc1->getRight() + 1;
+        }
+        else if (newLeftPos >= thisWidth - OSCHORIZMARGIN - oscWidth)
+        {
+            newLeftPos = thisWidth - OSCHORIZMARGIN - oscWidth - 1;
+        }
+        
+        theInstrument.partial1Frequency = getFrequencyOfXPos(newLeftPos + oscWidth / 2);
+        repaint();
+        
+    }
 }
 
 void TukarylSoundEdit::paintRuler(juce::Graphics& g)
@@ -132,6 +162,11 @@ void TukarylSoundEdit::paintRulerMark(juce::Graphics& g, double frequency)
 int TukarylSoundEdit::getXPosOfFrequency(double frequency)
 {
     return OSCHORIZMARGIN + std::log2(frequency) / std::log2(maxFrequency) * (getWidth() - 2 * OSCHORIZMARGIN);
+}
+
+double TukarylSoundEdit::getFrequencyOfXPos(double xPos)
+{
+    return std::pow(maxFrequency, (xPos - OSCHORIZMARGIN) / (double)(getWidth() - 2 * OSCHORIZMARGIN));
 }
 
 //[/MiscUserCode]

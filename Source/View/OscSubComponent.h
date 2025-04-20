@@ -39,23 +39,49 @@ class OscSubComponent  : public juce::Component,
 {
 public:
     //==============================================================================
-    OscSubComponent (juce::String labelText, unsigned short& injectedLevelVariable);
+    OscSubComponent (juce::String labelText, unsigned short& injectedLevelVariable, bool isDraggable);
     ~OscSubComponent() override;
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
+    // Types
+public:
+    // Listener class, to notify changes
+    class Listener
+    {
+    public:
+        // Destructor
+        virtual ~Listener() {}
+
+        virtual void OnDrag(OscSubComponent* component) = 0;
+    };
+
+    void addListener(Listener* listenerToAdd);
+    void removeListener(Listener* listenerToRemove);
+
+    juce::Point<float> getDragStart() const { return dragStart; }
+    juce::Point<float> getDragEnd() const { return dragEnd; }
+
     //[/UserMethods]
 
     void paint (juce::Graphics& g) override;
     void resized() override;
     void sliderValueChanged (juce::Slider* sliderThatWasMoved) override;
 
-
+    void mouseDown(const juce::MouseEvent& event) override;
+    void mouseDrag(const juce::MouseEvent& event) override;
+    void mouseUp(const juce::MouseEvent& event) override;
 
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
     unsigned short& levelVariable;
-    
+
+    bool draggingEnabled;
+    juce::Point<float> dragStart;
+    juce::Point<float> dragEnd;
+    bool isDragging;
+    juce::ListenerList<Listener> listeners;
+
     juce::Path thePointer;
     //[/UserVariables]
 

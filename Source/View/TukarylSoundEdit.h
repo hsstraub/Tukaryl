@@ -36,7 +36,9 @@
     Describe your class and how it works here!
                                                                     //[/Comments]
 */
-class TukarylSoundEdit  : public juce::Component
+class TukarylSoundEdit  
+    : public juce::Component
+    , public OscSubComponent::Listener
 {
 public:
     //==============================================================================
@@ -47,11 +49,14 @@ public:
     //[UserMethods]     -- You can add your own custom methods in this section.
     void addChangeListener (juce::ChangeListener* const listener);
 
+    void OnDrag(OscSubComponent* component) override;
+
 private:
     void paintRuler(juce::Graphics& g);
     void paintRulerMark(juce::Graphics& g, double frequency);
 
     int getXPosOfFrequency(double frequency);
+    double getFrequencyOfXPos(double xPos);
 
 
 public:
