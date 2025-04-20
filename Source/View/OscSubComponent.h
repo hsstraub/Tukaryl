@@ -39,7 +39,7 @@ class OscSubComponent  : public juce::Component,
 {
 public:
     //==============================================================================
-    OscSubComponent (juce::String labelText, unsigned short& injectedLevelVariable, bool isDraggable);
+    OscSubComponent (double& injectedfrequencyVariable, unsigned short& injectedLevelVariable, bool isDraggable);
     ~OscSubComponent() override;
 
     //==============================================================================
@@ -62,6 +62,8 @@ public:
     juce::Point<float> getDragStart() const { return dragStart; }
     juce::Point<float> getDragEnd() const { return dragEnd; }
 
+    void setFrequency(double newFrequency);
+
     //[/UserMethods]
 
     void paint (juce::Graphics& g) override;
@@ -74,6 +76,7 @@ public:
 
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
+    double& frequencyVariable;
     unsigned short& levelVariable;
 
     bool draggingEnabled;

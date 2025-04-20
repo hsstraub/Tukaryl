@@ -28,8 +28,9 @@
 //[/MiscUserDefs]
 
 //==============================================================================
-OscSubComponent::OscSubComponent (juce::String labelText, unsigned short& injectedLevelVariable, bool isDraggable)
-    : levelVariable(injectedLevelVariable)
+OscSubComponent::OscSubComponent (double& injectedFrequencyVariable, unsigned short& injectedLevelVariable, bool isDraggable)
+    : frequencyVariable(injectedFrequencyVariable)
+    , levelVariable(injectedLevelVariable)
     , draggingEnabled(isDraggable)
     , isDragging(false)
 {
@@ -64,7 +65,6 @@ OscSubComponent::OscSubComponent (juce::String labelText, unsigned short& inject
 
 
     //[Constructor] You can add your own custom stuff here..
-    descriptionLabel->setText(labelText, juce::NotificationType::dontSendNotification);
     //[/Constructor]
 }
 
@@ -85,6 +85,7 @@ OscSubComponent::~OscSubComponent()
 void OscSubComponent::paint (juce::Graphics& g)
 {
     //[UserPrePaint] Add your own custom painting code here..
+    descriptionLabel->setText(juce::String(frequencyVariable), juce::NotificationType::dontSendNotification);
     //[/UserPrePaint]
 
     g.fillAll (juce::Colour (0xff323e44));
@@ -176,6 +177,12 @@ void OscSubComponent::addListener(OscSubComponent::Listener* listener)
 void OscSubComponent::removeListener(OscSubComponent::Listener* listener)
 {
     listeners.remove(listener);
+}
+
+void OscSubComponent::setFrequency(double newFrequency)
+{
+    frequencyVariable = newFrequency;
+    sendChangeMessage();
 }
 
 //[/MiscUserCode]

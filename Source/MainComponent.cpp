@@ -4,6 +4,7 @@
 MainComponent::MainComponent()
 {
     theInstrument = TukarylInstrument {
+        1.0,
         63,
         2.0,
         31,

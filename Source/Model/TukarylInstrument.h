@@ -12,6 +12,7 @@
 
 struct TukarylInstrument
 {
+    double baseFrequency = 1.0;
     unsigned short baseOscLevel;
 
     double partial1Frequency;

@@ -34,13 +34,13 @@ TukarylSoundEdit::TukarylSoundEdit (TukarylInstrument& injectedInstrument)
     //[Constructor_pre] You can add your own custom stuff here..
     //[/Constructor_pre]
 
-    osc1.reset (new OscSubComponent ("Base", theInstrument.baseOscLevel, false));
+    osc1.reset (new OscSubComponent (theInstrument.baseFrequency, theInstrument.baseOscLevel, false));
     addAndMakeVisible (osc1.get());
     osc1->setName ("osc1");
 
     osc1->setBounds (8, 24, 70, 224);
 
-    osc2.reset (new OscSubComponent ("Partial 1", theInstrument.partial1Level, true));
+    osc2.reset (new OscSubComponent (theInstrument.partial1Frequency, theInstrument.partial1Level, true));
     addAndMakeVisible (osc2.get());
     osc2->setName ("osc2");
 
@@ -123,12 +123,12 @@ void TukarylSoundEdit::OnDrag(OscSubComponent* component)
         {
             newLeftPos = osc1->getRight() + 1;
         }
-        else if (newLeftPos >= thisWidth - OSCHORIZMARGIN - oscWidth)
+        else if (newLeftPos >= thisWidth - oscWidth)
         {
-            newLeftPos = thisWidth - OSCHORIZMARGIN - oscWidth - 1;
+            newLeftPos = thisWidth - oscWidth - 1;
         }
         
-        theInstrument.partial1Frequency = getFrequencyOfXPos(newLeftPos + oscWidth / 2);
+        osc2->setFrequency(getFrequencyOfXPos(newLeftPos + oscWidth / 2));
         repaint();
         
     }
