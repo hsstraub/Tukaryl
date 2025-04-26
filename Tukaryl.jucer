@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <JUCERPROJECT id="v7odDj" name="Tukaryl" projectType="guiapp" useAppConfig="0"
-              addUsingNamespaceToJuceHeader="0" displaySplashScreen="1" jucerFormatVersion="1"
-              companyName="Hans Straub" version="0.1.1">
+              displaySplashScreen="1" jucerFormatVersion="1" companyName="Hans Straub"
+              version="0.1.1">
   <MAINGROUP id="kOasHK" name="Tukaryl">
     <GROUP id="{DA080E50-8B91-F8CF-4614-C7654924B3CB}" name="Source">
+      <GROUP id="{B3043D56-F38F-3EBA-DF71-394EC27C7E36}" name="HajuLib">
+        <FILE id="HkpfF2" name="HajuMidiDriver.cpp" compile="1" resource="0"
+              file="Source/HajuLib/HajuMidiDriver.cpp"/>
+        <FILE id="vE4Ti9" name="HajuMidiDriver.h" compile="0" resource="0"
+              file="Source/HajuLib/HajuMidiDriver.h"/>
+      </GROUP>
       <GROUP id="{152C7EB1-C536-97E9-AFBF-327E12A0D808}" name="Model">
         <FILE id="lCdSTK" name="TukarylInstrument.h" compile="0" resource="0"
               file="Source/Model/TukarylInstrument.h"/>

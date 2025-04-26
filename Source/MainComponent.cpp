@@ -13,10 +13,21 @@ MainComponent::MainComponent()
     // Make sure you set the size of the component after
     // you add any child components.
 
+    cbMidiInput.reset (new juce::ComboBox ("cbMidiInput"));
+    addAndMakeVisible (cbMidiInput.get());
+    cbMidiInput->setTooltip (TRANS ("Receives answers to sent SysEx commands and the current configuration from controller "));
+    cbMidiInput->setEditableText (false);
+    cbMidiInput->setJustificationType (juce::Justification::centredLeft);
+    cbMidiInput->setTextWhenNothingSelected (TRANS ("Select MIDI Input"));
+    cbMidiInput->setTextWhenNoChoicesAvailable (TRANS ("(no choices)"));
+    cbMidiInput->addItemList(midiDriver.getMidiInputList(), 1);
+    cbMidiInput->onChange = [this] { setMidiInput (cbMidiInput->getSelectedItemIndex()); };
+    cbMidiInput->setBounds (8, 32, 184, 24);
+
     soundEditComponent.reset (new TukarylSoundEdit(theInstrument));
     addAndMakeVisible(soundEditComponent.get());
-    soundEditComponent->setBounds(0, 40, 600, 400);
     soundEditComponent->addChangeListener(this);
+    soundEditComponent->setBounds(0, 56, 600, 400);
 
     setSize (800, 600);
 
@@ -97,6 +108,7 @@ void MainComponent::resized()
     // This is called when the MainContentComponent is resized.
     // If you add any child components, this is where you should
     // update their positions.
+    soundEditComponent->setBounds(soundEditComponent->getX(), soundEditComponent->getY(), getWidth(), soundEditComponent->getHeight());
 }
 
 void MainComponent::changeListenerCallback(juce::ChangeBroadcaster *source)
@@ -111,5 +123,12 @@ void MainComponent::changeListenerCallback(juce::ChangeBroadcaster *source)
         auto cyclesPerSample2 = basefrequency * theInstrument.partial1Frequency / currentSampleRate;
         angleDelta2 = cyclesPerSample2 * 2.0 * juce::MathConstants<double>::pi;
    }
+}
+
+void MainComponent::setMidiInput (int index)
+{
+    if (index >= 0)
+        midiDriver.setMidiInput(index, nullptr);
+
 }
 
