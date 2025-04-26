@@ -43,6 +43,8 @@ MainComponent::MainComponent()
         // Specify the number of input and output channels that we want to open
         setAudioChannels (0, 2);
     }
+
+    keyboardState.addListener (this);
 }
 
 MainComponent::~MainComponent()
@@ -81,8 +83,8 @@ void MainComponent::getNextAudioBlock (const juce::AudioSourceChannelInfo& buffe
             auto currentSample2 = (float) std::sin (currentAngle2);
             currentAngle2 += angleDelta2;
 
-            leftBuffer[sample]  = currentSample1 * level1 + currentSample2 * level2;
-            rightBuffer[sample] = currentSample1 * level1 + currentSample2 * level2;
+            leftBuffer[sample]  = (currentSample1 * level1 + currentSample2 * level2) * currentVelocity;
+            rightBuffer[sample] = leftBuffer[sample];
         }
  }
 
@@ -128,7 +130,23 @@ void MainComponent::changeListenerCallback(juce::ChangeBroadcaster *source)
 void MainComponent::setMidiInput (int index)
 {
     if (index >= 0)
-        midiDriver.setMidiInput(index, nullptr);
+        midiDriver.setMidiInput(index, this);
 
+}
+
+void MainComponent::handleIncomingMidiMessage (juce::MidiInput* source, const juce::MidiMessage& message)
+{
+    keyboardState.processNextMidiEvent (message);
+}
+
+void MainComponent::handleNoteOn (juce::MidiKeyboardState*, int midiChannel, int midiNoteNumber, float velocity)
+{
+    currentVelocity = velocity;
+}
+
+
+void MainComponent::handleNoteOff (juce::MidiKeyboardState*, int midiChannel, int midiNoteNumber, float /*velocity*/)
+{
+    currentVelocity = 0.0;
 }
 
