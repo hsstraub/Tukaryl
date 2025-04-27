@@ -46,7 +46,8 @@ private:
     double currentAngle1 = 0.0, angleDelta1 = 0.0;
     double currentAngle2 = 0.0, angleDelta2 = 0.0;
 
-    float currentVelocity = 0.0;
+    double currentBaseFrequency = 440.0;
+    double currentVelocity = 0.0;
 
     HajuMidiDriver			     midiDriver;
     juce::MidiKeyboardState      keyboardState;

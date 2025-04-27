@@ -117,12 +117,10 @@ void MainComponent::changeListenerCallback(juce::ChangeBroadcaster *source)
 {
     if (currentSampleRate > 0.0)
     {
-        auto basefrequency = 440.0;   // Ad hoc frequency fix 440 Hz
-
-        auto cyclesPerSample1 = basefrequency / currentSampleRate;
+        auto cyclesPerSample1 = currentBaseFrequency / currentSampleRate;
         angleDelta1 = cyclesPerSample1 * 2.0 * juce::MathConstants<double>::pi;
 
-        auto cyclesPerSample2 = basefrequency * theInstrument.partial1Frequency / currentSampleRate;
+        auto cyclesPerSample2 = cyclesPerSample1 * theInstrument.partial1Frequency;
         angleDelta2 = cyclesPerSample2 * 2.0 * juce::MathConstants<double>::pi;
    }
 }
@@ -141,7 +139,9 @@ void MainComponent::handleIncomingMidiMessage (juce::MidiInput* source, const ju
 
 void MainComponent::handleNoteOn (juce::MidiKeyboardState*, int midiChannel, int midiNoteNumber, float velocity)
 {
+    currentBaseFrequency = juce::MidiMessage::getMidiNoteInHertz(midiNoteNumber);
     currentVelocity = velocity;
+    changeListenerCallback(nullptr);
 }
 
 
