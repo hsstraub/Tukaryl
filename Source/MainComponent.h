@@ -5,6 +5,7 @@
 #include "View/TukarylSoundEdit.h"
 #include "Model/TukarylInstrument.h"
 #include "HajuLib/HajuMidiDriver.h"
+#include "BusinessLogic/TukarylAudioSource.h"
 
 //==============================================================================
 /*
@@ -51,6 +52,7 @@ private:
 
     HajuMidiDriver			     midiDriver;
     juce::MidiKeyboardState      keyboardState;
+    TukarylAudioSource           theAudioSource;
 
     std::unique_ptr<juce::ComboBox> cbMidiInput;
     std::unique_ptr<TukarylSoundEdit> soundEditComponent;

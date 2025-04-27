@@ -2,6 +2,7 @@
 
 //==============================================================================
 MainComponent::MainComponent()
+: theAudioSource (keyboardState)
 {
     theInstrument = TukarylInstrument {
         1.0,

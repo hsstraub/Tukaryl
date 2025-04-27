@@ -5,6 +5,13 @@
               version="0.1.2">
   <MAINGROUP id="kOasHK" name="Tukaryl">
     <GROUP id="{DA080E50-8B91-F8CF-4614-C7654924B3CB}" name="Source">
+      <GROUP id="{DED70166-9714-7552-ECA9-D6A724CF0D5F}" name="BusinessLogic">
+        <FILE id="OHnlLQ" name="TukarylAudioSource.cpp" compile="1" resource="0"
+              file="Source/BusinessLogic/TukarylAudioSource.cpp"/>
+        <FILE id="ck6Lhe" name="TukarylAudioSource.h" compile="0" resource="0"
+              file="Source/BusinessLogic/TukarylAudioSource.h"/>
+        <FILE id="t0qNVP" name="TukarylSound.h" compile="0" resource="0" file="Source/BusinessLogic/TukarylSound.h"/>
+      </GROUP>
       <GROUP id="{B3043D56-F38F-3EBA-DF71-394EC27C7E36}" name="HajuLib">
         <FILE id="HkpfF2" name="HajuMidiDriver.cpp" compile="1" resource="0"
               file="Source/HajuLib/HajuMidiDriver.cpp"/>
