@@ -33,6 +33,8 @@ public:
 
     void renderNextBlock (juce::AudioSampleBuffer& outputBuffer, int startSample, int numSamples) override;
 
+    void updateFromInstrument();
+
 private:
     TukarylInstrument& theInstrument;
 

@@ -12,10 +12,7 @@
     This component lives inside our window, and this is where you should put all
     your controls and content.
 */
-class MainComponent  : public juce::AudioAppComponent,
-                       public juce::ChangeListener,
-                       private juce::MidiInputCallback,
-                       private juce::MidiKeyboardStateListener
+class MainComponent  : public juce::AudioAppComponent
 {
 public:
     //==============================================================================
@@ -31,24 +28,12 @@ public:
     void paint (juce::Graphics& g) override;
     void resized() override;
 
-	void changeListenerCallback(juce::ChangeBroadcaster *source) override;
-
-    TukarylInstrument theInstrument;
-
 private:
     void setMidiInput (int index);
-    void handleIncomingMidiMessage (juce::MidiInput* source, const juce::MidiMessage& message) override;
-    void handleNoteOn (juce::MidiKeyboardState*, int midiChannel, int midiNoteNumber, float velocity) override;
-    void handleNoteOff (juce::MidiKeyboardState*, int midiChannel, int midiNoteNumber, float /*velocity*/) override;
 
     //==============================================================================
     // Your private member variables go here...
-    double currentSampleRate = 0.0;
-    double currentAngle1 = 0.0, angleDelta1 = 0.0;
-    double currentAngle2 = 0.0, angleDelta2 = 0.0;
-
-    double currentBaseFrequency = 440.0;
-    double currentVelocity = 0.0;
+    TukarylInstrument            theInstrument;
 
     HajuMidiDriver			     midiDriver;
     juce::MidiKeyboardState      keyboardState;

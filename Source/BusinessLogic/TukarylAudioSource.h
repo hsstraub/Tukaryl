@@ -16,7 +16,7 @@
 #include "../Model/TukarylInstrument.h"
 //[/Headers]
 
-class TukarylAudioSource : public juce::AudioSource
+class TukarylAudioSource : public juce::AudioSource, public juce::ChangeListener
 {
 public:
     TukarylAudioSource (juce::MidiKeyboardState& keyState, TukarylInstrument& tukarylInstrument);
@@ -25,6 +25,13 @@ public:
     void getNextAudioBlock (const juce::AudioSourceChannelInfo& bufferToFill) override;
     void releaseResources() override;
 
+    void changeListenerCallback(juce::ChangeBroadcaster *source) override;
+
+    juce::MidiMessageCollector* getMidiCollector()
+    {
+        return &midiCollector;
+    }
+
 public:
     const int numberOfVoices = 4;
 
@@ -32,4 +39,5 @@ public:
 private:
     juce::MidiKeyboardState& keyboardState;
     juce::Synthesiser synth;
+    juce::MidiMessageCollector midiCollector;
 };

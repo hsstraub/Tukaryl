@@ -28,20 +28,13 @@ void TukarylVoice::startNote(
     currentVelocity = velocity;
     currentAngle1 = currentAngle2 = 0.0;
 
-    if (getSampleRate() > 0.0)
-    {
-        auto cyclesPerSample1 = currentBaseFrequency / getSampleRate();
-        angleDelta1 = cyclesPerSample1 * 2.0 * juce::MathConstants<double>::pi;
-
-        auto cyclesPerSample2 = cyclesPerSample1 * theInstrument.partial1Frequency;
-        angleDelta2 = cyclesPerSample2 * 2.0 * juce::MathConstants<double>::pi;
-   }
+    updateFromInstrument();
 }
 
 void TukarylVoice::stopNote(float /*velocity*/, bool allowTailOff)
 {
     clearCurrentNote();
-    angleDelta1 =angleDelta2 = 0.0;
+    angleDelta1 = angleDelta2 = 0.0;
 }
 
 
@@ -64,5 +57,17 @@ void TukarylVoice::renderNextBlock (juce::AudioSampleBuffer& outputBuffer, int s
             currentAngle1 += angleDelta1;
             currentAngle2 += angleDelta2;
         }
+    }
+}
+
+void TukarylVoice::updateFromInstrument()
+{
+    if (getSampleRate() > 0.0)
+    {
+        auto cyclesPerSample1 = currentBaseFrequency / getSampleRate();
+        angleDelta1 = cyclesPerSample1 * 2.0 * juce::MathConstants<double>::pi;
+
+        auto cyclesPerSample2 = cyclesPerSample1 * theInstrument.partial1Frequency;
+        angleDelta2 = cyclesPerSample2 * 2.0 * juce::MathConstants<double>::pi;
     }
 }
