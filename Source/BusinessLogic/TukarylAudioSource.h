@@ -12,16 +12,22 @@
 
 //[Headers]     -- You can add your own extra header files here --
 #include <JuceHeader.h>
+
+#include "../Model/TukarylInstrument.h"
 //[/Headers]
 
 class TukarylAudioSource : public juce::AudioSource
 {
 public:
-    TukarylAudioSource (juce::MidiKeyboardState& keyState);
+    TukarylAudioSource (juce::MidiKeyboardState& keyState, TukarylInstrument& tukarylInstrument);
 
     void prepareToPlay (int samplesPerBlockExpected, double sampleRate) override;
     void getNextAudioBlock (const juce::AudioSourceChannelInfo& bufferToFill) override;
     void releaseResources() override;
+
+public:
+    const int numberOfVoices = 4;
+
 
 private:
     juce::MidiKeyboardState& keyboardState;

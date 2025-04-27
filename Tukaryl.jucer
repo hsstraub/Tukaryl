@@ -11,6 +11,9 @@
         <FILE id="ck6Lhe" name="TukarylAudioSource.h" compile="0" resource="0"
               file="Source/BusinessLogic/TukarylAudioSource.h"/>
         <FILE id="t0qNVP" name="TukarylSound.h" compile="0" resource="0" file="Source/BusinessLogic/TukarylSound.h"/>
+        <FILE id="kC0blb" name="TukarylVoice.cpp" compile="1" resource="0"
+              file="Source/BusinessLogic/TukarylVoice.cpp"/>
+        <FILE id="jNuALf" name="TukarylVoice.h" compile="0" resource="0" file="Source/BusinessLogic/TukarylVoice.h"/>
       </GROUP>
       <GROUP id="{B3043D56-F38F-3EBA-DF71-394EC27C7E36}" name="HajuLib">
         <FILE id="HkpfF2" name="HajuMidiDriver.cpp" compile="1" resource="0"

@@ -9,11 +9,15 @@
 */
 
 #include "TukarylAudioSource.h"
+#include "TukarylVoice.h"
 #include"TukarylSound.h"
 
-TukarylAudioSource::TukarylAudioSource(juce::MidiKeyboardState& keyState)
+TukarylAudioSource::TukarylAudioSource(juce::MidiKeyboardState& keyState, TukarylInstrument& tukarylInstrument)
 : keyboardState (keyState)
 {
+    for (auto i = 0; i < numberOfVoices; ++i) // [1]
+        synth.addVoice (new TukarylVoice(tukarylInstrument));
+
     synth.addSound (new TukarylSound());
 }
 

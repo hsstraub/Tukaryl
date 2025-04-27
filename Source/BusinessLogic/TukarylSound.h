@@ -14,8 +14,9 @@
 #include <JuceHeader.h>
 //[/Headers]
 
-struct TukarylSound : public juce::SynthesiserSound
+class TukarylSound : public juce::SynthesiserSound
 {
+public:
     TukarylSound() {}
     bool appliesToNote (int) override { return true; }
     bool appliesToChannel (int) override { return true; }
