@@ -50,9 +50,10 @@ void TukarylVoice::renderNextBlock (juce::AudioSampleBuffer& outputBuffer, int s
             auto currentSample1 = (float) std::sin (currentAngle1);
             auto currentSample2 = (float) std::sin (currentAngle2);
 
+            auto alloverSample = (currentSample1 * level1 + currentSample2 * level2) * currentVelocity;
+
             for (auto i = outputBuffer.getNumChannels(); --i >= 0;)
-                outputBuffer.addSample(
-                    i, startSample, (currentSample1 * level1 + currentSample2 * level2) * currentVelocity);
+                outputBuffer.addSample(i, startSample, alloverSample);
 
             currentAngle1 += angleDelta1;
             currentAngle2 += angleDelta2;
