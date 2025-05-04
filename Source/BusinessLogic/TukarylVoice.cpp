@@ -57,6 +57,7 @@ void TukarylVoice::renderNextBlock (juce::AudioSampleBuffer& outputBuffer, int s
 
             currentAngle1 += angleDelta1;
             currentAngle2 += angleDelta2;
+            ++startSample;
         }
     }
 }
