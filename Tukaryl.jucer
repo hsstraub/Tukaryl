@@ -20,8 +20,16 @@
               file="Source/HajuLib/HajuMidiDriver.cpp"/>
         <FILE id="vE4Ti9" name="HajuMidiDriver.h" compile="0" resource="0"
               file="Source/HajuLib/HajuMidiDriver.h"/>
+        <FILE id="XzMrAq" name="RationalNumber.cpp" compile="1" resource="0"
+              file="Source/HajuLib/RationalNumber.cpp"/>
+        <FILE id="qF8lgX" name="RationalNumber.h" compile="0" resource="0"
+              file="Source/HajuLib/RationalNumber.h"/>
       </GROUP>
       <GROUP id="{152C7EB1-C536-97E9-AFBF-327E12A0D808}" name="Model">
+        <FILE id="f4YULm" name="FrequencyModel.cpp" compile="1" resource="0"
+              file="Source/Model/FrequencyModel.cpp"/>
+        <FILE id="PMx29g" name="FrequencyModel.h" compile="0" resource="0"
+              file="Source/Model/FrequencyModel.h"/>
         <FILE id="lCdSTK" name="TukarylInstrument.h" compile="0" resource="0"
               file="Source/Model/TukarylInstrument.h"/>
       </GROUP>
