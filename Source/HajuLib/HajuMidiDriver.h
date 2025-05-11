@@ -28,6 +28,7 @@ public:
 
 	// List of MIDI input device names
 	juce::StringArray getMidiInputList();
+
 	// List of MIDI output device names
 	juce::StringArray getMidiOutputList();
 
@@ -36,6 +37,10 @@ public:
 
 	// Open the specified output device
 	void setMidiOutput(int deviceIndex);
+
+	int getFirstEnabledMidiInput();
+
+	void setFirstEnabledMidiInput(MidiInputCallback* callback);
 
 	// Send a MIDI message directly
 	void sendMessageNow(const juce::MidiMessage& message);

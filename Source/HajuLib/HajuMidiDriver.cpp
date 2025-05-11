@@ -29,7 +29,7 @@ HajuMidiDriver::~HajuMidiDriver()
 	midiOutput = nullptr;
 }
 
-StringArray HajuMidiDriver::getMidiInputList() 
+StringArray HajuMidiDriver::getMidiInputList()
 {
 	juce::StringArray midiInputNames;
 
@@ -39,8 +39,8 @@ StringArray HajuMidiDriver::getMidiInputList()
 	return midiInputNames;
 }
 
-StringArray HajuMidiDriver::getMidiOutputList() 
-{ 
+StringArray HajuMidiDriver::getMidiOutputList()
+{
 	juce::StringArray midiOutputNames;
 
 	for (auto output : midiOutputs)
@@ -72,6 +72,29 @@ void HajuMidiDriver::setMidiOutput(int deviceIndex)
 
 	midiOutput = MidiOutput::openDevice(midiOutputs[deviceIndex].identifier);
 }
+
+int HajuMidiDriver::getFirstEnabledMidiInput()
+{
+    for (auto input : midiInputs)
+    {
+        if (deviceManager.isMidiInputDeviceEnabled (input.identifier))
+        {
+            return midiInputs.indexOf (input);
+        }
+    }
+
+    return -1;
+}
+
+void HajuMidiDriver::setFirstEnabledMidiInput(MidiInputCallback* callback)
+{
+    auto inputIndex = getFirstEnabledMidiInput();
+    if ( inputIndex >= 0)
+    {
+        setMidiInput(inputIndex, callback);
+    }
+}
+
 
 void HajuMidiDriver::sendMessageNow(const MidiMessage& message)
 {

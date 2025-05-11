@@ -34,6 +34,8 @@ MainComponent::MainComponent()
 
     // Specify the number of input and output channels that we want to open
     setAudioChannels (0, 2);
+
+    cbMidiInput->setSelectedId(midiDriver.getFirstEnabledMidiInput());
 }
 
 MainComponent::~MainComponent()
