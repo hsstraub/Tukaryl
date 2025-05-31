@@ -24,6 +24,7 @@
 
 #include "OscSubComponent.h"
 #include "../Model/TukarylInstrument.h"
+#include "../Model/FrequencyModel.h"
 //[/Headers]
 
 
@@ -36,7 +37,7 @@
     Describe your class and how it works here!
                                                                     //[/Comments]
 */
-class TukarylSoundEdit  
+class TukarylSoundEdit
     : public juce::Component
     , public OscSubComponent::Listener
 {
@@ -53,10 +54,10 @@ public:
 
 private:
     void paintRuler(juce::Graphics& g);
-    void paintRulerMark(juce::Graphics& g, double frequency);
+    void paintRulerMark(juce::Graphics& g, FrequencyModel frequency);
 
-    int getXPosOfFrequency(double frequency);
-    double getFrequencyOfXPos(double xPos);
+    int getXPosOfFrequency(FrequencyModel frequency);
+    FrequencyModel getFrequencyOfXPos(double xPos);
 
 
 public:
@@ -71,7 +72,7 @@ private:
     //[UserVariables]   -- You can add your own custom variables in this section.
     TukarylInstrument& theInstrument;
 
-    const double maxFrequency = 4.0;
+    const FrequencyModel maxFrequency = FrequencyModel::doubleOctave();
     //[/UserVariables]
 
     //==============================================================================

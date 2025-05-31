@@ -20,10 +20,13 @@ public:
     FrequencyModel(RationalNumber intervalRatio);
     FrequencyModel(float valueInCents);
 
-
     double getValueInCents() const;
     double getValueAsFrequencyRatio() const;
     juce::String toString();
+
+    static FrequencyModel perfectPrime() { return FrequencyModel(RationalNumber(1, 1)); }
+    static FrequencyModel octave() { return FrequencyModel(RationalNumber(2, 1)); }
+    static FrequencyModel doubleOctave() { return FrequencyModel(RationalNumber(4, 1)); }
 
 private:
     std::variant<RationalNumber, float> value;

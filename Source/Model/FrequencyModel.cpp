@@ -53,7 +53,7 @@ double FrequencyModel::getValueAsFrequencyRatio() const
 
 juce::String FrequencyModel::toString()
 {
-    if (std::holds_alternative<float>)
+    if (std::holds_alternative<float>(value))
     {
         // Value is in cents
         auto cents = std::get<float>(value);
@@ -62,7 +62,7 @@ juce::String FrequencyModel::toString()
     else
     {
         // Value is a ratio
-        auto intervalRatio = td::get<RationalNumber>(value);
+        auto intervalRatio = std::get<RationalNumber>(value);
         return intervalRatio.asString();
     }
 }

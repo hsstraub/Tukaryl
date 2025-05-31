@@ -83,8 +83,12 @@ void TukarylSoundEdit::paint (juce::Graphics& g)
     //[UserPaint] Add your own custom painting code here..
     paintRuler(g);
 
-    osc1->setTopLeftPosition(getXPosOfFrequency(1.0) - osc1->getWidth() / 2, OSCTOP);
-    osc2->setTopLeftPosition(getXPosOfFrequency(theInstrument.partial1Frequency) - osc2->getWidth() / 2, OSCTOP);
+    osc1->setTopLeftPosition(getXPosOfFrequency(FrequencyModel::perfectPrime()) - osc1->getWidth() / 2, OSCTOP);
+
+    // ad hoc (while theInstrument.partial1Frequency is not in FrequencyModel form)
+    auto freq2 = FrequencyModel(std::log2(theInstrument.partial1Frequency) * 1200.0);
+
+    osc2->setTopLeftPosition(getXPosOfFrequency(freq2) - osc2->getWidth() / 2, OSCTOP);
     //[/UserPaint]
 }
 
@@ -127,10 +131,10 @@ void TukarylSoundEdit::OnDrag(OscSubComponent* component)
         {
             newLeftPos = thisWidth - oscWidth - 1;
         }
-        
-        osc2->setFrequency(getFrequencyOfXPos(newLeftPos + oscWidth / 2));
+
+        osc2->setFrequency(getFrequencyOfXPos(newLeftPos + oscWidth / 2).getValueAsFrequencyRatio());
         repaint();
-        
+
     }
 }
 
@@ -139,12 +143,12 @@ void TukarylSoundEdit::paintRuler(juce::Graphics& g)
     g.setColour(getLookAndFeel().findColour(juce::TextEditor::textColourId));
     g.drawLine(0, RULERYPOS, getRight(), RULERYPOS);
 
-    paintRulerMark(g, 1.0);
-    paintRulerMark(g, 2.0);
-    paintRulerMark(g, 4.0);
+    paintRulerMark(g, FrequencyModel::perfectPrime());
+    paintRulerMark(g, FrequencyModel::octave());
+    paintRulerMark(g, FrequencyModel::doubleOctave());
 }
 
-void TukarylSoundEdit::paintRulerMark(juce::Graphics& g, double frequency)
+void TukarylSoundEdit::paintRulerMark(juce::Graphics& g, FrequencyModel frequency)
 {
     auto xPos = getXPosOfFrequency(frequency);
     if (xPos >= 0 && xPos <= getWidth())
@@ -155,18 +159,19 @@ void TukarylSoundEdit::paintRulerMark(juce::Graphics& g, double frequency)
         auto oscWidth = osc2->getWidth();
 
         g.drawLine(xPos, RULERYPOS, xPos, RULERYPOS - RULERMARKHEIGHT);
-        g.drawText(juce::String(frequency), xPos - oscWidth/2, RULERYPOS - RULERMARKHEIGHT- RULERTEXTSIZE - 1, oscWidth, RULERTEXTSIZE, juce::Justification::centred);
+        g.drawText(frequency.toString(), xPos - oscWidth/2, RULERYPOS - RULERMARKHEIGHT- RULERTEXTSIZE - 1, oscWidth, RULERTEXTSIZE, juce::Justification::centred);
     }
 }
 
-int TukarylSoundEdit::getXPosOfFrequency(double frequency)
+int TukarylSoundEdit::getXPosOfFrequency(FrequencyModel frequency)
 {
-    return OSCHORIZMARGIN + std::log2(frequency) / std::log2(maxFrequency) * (getWidth() - 2 * OSCHORIZMARGIN);
+    return OSCHORIZMARGIN + (getWidth() - 2 * OSCHORIZMARGIN) * frequency.getValueInCents() / maxFrequency.getValueInCents();
 }
 
-double TukarylSoundEdit::getFrequencyOfXPos(double xPos)
+FrequencyModel TukarylSoundEdit::getFrequencyOfXPos(double xPos)
 {
-    return std::pow(maxFrequency, (xPos - OSCHORIZMARGIN) / (double)(getWidth() - 2 * OSCHORIZMARGIN));
+    return FrequencyModel(
+        maxFrequency.getValueInCents() * (xPos - OSCHORIZMARGIN) / (getWidth() - 2 * OSCHORIZMARGIN));
 }
 
 //[/MiscUserCode]
