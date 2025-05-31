@@ -9,12 +9,19 @@
 */
 
 #pragma once
+#include "FrequencyModel.h"
 
 struct TukarylInstrument
 {
-    double baseFrequency = 1.0;
+    FrequencyModel baseFrequency = FrequencyModel::perfectPrime();
     unsigned short baseOscLevel;
 
-    double partial1Frequency;
+    FrequencyModel partial1Frequency;
     unsigned short partial1Level;
+
+    TukarylInstrument(
+        unsigned short newBaseOscLevel, FrequencyModel newPartial1Frequency, unsigned short newPartial1Level)
+    : baseOscLevel(newBaseOscLevel), partial1Frequency(newPartial1Frequency), partial1Level(newPartial1Level)
+    {
+    }
 };

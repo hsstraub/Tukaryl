@@ -18,7 +18,7 @@
 */
 
 //[Headers] You can add your own extra header files here...
-#include "ViewConstants.h" 
+#include "ViewConstants.h"
 //[/Headers]
 
 #include "OscSubComponent.h"
@@ -28,7 +28,7 @@
 //[/MiscUserDefs]
 
 //==============================================================================
-OscSubComponent::OscSubComponent (double& injectedFrequencyVariable, unsigned short& injectedLevelVariable, bool isDraggable)
+OscSubComponent::OscSubComponent (FrequencyModel& injectedFrequencyVariable, unsigned short& injectedLevelVariable, bool isDraggable)
     : frequencyVariable(injectedFrequencyVariable)
     , levelVariable(injectedLevelVariable)
     , draggingEnabled(isDraggable)
@@ -85,14 +85,14 @@ OscSubComponent::~OscSubComponent()
 void OscSubComponent::paint (juce::Graphics& g)
 {
     //[UserPrePaint] Add your own custom painting code here..
-    descriptionLabel->setText(juce::String(frequencyVariable), juce::NotificationType::dontSendNotification);
+    descriptionLabel->setText(frequencyVariable.toString(), juce::NotificationType::dontSendNotification);
     //[/UserPrePaint]
 
     g.fillAll (juce::Colour (0xff323e44));
 
     //[UserPaint] Add your own custom painting code here..
     juce::Colour fillColour = juce::Colour(0xff2aa583);
-    
+
     auto width = getWidth();
 
     thePointer.clear();
@@ -100,7 +100,7 @@ void OscSubComponent::paint (juce::Graphics& g)
     thePointer.lineTo(width, POINTERHEIGHT);
     thePointer.lineTo(width/2, 0);
     thePointer.closeSubPath();
-    
+
     g.setColour(fillColour);
     g.fillPath(thePointer, juce::AffineTransform::translation(0, 0));
     //[/UserPaint]
@@ -179,7 +179,7 @@ void OscSubComponent::removeListener(OscSubComponent::Listener* listener)
     listeners.remove(listener);
 }
 
-void OscSubComponent::setFrequency(double newFrequency)
+void OscSubComponent::setFrequency(FrequencyModel newFrequency)
 {
     frequencyVariable = newFrequency;
     sendChangeMessage();

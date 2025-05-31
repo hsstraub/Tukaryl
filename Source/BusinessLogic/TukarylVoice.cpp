@@ -69,7 +69,7 @@ void TukarylVoice::updateFromInstrument()
         auto cyclesPerSample1 = currentBaseFrequency / getSampleRate();
         angleDelta1 = cyclesPerSample1 * 2.0 * juce::MathConstants<double>::pi;
 
-        auto cyclesPerSample2 = cyclesPerSample1 * theInstrument.partial1Frequency;
+        auto cyclesPerSample2 = cyclesPerSample1 * theInstrument.partial1Frequency.getValueAsFrequencyRatio();
         angleDelta2 = cyclesPerSample2 * 2.0 * juce::MathConstants<double>::pi;
     }
 }

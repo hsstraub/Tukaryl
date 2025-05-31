@@ -85,10 +85,7 @@ void TukarylSoundEdit::paint (juce::Graphics& g)
 
     osc1->setTopLeftPosition(getXPosOfFrequency(FrequencyModel::perfectPrime()) - osc1->getWidth() / 2, OSCTOP);
 
-    // ad hoc (while theInstrument.partial1Frequency is not in FrequencyModel form)
-    auto freq2 = FrequencyModel(std::log2(theInstrument.partial1Frequency) * 1200.0);
-
-    osc2->setTopLeftPosition(getXPosOfFrequency(freq2) - osc2->getWidth() / 2, OSCTOP);
+    osc2->setTopLeftPosition(getXPosOfFrequency(theInstrument.partial1Frequency) - osc2->getWidth() / 2, OSCTOP);
     //[/UserPaint]
 }
 
@@ -132,7 +129,7 @@ void TukarylSoundEdit::OnDrag(OscSubComponent* component)
             newLeftPos = thisWidth - oscWidth - 1;
         }
 
-        osc2->setFrequency(getFrequencyOfXPos(newLeftPos + oscWidth / 2).getValueAsFrequencyRatio());
+        osc2->setFrequency(getFrequencyOfXPos(newLeftPos + oscWidth / 2));
         repaint();
 
     }

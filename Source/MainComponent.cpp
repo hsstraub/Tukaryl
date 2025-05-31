@@ -2,15 +2,9 @@
 
 //==============================================================================
 MainComponent::MainComponent()
-: theAudioSource (keyboardState, theInstrument)
+: theInstrument(63, FrequencyModel::octave(), 31)
+, theAudioSource(keyboardState, theInstrument)
 {
-    theInstrument = TukarylInstrument {
-        1.0,
-        63,
-        2.0,
-        31,
-    };
-
     // Make sure you set the size of the component after
     // you add any child components.
 
