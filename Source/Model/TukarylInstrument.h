@@ -9,19 +9,28 @@
 */
 
 #pragma once
-#include "FrequencyModel.h"
+#include "IntervalModel.h"
+#include "TuningTable.h"
 
 struct TukarylInstrument
 {
-    FrequencyModel baseFrequency = FrequencyModel::perfectPrime();
+    IntervalModel baseFrequency = IntervalModel::perfectPrime();
     unsigned short baseOscLevel;
 
-    FrequencyModel partial1Frequency;
+    IntervalModel partial1Frequency;
     unsigned short partial1Level;
 
+    TuningTable tuningTable = TuningTable::standard12Edo();
+
     TukarylInstrument(
-        unsigned short newBaseOscLevel, FrequencyModel newPartial1Frequency, unsigned short newPartial1Level)
-    : baseOscLevel(newBaseOscLevel), partial1Frequency(newPartial1Frequency), partial1Level(newPartial1Level)
+        unsigned short newBaseOscLevel,
+        IntervalModel newPartial1Frequency,
+        unsigned short newPartial1Level,
+        TuningTable newTuningTable)
+    : baseOscLevel(newBaseOscLevel)
+    , partial1Frequency(newPartial1Frequency)
+    , partial1Level(newPartial1Level)
+    , tuningTable(newTuningTable)
     {
     }
 };

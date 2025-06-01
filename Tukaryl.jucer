@@ -26,12 +26,13 @@
               file="Source/HajuLib/RationalNumber.h"/>
       </GROUP>
       <GROUP id="{152C7EB1-C536-97E9-AFBF-327E12A0D808}" name="Model">
-        <FILE id="f4YULm" name="FrequencyModel.cpp" compile="1" resource="0"
-              file="Source/Model/FrequencyModel.cpp"/>
-        <FILE id="PMx29g" name="FrequencyModel.h" compile="0" resource="0"
-              file="Source/Model/FrequencyModel.h"/>
+        <FILE id="f4YULm" name="IntervalModel.cpp" compile="1" resource="0"
+              file="Source/Model/IntervalModel.cpp"/>
+        <FILE id="PMx29g" name="IntervalModel.h" compile="0" resource="0" file="Source/Model/IntervalModel.h"/>
         <FILE id="lCdSTK" name="TukarylInstrument.h" compile="0" resource="0"
               file="Source/Model/TukarylInstrument.h"/>
+        <FILE id="QuQMc4" name="TuningTable.cpp" compile="1" resource="0" file="Source/Model/TuningTable.cpp"/>
+        <FILE id="vfAz1v" name="TuningTable.h" compile="0" resource="0" file="Source/Model/TuningTable.h"/>
       </GROUP>
       <GROUP id="{E9E9A777-8DA5-36D5-A2EB-B9125DF2CCEE}" name="View">
         <FILE id="PqNXWo" name="OscSubComponent.h" compile="0" resource="0"

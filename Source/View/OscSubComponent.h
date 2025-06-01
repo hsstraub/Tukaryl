@@ -21,7 +21,7 @@
 
 //[Headers]     -- You can add your own extra header files here --
 #include <JuceHeader.h>
-#include "../Model/FrequencyModel.h"
+#include "../Model/IntervalModel.h"
 //[/Headers]
 
 
@@ -40,7 +40,7 @@ class OscSubComponent  : public juce::Component,
 {
 public:
     //==============================================================================
-    OscSubComponent (FrequencyModel& injectedfrequencyVariable, unsigned short& injectedLevelVariable, bool isDraggable);
+    OscSubComponent (IntervalModel& injectedfrequencyVariable, unsigned short& injectedLevelVariable, bool isDraggable);
     ~OscSubComponent() override;
 
     //==============================================================================
@@ -63,7 +63,7 @@ public:
     juce::Point<float> getDragStart() const { return dragStart; }
     juce::Point<float> getDragEnd() const { return dragEnd; }
 
-    void setFrequency(FrequencyModel newFrequency);
+    void setFrequency(IntervalModel newFrequency);
 
     //[/UserMethods]
 
@@ -77,7 +77,7 @@ public:
 
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
-    FrequencyModel& frequencyVariable;
+    IntervalModel& frequencyVariable;
     unsigned short& levelVariable;
 
     bool draggingEnabled;

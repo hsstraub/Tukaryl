@@ -20,6 +20,9 @@ public:
     double asDouble() const;
     juce::String asString() const;
 
+    RationalNumber operator*(RationalNumber const& second) const;
+    RationalNumber getInverse() const;
+
 private:
     int numerator;
     int denominator;

@@ -28,7 +28,7 @@
 //[/MiscUserDefs]
 
 //==============================================================================
-OscSubComponent::OscSubComponent (FrequencyModel& injectedFrequencyVariable, unsigned short& injectedLevelVariable, bool isDraggable)
+OscSubComponent::OscSubComponent (IntervalModel& injectedFrequencyVariable, unsigned short& injectedLevelVariable, bool isDraggable)
     : frequencyVariable(injectedFrequencyVariable)
     , levelVariable(injectedLevelVariable)
     , draggingEnabled(isDraggable)
@@ -179,7 +179,7 @@ void OscSubComponent::removeListener(OscSubComponent::Listener* listener)
     listeners.remove(listener);
 }
 
-void OscSubComponent::setFrequency(FrequencyModel newFrequency)
+void OscSubComponent::setFrequency(IntervalModel newFrequency)
 {
     frequencyVariable = newFrequency;
     sendChangeMessage();

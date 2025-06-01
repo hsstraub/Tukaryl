@@ -83,7 +83,7 @@ void TukarylSoundEdit::paint (juce::Graphics& g)
     //[UserPaint] Add your own custom painting code here..
     paintRuler(g);
 
-    osc1->setTopLeftPosition(getXPosOfFrequency(FrequencyModel::perfectPrime()) - osc1->getWidth() / 2, OSCTOP);
+    osc1->setTopLeftPosition(getXPosOfFrequency(IntervalModel::perfectPrime()) - osc1->getWidth() / 2, OSCTOP);
 
     osc2->setTopLeftPosition(getXPosOfFrequency(theInstrument.partial1Frequency) - osc2->getWidth() / 2, OSCTOP);
     //[/UserPaint]
@@ -140,12 +140,16 @@ void TukarylSoundEdit::paintRuler(juce::Graphics& g)
     g.setColour(getLookAndFeel().findColour(juce::TextEditor::textColourId));
     g.drawLine(0, RULERYPOS, getRight(), RULERYPOS);
 
-    paintRulerMark(g, FrequencyModel::perfectPrime());
-    paintRulerMark(g, FrequencyModel::octave());
-    paintRulerMark(g, FrequencyModel::doubleOctave());
+    paintRulerMark(g, IntervalModel::perfectPrime());
+    paintRulerMark(g, maxFrequency);
+
+    for (auto freqIter = theInstrument.tuningTable.begin(); freqIter != theInstrument.tuningTable.end(); freqIter++)
+    {
+           paintRulerMark(g, *freqIter);
+    }
 }
 
-void TukarylSoundEdit::paintRulerMark(juce::Graphics& g, FrequencyModel frequency)
+void TukarylSoundEdit::paintRulerMark(juce::Graphics& g, IntervalModel frequency)
 {
     auto xPos = getXPosOfFrequency(frequency);
     if (xPos >= 0 && xPos <= getWidth())
@@ -160,14 +164,14 @@ void TukarylSoundEdit::paintRulerMark(juce::Graphics& g, FrequencyModel frequenc
     }
 }
 
-int TukarylSoundEdit::getXPosOfFrequency(FrequencyModel frequency)
+int TukarylSoundEdit::getXPosOfFrequency(IntervalModel frequency)
 {
     return OSCHORIZMARGIN + (getWidth() - 2 * OSCHORIZMARGIN) * frequency.getValueInCents() / maxFrequency.getValueInCents();
 }
 
-FrequencyModel TukarylSoundEdit::getFrequencyOfXPos(double xPos)
+IntervalModel TukarylSoundEdit::getFrequencyOfXPos(double xPos)
 {
-    return FrequencyModel(
+    return IntervalModel(
         maxFrequency.getValueInCents() * (xPos - OSCHORIZMARGIN) / (getWidth() - 2 * OSCHORIZMARGIN));
 }
 

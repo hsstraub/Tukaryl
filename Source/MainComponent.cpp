@@ -2,7 +2,7 @@
 
 //==============================================================================
 MainComponent::MainComponent()
-: theInstrument(63, FrequencyModel::octave(), 31)
+: theInstrument(63, IntervalModel::octave(), 31, TuningTable::standard12Edo())
 , theAudioSource(keyboardState, theInstrument)
 {
     // Make sure you set the size of the component after

@@ -24,6 +24,9 @@ public:
     double getValueAsFrequencyRatio() const;
     juce::String toString();
 
+    FrequencyModel add(FrequencyModel const& second) const;
+    FrequencyModel getInverse() const;
+
     static FrequencyModel perfectPrime() { return FrequencyModel(RationalNumber(1, 1)); }
     static FrequencyModel octave() { return FrequencyModel(RationalNumber(2, 1)); }
     static FrequencyModel doubleOctave() { return FrequencyModel(RationalNumber(4, 1)); }

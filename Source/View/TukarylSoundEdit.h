@@ -24,7 +24,7 @@
 
 #include "OscSubComponent.h"
 #include "../Model/TukarylInstrument.h"
-#include "../Model/FrequencyModel.h"
+#include "../Model/IntervalModel.h"
 //[/Headers]
 
 
@@ -54,10 +54,10 @@ public:
 
 private:
     void paintRuler(juce::Graphics& g);
-    void paintRulerMark(juce::Graphics& g, FrequencyModel frequency);
+    void paintRulerMark(juce::Graphics& g, IntervalModel frequency);
 
-    int getXPosOfFrequency(FrequencyModel frequency);
-    FrequencyModel getFrequencyOfXPos(double xPos);
+    int getXPosOfFrequency(IntervalModel frequency);
+    IntervalModel getFrequencyOfXPos(double xPos);
 
 
 public:
@@ -72,7 +72,7 @@ private:
     //[UserVariables]   -- You can add your own custom variables in this section.
     TukarylInstrument& theInstrument;
 
-    const FrequencyModel maxFrequency = FrequencyModel::doubleOctave();
+    const IntervalModel maxFrequency = IntervalModel::doubleOctave();
     //[/UserVariables]
 
     //==============================================================================
