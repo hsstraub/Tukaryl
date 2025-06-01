@@ -15,8 +15,8 @@
 class TuningTable : public std::vector<IntervalModel>
 {
 public:
-    IntervalModel periodInterval() const { return *end(); }
+    IntervalModel periodInterval() const { return*(--end()); }
 
-     static TuningTable standard12Edo();
+    static TuningTable standard12Edo();
 };
 

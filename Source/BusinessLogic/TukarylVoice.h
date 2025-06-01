@@ -36,6 +36,9 @@ public:
     void updateFromInstrument();
 
 private:
+    double getMidiNoteInHertz (int midiNoteNumber);
+
+private:
     TukarylInstrument& theInstrument;
 
     double currentBaseFrequency = 440.0;
