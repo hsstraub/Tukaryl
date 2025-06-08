@@ -27,5 +27,7 @@ TuningTable TuningTable::standard12Edo()
     tuningTable.push_back(IntervalModel(1100.0));
     tuningTable.push_back(IntervalModel(RationalNumber(2, 1)));
 
+    tuningTable.setDescription("12edo");
+
     return tuningTable;
 }

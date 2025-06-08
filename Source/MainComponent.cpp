@@ -1,4 +1,5 @@
 #include "MainComponent.h"
+#include "View/ViewConstants.h"
 
 //==============================================================================
 MainComponent::MainComponent()
@@ -17,12 +18,12 @@ MainComponent::MainComponent()
     cbMidiInput->setTextWhenNoChoicesAvailable (TRANS ("(no choices)"));
     cbMidiInput->addItemList(midiDriver.getMidiInputList(), 1);
     cbMidiInput->onChange = [this] { setMidiInput (cbMidiInput->getSelectedItemIndex()); };
-    cbMidiInput->setBounds (8, 32, 184, 24);
+    cbMidiInput->setBounds (8, MIDIINPUTTOP, 184, 24);
 
     soundEditComponent.reset (new TukarylSoundEdit(theInstrument));
     addAndMakeVisible(soundEditComponent.get());
     soundEditComponent->addChangeListener(&theAudioSource);
-    soundEditComponent->setBounds(0, 56, 600, 400);
+    soundEditComponent->setBounds(0, SOUNDEDITTOP, 600, 400);
 
     setSize (800, 600);
 

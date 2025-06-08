@@ -10,11 +10,14 @@
 
 #pragma once
 
-#define RULERYPOS 24
+#define MIDIINPUTTOP 16
+#define SOUNDEDITTOP 48
+
+#define RULERYPOS 48
 #define RULERMARKHEIGHT 5
 #define RULERTEXTSIZE 11.0
 
-#define OSCTOP 28
+#define OSCTOP 60
 
 #define OSCHORIZMARGIN 36
 

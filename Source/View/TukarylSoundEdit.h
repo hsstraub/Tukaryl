@@ -37,9 +37,9 @@
     Describe your class and how it works here!
                                                                     //[/Comments]
 */
-class TukarylSoundEdit
-    : public juce::Component
-    , public OscSubComponent::Listener
+class TukarylSoundEdit  : public juce::Component,
+                          public OscSubComponent::Listener,
+                          public juce::Button::Listener
 {
 public:
     //==============================================================================
@@ -50,7 +50,7 @@ public:
     //[UserMethods]     -- You can add your own custom methods in this section.
     void addChangeListener (juce::ChangeListener* const listener);
 
-    void OnDrag(OscSubComponent* component) override;
+    void OnDrag(OscSubComponent* component);
 
 private:
     void paintRuler(juce::Graphics& g);
@@ -65,6 +65,7 @@ public:
 
     void paint (juce::Graphics& g) override;
     void resized() override;
+    void buttonClicked (juce::Button* buttonThatWasClicked) override;
 
 
 
@@ -78,6 +79,9 @@ private:
     //==============================================================================
     std::unique_ptr<OscSubComponent> osc1;
     std::unique_ptr<OscSubComponent> osc2;
+    std::unique_ptr<juce::Label> lblTuningDescription;
+    std::unique_ptr<juce::TextButton> btnLoadScalaFile;
+    std::unique_ptr<juce::TextButton> btnTuningReset;
 
 
     //==============================================================================

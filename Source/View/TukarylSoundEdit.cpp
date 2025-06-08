@@ -38,15 +38,38 @@ TukarylSoundEdit::TukarylSoundEdit (TukarylInstrument& injectedInstrument)
     addAndMakeVisible (osc1.get());
     osc1->setName ("osc1");
 
-    osc1->setBounds (8, 24, 70, 224);
+    osc1->setBounds (8, 56, 70, 224);
 
     osc2.reset (new OscSubComponent (theInstrument.partial1Frequency, theInstrument.partial1Level, true));
     addAndMakeVisible (osc2.get());
     osc2->setName ("osc2");
 
-    osc2->setBounds (96, 24, 70, 224);
+    osc2->setBounds (96, 56, 70, 224);
 
-    osc2->addListener(this);
+    lblTuningDescription.reset (new juce::Label ("lblTuningDescription",
+                                                 TRANS ("Tuning description")));
+    addAndMakeVisible (lblTuningDescription.get());
+    lblTuningDescription->setFont (juce::Font (12.00f, juce::Font::plain));
+    lblTuningDescription->setJustificationType (juce::Justification::centredLeft);
+    lblTuningDescription->setEditable (false, false, false);
+    lblTuningDescription->setColour (juce::TextEditor::textColourId, juce::Colours::black);
+    lblTuningDescription->setColour (juce::TextEditor::backgroundColourId, juce::Colour (0x00000000));
+
+    lblTuningDescription->setBounds (8, 0, 150, 24);
+
+    btnLoadScalaFile.reset (new juce::TextButton ("btnLoadScalaFile"));
+    addAndMakeVisible (btnLoadScalaFile.get());
+    btnLoadScalaFile->setButtonText (TRANS ("Scala FIle"));
+    btnLoadScalaFile->addListener (this);
+
+    btnLoadScalaFile->setBounds (184, 0, 150, 24);
+
+    btnTuningReset.reset (new juce::TextButton ("btnTuningReset"));
+    addAndMakeVisible (btnTuningReset.get());
+    btnTuningReset->setButtonText (TRANS ("Reset tuning"));
+    btnTuningReset->addListener (this);
+
+    btnTuningReset->setBounds (344, 0, 150, 24);
 
 
     //[UserPreSize]
@@ -56,6 +79,7 @@ TukarylSoundEdit::TukarylSoundEdit (TukarylInstrument& injectedInstrument)
 
 
     //[Constructor] You can add your own custom stuff here..
+    osc2->addListener(this);
     //[/Constructor]
 }
 
@@ -66,6 +90,9 @@ TukarylSoundEdit::~TukarylSoundEdit()
 
     osc1 = nullptr;
     osc2 = nullptr;
+    lblTuningDescription = nullptr;
+    btnLoadScalaFile = nullptr;
+    btnTuningReset = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -83,6 +110,8 @@ void TukarylSoundEdit::paint (juce::Graphics& g)
     //[UserPaint] Add your own custom painting code here..
     paintRuler(g);
 
+    lblTuningDescription->setText(theInstrument.tuningTable.getDescription(), NotificationType::dontSendNotification);
+
     osc1->setTopLeftPosition(getXPosOfFrequency(IntervalModel::perfectPrime()) - osc1->getWidth() / 2, OSCTOP);
 
     osc2->setTopLeftPosition(getXPosOfFrequency(theInstrument.partial1Frequency) - osc2->getWidth() / 2, OSCTOP);
@@ -96,6 +125,26 @@ void TukarylSoundEdit::resized()
 
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
+}
+
+void TukarylSoundEdit::buttonClicked (juce::Button* buttonThatWasClicked)
+{
+    //[UserbuttonClicked_Pre]
+    //[/UserbuttonClicked_Pre]
+
+    if (buttonThatWasClicked == btnLoadScalaFile.get())
+    {
+        //[UserButtonCode_btnLoadScalaFile] -- add your button handler code here..
+        //[/UserButtonCode_btnLoadScalaFile]
+    }
+    else if (buttonThatWasClicked == btnTuningReset.get())
+    {
+        //[UserButtonCode_btnTuningReset] -- add your button handler code here..
+        //[/UserButtonCode_btnTuningReset]
+    }
+
+    //[UserbuttonClicked_Post]
+    //[/UserbuttonClicked_Post]
 }
 
 
@@ -188,17 +237,29 @@ IntervalModel TukarylSoundEdit::getFrequencyOfXPos(double xPos)
 BEGIN_JUCER_METADATA
 
 <JUCER_COMPONENT documentType="Component" className="TukarylSoundEdit" componentName=""
-                 parentClasses="public juce::Component" constructorParams="TukarylInstrument&amp; injectedInstrument"
+                 parentClasses="public juce::Component, public OscSubComponent::Listener"
+                 constructorParams="TukarylInstrument&amp; injectedInstrument"
                  variableInitialisers="theInstrument(injectedInstrument)" snapPixels="8"
                  snapActive="1" snapShown="1" overlayOpacity="0.330" fixedSize="0"
                  initialWidth="600" initialHeight="400">
   <BACKGROUND backgroundColour="ff323e44"/>
   <GENERICCOMPONENT name="osc1" id="5752b2c7ddf48ad8" memberName="osc1" virtualName="OscSubComponent"
-                    explicitFocusOrder="0" pos="8 24 70 224" class="OscSubComponent"
-                    params="&quot;Base&quot;, theInstrument.baseOscLevel"/>
+                    explicitFocusOrder="0" pos="8 56 70 224" class="OscSubComponent"
+                    params="theInstrument.baseFrequency, theInstrument.baseOscLevel, false"/>
   <GENERICCOMPONENT name="osc2" id="8b807cc720421151" memberName="osc2" virtualName="OscSubComponent"
-                    explicitFocusOrder="0" pos="96 24 70 224" class="OscSubComponent"
-                    params="&quot;Partial 1&quot;, theInstrument.partial1Level"/>
+                    explicitFocusOrder="0" pos="96 56 70 224" class="OscSubComponent"
+                    params="theInstrument.partial1Frequency, theInstrument.partial1Level, true"/>
+  <LABEL name="lblTuningDescription" id="2fa3694df70d7ee4" memberName="lblTuningDescription"
+         virtualName="" explicitFocusOrder="0" pos="8 0 150 24" edTextCol="ff000000"
+         edBkgCol="0" labelText="Tuning description" editableSingleClick="0"
+         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
+         fontsize="12.0" kerning="0.0" bold="0" italic="0" justification="33"/>
+  <TEXTBUTTON name="btnLoadScalaFile" id="3d4c2ccc04f7e5d2" memberName="btnLoadScalaFile"
+              virtualName="" explicitFocusOrder="0" pos="184 0 150 24" buttonText="Scala FIle"
+              connectedEdges="0" needsCallback="1" radioGroupId="0"/>
+  <TEXTBUTTON name="btnTuningReset" id="b50a1895561623fe" memberName="btnTuningReset"
+              virtualName="" explicitFocusOrder="0" pos="344 0 150 24" buttonText="Reset tuning"
+              connectedEdges="0" needsCallback="1" radioGroupId="0"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA
