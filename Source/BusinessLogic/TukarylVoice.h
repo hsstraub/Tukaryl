@@ -37,9 +37,12 @@ public:
 
 private:
     double getMidiNoteInHertz (int midiNoteNumber);
+    double getAbstractOctaveStartInHertz(int abstractOctaveNoFromMiddleC);
 
 private:
     TukarylInstrument& theInstrument;
+
+    int tuningTableSize;
 
     double currentBaseFrequency = 440.0;
     double currentVelocity = 0.0;

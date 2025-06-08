@@ -14,6 +14,7 @@
 TukarylVoice::TukarylVoice(TukarylInstrument& tukarylInstrument)
 : theInstrument(tukarylInstrument)
 {
+    updateFromInstrument();
 }
 
 bool TukarylVoice::canPlaySound(juce::SynthesiserSound* sound)
@@ -64,6 +65,8 @@ void TukarylVoice::renderNextBlock (juce::AudioSampleBuffer& outputBuffer, int s
 
 void TukarylVoice::updateFromInstrument()
 {
+    tuningTableSize = (int)theInstrument.tuningTable.size();
+
     if (getSampleRate() > 0.0)
     {
         auto cyclesPerSample1 = currentBaseFrequency / getSampleRate();
@@ -76,27 +79,58 @@ void TukarylVoice::updateFromInstrument()
 
 double TukarylVoice::getMidiNoteInHertz (int midiNoteNumber)
 {
-    static double frequencyOfMiddleC = 440.0 / IntervalModel(900.0).getValueAsFrequencyRatio();
+    static int middleCNoteNumber = 60;
 
-    auto noteNumberFromMiddleC = midiNoteNumber - 60;
+    int midiNoteNumberFromMiddleC = midiNoteNumber - middleCNoteNumber;
 
-    auto tuningTableSize = theInstrument.tuningTable.size();
+    int abstractOctaveNoFromMiddleC = 0;
+    int midiNrOfAbstractOctaveStart = middleCNoteNumber;
 
-    auto noteNumberFromAbstractOctaveStart = noteNumberFromMiddleC % tuningTableSize;
-
-    auto abstractOctaveNo = noteNumberFromMiddleC / tuningTableSize;
-
-    auto frequencyOfAbstractOctaveBegin = frequencyOfMiddleC;
-
-    if (abstractOctaveNo != 0)
+    int tempMidiNoteNumber = midiNoteNumberFromMiddleC;
+    if (tempMidiNoteNumber >= tuningTableSize)
     {
-        frequencyOfAbstractOctaveBegin *= std::pow(theInstrument.tuningTable.periodInterval().getValueAsFrequencyRatio(), abstractOctaveNo);
+        while (tempMidiNoteNumber > tuningTableSize)
+        {
+            abstractOctaveNoFromMiddleC++;
+            midiNrOfAbstractOctaveStart += tuningTableSize;
+            tempMidiNoteNumber -= tuningTableSize;
+        }
+    }
+    else if (tempMidiNoteNumber < 0)
+    {
+        while (tempMidiNoteNumber < 0)
+        {
+            abstractOctaveNoFromMiddleC--;
+            midiNrOfAbstractOctaveStart -= tuningTableSize;
+            tempMidiNoteNumber += tuningTableSize;
+        }
     }
 
-    if (noteNumberFromAbstractOctaveStart == 0)
+    double abstractOctaveStartInHertz = getAbstractOctaveStartInHertz(abstractOctaveNoFromMiddleC);
+
+    if (midiNoteNumber == midiNrOfAbstractOctaveStart)
     {
-        return frequencyOfAbstractOctaveBegin;
+        return abstractOctaveStartInHertz;
     }
 
-    return frequencyOfAbstractOctaveBegin * theInstrument.tuningTable.at(noteNumberFromAbstractOctaveStart-1).getValueAsFrequencyRatio();
+    int noteNumberFromAbstractOctaveStart = midiNoteNumber - midiNrOfAbstractOctaveStart;
+
+    return abstractOctaveStartInHertz * theInstrument.tuningTable.at(noteNumberFromAbstractOctaveStart-1).getValueAsFrequencyRatio();
 }
+
+
+double TukarylVoice::getAbstractOctaveStartInHertz(int abstractOctaveNoFromMiddleC)
+{
+    static double middleCInHertz = 440.0 / IntervalModel(900.0).getValueAsFrequencyRatio();
+
+    double abstractOctaveStartInHertz = middleCInHertz;
+    if (abstractOctaveStartInHertz != 0)
+    {
+        abstractOctaveStartInHertz *= std::pow(
+            theInstrument.tuningTable.periodInterval().getValueAsFrequencyRatio(), abstractOctaveNoFromMiddleC);
+    }
+
+    return abstractOctaveStartInHertz;
+}
+
+
