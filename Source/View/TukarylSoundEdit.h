@@ -25,6 +25,7 @@
 #include "OscSubComponent.h"
 #include "../Model/TukarylInstrument.h"
 #include "../Model/IntervalModel.h"
+#include "../HajuLib/HajuErrorVisualizer.h"
 //[/Headers]
 
 
@@ -59,6 +60,7 @@ private:
     int getXPosOfFrequency(IntervalModel frequency);
     IntervalModel getFrequencyOfXPos(double xPos);
 
+    void OpenSclFileDialog();
 
 public:
     //[/UserMethods]
@@ -74,6 +76,11 @@ private:
     TukarylInstrument& theInstrument;
 
     const IntervalModel maxFrequency = IntervalModel::doubleOctave();
+
+    std::unique_ptr<FileChooser> chooser;
+    File	currentFile;
+
+    HajuErrorVisualizer errorVisualizer;
     //[/UserVariables]
 
     //==============================================================================
@@ -82,6 +89,7 @@ private:
     std::unique_ptr<juce::Label> lblTuningDescription;
     std::unique_ptr<juce::TextButton> btnLoadScalaFile;
     std::unique_ptr<juce::TextButton> btnTuningReset;
+    std::unique_ptr<juce::Label> labelMessageArea;
 
 
     //==============================================================================

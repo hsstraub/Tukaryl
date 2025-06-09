@@ -29,7 +29,7 @@
 
 //==============================================================================
 TukarylSoundEdit::TukarylSoundEdit (TukarylInstrument& injectedInstrument)
-    : theInstrument(injectedInstrument)
+    : theInstrument(injectedInstrument), errorVisualizer(getLookAndFeel())
 {
     //[Constructor_pre] You can add your own custom stuff here..
     //[/Constructor_pre]
@@ -71,6 +71,15 @@ TukarylSoundEdit::TukarylSoundEdit (TukarylInstrument& injectedInstrument)
 
     btnTuningReset->setBounds (344, 0, 150, 24);
 
+    labelMessageArea.reset (new juce::Label ("labelMessageArea",
+                                             TRANS ("Message area\n")));
+    addAndMakeVisible (labelMessageArea.get());
+    labelMessageArea->setFont (juce::Font (15.00f, juce::Font::plain));
+    labelMessageArea->setJustificationType (juce::Justification::centredLeft);
+    labelMessageArea->setEditable (false, false, false);
+    labelMessageArea->setColour (juce::TextEditor::textColourId, juce::Colours::black);
+    labelMessageArea->setColour (juce::TextEditor::backgroundColourId, juce::Colour (0x00000000));
+
 
     //[UserPreSize]
     //[/UserPreSize]
@@ -93,6 +102,7 @@ TukarylSoundEdit::~TukarylSoundEdit()
     lblTuningDescription = nullptr;
     btnLoadScalaFile = nullptr;
     btnTuningReset = nullptr;
+    labelMessageArea = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -121,9 +131,12 @@ void TukarylSoundEdit::paint (juce::Graphics& g)
 void TukarylSoundEdit::resized()
 {
     //[UserPreResize] Add your own custom resize code here..
+    // auto area = getLocalBounds();
     //[/UserPreResize]
 
+    labelMessageArea->setBounds (0, getHeight() - 16, proportionOfWidth (1.000f), 16);
     //[UserResized] Add your own custom resize handling here..
+    // labelMessageArea->setBounds(area.removeFromBottom (16));
     //[/UserResized]
 }
 
@@ -135,11 +148,13 @@ void TukarylSoundEdit::buttonClicked (juce::Button* buttonThatWasClicked)
     if (buttonThatWasClicked == btnLoadScalaFile.get())
     {
         //[UserButtonCode_btnLoadScalaFile] -- add your button handler code here..
+        OpenSclFileDialog();
         //[/UserButtonCode_btnLoadScalaFile]
     }
     else if (buttonThatWasClicked == btnTuningReset.get())
     {
         //[UserButtonCode_btnTuningReset] -- add your button handler code here..
+        theInstrument.tuningTable = TuningTable::standard12Edo();
         //[/UserButtonCode_btnTuningReset]
     }
 
@@ -224,6 +239,30 @@ IntervalModel TukarylSoundEdit::getFrequencyOfXPos(double xPos)
         maxFrequency.getValueInCents() * (xPos - OSCHORIZMARGIN) / (getWidth() - 2 * OSCHORIZMARGIN));
 }
 
+void TukarylSoundEdit::OpenSclFileDialog()
+{
+    chooser = std::make_unique<FileChooser>("Open a Scala file", File(), "*.scl", true, false, this);
+    chooser->launchAsync(FileBrowserComponent::FileChooserFlags::canSelectFiles | FileBrowserComponent::FileChooserFlags::openMode,
+        [&](const FileChooser& chooser)
+        {
+            currentFile = chooser.getResult();
+            if ( !currentFile.existsAsFile())
+            {
+                errorVisualizer.setErrorLevel(
+                    *labelMessageArea.get(),
+                    HajuErrorVisualizer::ErrorLevel::error,
+                    "The file " + currentFile.getFullPathName() + " could not be opened.");
+            }
+            else{
+                // ToDo
+                errorVisualizer.setErrorLevel(
+                    *labelMessageArea.get(),
+                    HajuErrorVisualizer::ErrorLevel::noError,
+                    currentFile.getFullPathName());
+            }
+        });
+}
+
 //[/MiscUserCode]
 
 
@@ -239,9 +278,9 @@ BEGIN_JUCER_METADATA
 <JUCER_COMPONENT documentType="Component" className="TukarylSoundEdit" componentName=""
                  parentClasses="public juce::Component, public OscSubComponent::Listener"
                  constructorParams="TukarylInstrument&amp; injectedInstrument"
-                 variableInitialisers="theInstrument(injectedInstrument)" snapPixels="8"
-                 snapActive="1" snapShown="1" overlayOpacity="0.330" fixedSize="0"
-                 initialWidth="600" initialHeight="400">
+                 variableInitialisers="theInstrument(injectedInstrument), errorVisualizer(getLookAndFeel())"
+                 snapPixels="8" snapActive="1" snapShown="1" overlayOpacity="0.330"
+                 fixedSize="0" initialWidth="600" initialHeight="400">
   <BACKGROUND backgroundColour="ff323e44"/>
   <GENERICCOMPONENT name="osc1" id="5752b2c7ddf48ad8" memberName="osc1" virtualName="OscSubComponent"
                     explicitFocusOrder="0" pos="8 56 70 224" class="OscSubComponent"
@@ -260,6 +299,12 @@ BEGIN_JUCER_METADATA
   <TEXTBUTTON name="btnTuningReset" id="b50a1895561623fe" memberName="btnTuningReset"
               virtualName="" explicitFocusOrder="0" pos="344 0 150 24" buttonText="Reset tuning"
               connectedEdges="0" needsCallback="1" radioGroupId="0"/>
+  <LABEL name="labelMessageArea" id="7851234199cd91c" memberName="labelMessageArea"
+         virtualName="" explicitFocusOrder="0" pos="0 16R 100.000% 16"
+         edTextCol="ff000000" edBkgCol="0" labelText="Message area&#10;"
+         editableSingleClick="0" editableDoubleClick="0" focusDiscardsChanges="0"
+         fontname="Default font" fontsize="15.0" kerning="0.0" bold="0"
+         italic="0" justification="33"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

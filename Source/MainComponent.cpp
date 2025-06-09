@@ -80,7 +80,7 @@ void MainComponent::resized()
     // This is called when the MainContentComponent is resized.
     // If you add any child components, this is where you should
     // update their positions.
-    soundEditComponent->setBounds(soundEditComponent->getX(), soundEditComponent->getY(), getWidth(), soundEditComponent->getHeight());
+    soundEditComponent->setBounds(soundEditComponent->getX(), soundEditComponent->getY(), getWidth(), getHeight() - SOUNDEDITTOP);;
 }
 
 void MainComponent::setMidiInput (int index)

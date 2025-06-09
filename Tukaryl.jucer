@@ -16,6 +16,10 @@
         <FILE id="jNuALf" name="TukarylVoice.h" compile="0" resource="0" file="Source/BusinessLogic/TukarylVoice.h"/>
       </GROUP>
       <GROUP id="{B3043D56-F38F-3EBA-DF71-394EC27C7E36}" name="HajuLib">
+        <FILE id="bHlEsb" name="HajuErrorVisualizer.cpp" compile="1" resource="0"
+              file="Source/HajuLib/HajuErrorVisualizer.cpp"/>
+        <FILE id="oapu5p" name="HajuErrorVisualizer.h" compile="0" resource="0"
+              file="Source/HajuLib/HajuErrorVisualizer.h"/>
         <FILE id="HkpfF2" name="HajuMidiDriver.cpp" compile="1" resource="0"
               file="Source/HajuLib/HajuMidiDriver.cpp"/>
         <FILE id="vE4Ti9" name="HajuMidiDriver.h" compile="0" resource="0"
