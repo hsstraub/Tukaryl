@@ -97,3 +97,17 @@ IntervalModel IntervalModel::getInverse() const
     }
 }
 
+bool IntervalModel::operator<(const IntervalModel& second) const
+{
+    if (std::holds_alternative<float>(value) || std::holds_alternative<float>(second.value))
+    {
+        // At least one of the values is in cents
+        return getValueInCents() < second.getValueInCents();
+    }
+    else
+    {
+        // Both values are ratios
+        return getValueAsFrequencyRatio() < second.getValueAsFrequencyRatio();
+    }
+}
+

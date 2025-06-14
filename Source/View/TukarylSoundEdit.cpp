@@ -205,12 +205,24 @@ void TukarylSoundEdit::paintRuler(juce::Graphics& g)
     g.setColour(getLookAndFeel().findColour(juce::TextEditor::textColourId));
     g.drawLine(0, RULERYPOS, getRight(), RULERYPOS);
 
-    paintRulerMark(g, IntervalModel::perfectPrime());
-    paintRulerMark(g, maxFrequency);
+    auto baseInterval = IntervalModel::perfectPrime();
 
-    for (auto freqIter = theInstrument.tuningTable.begin(); freqIter != theInstrument.tuningTable.end(); freqIter++)
+    while (baseInterval < maxFrequency)
     {
-           paintRulerMark(g, *freqIter);
+        paintRulerMark(g, baseInterval);
+
+        for (auto freqIter = theInstrument.tuningTable.begin(); freqIter != theInstrument.tuningTable.end(); freqIter++)
+        {
+            auto currentInterval = baseInterval.add(*freqIter);
+            if (currentInterval > maxFrequency)
+            {
+                break;
+            }
+
+            paintRulerMark(g, currentInterval);
+        }
+
+        baseInterval = baseInterval.add(theInstrument.tuningTable.periodInterval());
     }
 }
 

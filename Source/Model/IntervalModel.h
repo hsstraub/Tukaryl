@@ -26,6 +26,8 @@ public:
 
     IntervalModel add(IntervalModel const& second) const;
     IntervalModel getInverse() const;
+    bool operator<(const IntervalModel& second) const;
+    bool operator>(const IntervalModel& second) const { return second < (*this); }
 
     static IntervalModel perfectPrime() { return IntervalModel(RationalNumber(1, 1)); }
     static IntervalModel octave() { return IntervalModel(RationalNumber(2, 1)); }
