@@ -19,6 +19,7 @@
 
 //[Headers] You can add your own extra header files here...
 #include "ViewConstants.h"
+#include "../BusinessLogic/ScalaSerializer.h"
 //[/Headers]
 
 #include "TukarylSoundEdit.h"
@@ -55,21 +56,19 @@ TukarylSoundEdit::TukarylSoundEdit (TukarylInstrument& injectedInstrument)
     lblTuningDescription->setColour (juce::TextEditor::textColourId, juce::Colours::black);
     lblTuningDescription->setColour (juce::TextEditor::backgroundColourId, juce::Colour (0x00000000));
 
-    lblTuningDescription->setBounds (8, 0, 150, 24);
-
     btnLoadScalaFile.reset (new juce::TextButton ("btnLoadScalaFile"));
     addAndMakeVisible (btnLoadScalaFile.get());
     btnLoadScalaFile->setButtonText (TRANS ("Scala FIle"));
     btnLoadScalaFile->addListener (this);
 
-    btnLoadScalaFile->setBounds (184, 0, 150, 24);
+    btnLoadScalaFile->setBounds (240, 0, 150, 24);
 
     btnTuningReset.reset (new juce::TextButton ("btnTuningReset"));
     addAndMakeVisible (btnTuningReset.get());
     btnTuningReset->setButtonText (TRANS ("Reset tuning"));
     btnTuningReset->addListener (this);
 
-    btnTuningReset->setBounds (344, 0, 150, 24);
+    btnTuningReset->setBounds (400, 0, 150, 24);
 
     labelMessageArea.reset (new juce::Label ("labelMessageArea",
                                              TRANS ("Message area\n")));
@@ -134,7 +133,8 @@ void TukarylSoundEdit::resized()
     // auto area = getLocalBounds();
     //[/UserPreResize]
 
-    labelMessageArea->setBounds (0, getHeight() - 16, proportionOfWidth (1.000f), 16);
+    lblTuningDescription->setBounds (8, 0, 200, 24);
+    labelMessageArea->setBounds (0, getHeight() - 16, proportionOfWidth (1.0000f), 16);
     //[UserResized] Add your own custom resize handling here..
     // labelMessageArea->setBounds(area.removeFromBottom (16));
     //[/UserResized]
@@ -155,6 +155,7 @@ void TukarylSoundEdit::buttonClicked (juce::Button* buttonThatWasClicked)
     {
         //[UserButtonCode_btnTuningReset] -- add your button handler code here..
         theInstrument.tuningTable = TuningTable::standard12Edo();
+        repaint();
         //[/UserButtonCode_btnTuningReset]
     }
 
@@ -253,13 +254,55 @@ void TukarylSoundEdit::OpenSclFileDialog()
                     HajuErrorVisualizer::ErrorLevel::error,
                     "The file " + currentFile.getFullPathName() + " could not be opened.");
             }
-            else{
-                // ToDo
-                errorVisualizer.setErrorLevel(
-                    *labelMessageArea.get(),
-                    HajuErrorVisualizer::ErrorLevel::noError,
-                    currentFile.getFullPathName());
-            }
+            else {
+                StringArray stringArray;
+                currentFile.readLines(stringArray);
+
+                auto deserializationResult = ScalaSerializer::deserialize(stringArray, theInstrument.tuningTable);
+
+                switch (deserializationResult)
+                {
+                case ScalaSerializer::DeserializationResult::InvalidScalaFile:
+                    errorVisualizer.setErrorLevel(
+                        *labelMessageArea.get(),
+                        HajuErrorVisualizer::ErrorLevel::error,
+                    	"The file " + currentFile.getFullPathName() + " is not a valid SCALA file.");
+                    break;
+
+                case ScalaSerializer::DeserializationResult::SizeSpecifiedAsZero:
+                    errorVisualizer.setErrorLevel(
+                        *labelMessageArea.get(),
+                        HajuErrorVisualizer::ErrorLevel::warning,
+                    	"Scale with size 0 specified.");
+
+                case ScalaSerializer::DeserializationResult::NoTunigValuesFound:
+                    errorVisualizer.setErrorLevel(
+                        *labelMessageArea.get(),
+                        HajuErrorVisualizer::ErrorLevel::warning,
+                    	"No tuning values found.");
+
+                case ScalaSerializer::DeserializationResult::LessTuningValuesThanSize:
+                    errorVisualizer.setErrorLevel(
+                        *labelMessageArea.get(),
+                        HajuErrorVisualizer::ErrorLevel::warning,
+                    	"Less tuning values specified than specified size.");
+
+                case ScalaSerializer::DeserializationResult::MoreTuningValuesThanSize:
+                    errorVisualizer.setErrorLevel(
+                        *labelMessageArea.get(),
+                        HajuErrorVisualizer::ErrorLevel::warning,
+                    	"More tuning values specified than specified size.");
+
+                 default:
+                   errorVisualizer.setErrorLevel(
+                        *labelMessageArea.get(),
+                        HajuErrorVisualizer::ErrorLevel::noError,
+                        currentFile.getFullPathName());
+                    break;
+                 };
+             }
+
+             repaint();
         });
 }
 
@@ -289,22 +332,22 @@ BEGIN_JUCER_METADATA
                     explicitFocusOrder="0" pos="96 56 70 224" class="OscSubComponent"
                     params="theInstrument.partial1Frequency, theInstrument.partial1Level, true"/>
   <LABEL name="lblTuningDescription" id="2fa3694df70d7ee4" memberName="lblTuningDescription"
-         virtualName="" explicitFocusOrder="0" pos="8 0 150 24" edTextCol="ff000000"
-         edBkgCol="0" labelText="Tuning description" editableSingleClick="0"
-         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
-         fontsize="12.0" kerning="0.0" bold="0" italic="0" justification="33"/>
+         virtualName="" explicitFocusOrder="0" pos="8 0 200 24" posRelativeW="3d4c2ccc04f7e5d2"
+         edTextCol="ff000000" edBkgCol="0" labelText="Tuning description"
+         editableSingleClick="0" editableDoubleClick="0" focusDiscardsChanges="0"
+         fontname="Default font" fontsize="12.0" kerning="0.0" bold="0"
+         italic="0" justification="33"/>
   <TEXTBUTTON name="btnLoadScalaFile" id="3d4c2ccc04f7e5d2" memberName="btnLoadScalaFile"
-              virtualName="" explicitFocusOrder="0" pos="184 0 150 24" buttonText="Scala FIle"
+              virtualName="" explicitFocusOrder="0" pos="240 0 150 24" buttonText="Scala FIle"
               connectedEdges="0" needsCallback="1" radioGroupId="0"/>
   <TEXTBUTTON name="btnTuningReset" id="b50a1895561623fe" memberName="btnTuningReset"
-              virtualName="" explicitFocusOrder="0" pos="344 0 150 24" buttonText="Reset tuning"
+              virtualName="" explicitFocusOrder="0" pos="400 0 150 24" buttonText="Reset tuning"
               connectedEdges="0" needsCallback="1" radioGroupId="0"/>
   <LABEL name="labelMessageArea" id="7851234199cd91c" memberName="labelMessageArea"
-         virtualName="" explicitFocusOrder="0" pos="0 16R 100.000% 16"
-         edTextCol="ff000000" edBkgCol="0" labelText="Message area&#10;"
-         editableSingleClick="0" editableDoubleClick="0" focusDiscardsChanges="0"
-         fontname="Default font" fontsize="15.0" kerning="0.0" bold="0"
-         italic="0" justification="33"/>
+         virtualName="" explicitFocusOrder="0" pos="0 16R 100% 16" edTextCol="ff000000"
+         edBkgCol="0" labelText="Message area&#10;" editableSingleClick="0"
+         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
+         fontsize="15.0" kerning="0.0" bold="0" italic="0" justification="33"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA
