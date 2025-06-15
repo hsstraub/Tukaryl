@@ -62,6 +62,8 @@ private:
 
     void OpenSclFileDialog();
 
+    void displayMessage(String message, HajuErrorVisualizer::ErrorLevel errorLevel = HajuErrorVisualizer::ErrorLevel::noError);
+
 public:
     //[/UserMethods]
 

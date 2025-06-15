@@ -63,6 +63,13 @@ ScalaSerializer::DeserializationResult ScalaSerializer::deserialize(const String
         }
     }
 
+    // Errors
+    if (tuningTable.periodInterval().getValueInCents() == 0.0)
+    {
+        return DeserializationResult::EmptyPeriodInterval;
+    }
+
+    // Warnings
     if (tuningTable.size() < scalaSize)
     {
         return DeserializationResult::LessTuningValuesThanSize;

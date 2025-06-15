@@ -29,8 +29,11 @@ public:
         // Errors
         InvalidScalaFile = -11,
         InvalidTuningValue = -12,
+        EmptyPeriodInterval = -13,
 
     };
+
+    static bool deserializationResultIsError(DeserializationResult deserializationResult) { return deserializationResult < 0; }
 
     static DeserializationResult deserialize(const StringArray& stringArray, TuningTable& tuningTable);
 };

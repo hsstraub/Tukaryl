@@ -154,6 +154,7 @@ void TukarylSoundEdit::buttonClicked (juce::Button* buttonThatWasClicked)
     else if (buttonThatWasClicked == btnTuningReset.get())
     {
         //[UserButtonCode_btnTuningReset] -- add your button handler code here..
+        displayMessage("Tuning reset to 12edo.", HajuErrorVisualizer::ErrorLevel::noError);
         theInstrument.tuningTable = TuningTable::standard12Edo();
         repaint();
         //[/UserButtonCode_btnTuningReset]
@@ -261,61 +262,76 @@ void TukarylSoundEdit::OpenSclFileDialog()
             currentFile = chooser.getResult();
             if ( !currentFile.existsAsFile())
             {
-                errorVisualizer.setErrorLevel(
-                    *labelMessageArea.get(),
-                    HajuErrorVisualizer::ErrorLevel::error,
-                    "The file " + currentFile.getFullPathName() + " could not be opened.");
+                displayMessage(
+                    "The file " + currentFile.getFullPathName() + " could not be opened.",
+                    HajuErrorVisualizer::ErrorLevel::error);
             }
             else {
                 StringArray stringArray;
                 currentFile.readLines(stringArray);
 
-                auto deserializationResult = ScalaSerializer::deserialize(stringArray, theInstrument.tuningTable);
+                TuningTable newTuningTable;
+                auto deserializationResult = ScalaSerializer::deserialize(stringArray, newTuningTable);
 
                 switch (deserializationResult)
                 {
                 case ScalaSerializer::DeserializationResult::InvalidScalaFile:
-                    errorVisualizer.setErrorLevel(
-                        *labelMessageArea.get(),
-                        HajuErrorVisualizer::ErrorLevel::error,
-                    	"The file " + currentFile.getFullPathName() + " is not a valid SCALA file.");
+                    displayMessage(
+                        "The file " + currentFile.getFullPathName() + " is not a valid SCALA file.",
+                        HajuErrorVisualizer::ErrorLevel::error);
+                    break;
+
+                case ScalaSerializer::DeserializationResult::EmptyPeriodInterval:
+                    displayMessage(
+                        "Scale with empty period interval.",
+                        HajuErrorVisualizer::ErrorLevel::error);
                     break;
 
                 case ScalaSerializer::DeserializationResult::SizeSpecifiedAsZero:
-                    errorVisualizer.setErrorLevel(
-                        *labelMessageArea.get(),
-                        HajuErrorVisualizer::ErrorLevel::warning,
-                    	"Scale with size 0 specified.");
+                    displayMessage(
+                        "Scale with size 0 specified.",
+                        HajuErrorVisualizer::ErrorLevel::warning);
+                    break;
 
                 case ScalaSerializer::DeserializationResult::NoTunigValuesFound:
-                    errorVisualizer.setErrorLevel(
-                        *labelMessageArea.get(),
-                        HajuErrorVisualizer::ErrorLevel::warning,
-                    	"No tuning values found.");
+                    displayMessage(
+                        "No tuning values found.",
+                        HajuErrorVisualizer::ErrorLevel::warning);
+                    break;
 
                 case ScalaSerializer::DeserializationResult::LessTuningValuesThanSize:
-                    errorVisualizer.setErrorLevel(
-                        *labelMessageArea.get(),
-                        HajuErrorVisualizer::ErrorLevel::warning,
-                    	"Less tuning values specified than specified size.");
+                    displayMessage(
+                        "Less tuning values specified than specified size.",
+                        HajuErrorVisualizer::ErrorLevel::warning);
+                    break;
 
                 case ScalaSerializer::DeserializationResult::MoreTuningValuesThanSize:
-                    errorVisualizer.setErrorLevel(
-                        *labelMessageArea.get(),
-                        HajuErrorVisualizer::ErrorLevel::warning,
-                    	"More tuning values specified than specified size.");
+                    displayMessage(
+                        "More tuning values specified than specified size.",
+                        HajuErrorVisualizer::ErrorLevel::warning);
+                    break;
 
                  default:
-                   errorVisualizer.setErrorLevel(
-                        *labelMessageArea.get(),
-                        HajuErrorVisualizer::ErrorLevel::noError,
-                        currentFile.getFullPathName());
+                   displayMessage(
+                        currentFile.getFullPathName() + " opened successfully.",
+                        HajuErrorVisualizer::ErrorLevel::noError);
                     break;
                  };
-             }
 
-             repaint();
+                 if (!ScalaSerializer::deserializationResultIsError(deserializationResult))
+                 {
+                    theInstrument.tuningTable = newTuningTable;
+                    repaint();
+                 }
+             }
         });
+}
+
+void TukarylSoundEdit::displayMessage(String message, HajuErrorVisualizer::ErrorLevel errorLevel)
+{
+    labelMessageArea->setText(message, juce::NotificationType::dontSendNotification);
+
+    errorVisualizer.setErrorLevel(*labelMessageArea.get(), errorLevel, message);
 }
 
 //[/MiscUserCode]
