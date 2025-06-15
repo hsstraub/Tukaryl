@@ -124,7 +124,7 @@ double TukarylVoice::getAbstractOctaveStartInHertz(int abstractOctaveNoFromMiddl
     static double middleCInHertz = 440.0 / IntervalModel(900.0).getValueAsFrequencyRatio();
 
     double abstractOctaveStartInHertz = middleCInHertz;
-    if (abstractOctaveStartInHertz != 0)
+    if (abstractOctaveNoFromMiddleC != 0)
     {
         abstractOctaveStartInHertz *= std::pow(
             theInstrument.tuningTable.periodInterval().getValueAsFrequencyRatio(), abstractOctaveNoFromMiddleC);
