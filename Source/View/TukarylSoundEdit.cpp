@@ -58,7 +58,7 @@ TukarylSoundEdit::TukarylSoundEdit (TukarylInstrument& injectedInstrument)
 
     btnLoadScalaFile.reset (new juce::TextButton ("btnLoadScalaFile"));
     addAndMakeVisible (btnLoadScalaFile.get());
-    btnLoadScalaFile->setButtonText (TRANS ("Scala FIle"));
+    btnLoadScalaFile->setButtonText (TRANS ("Scala file"));
     btnLoadScalaFile->addListener (this);
 
     btnLoadScalaFile->setBounds (240, 0, 150, 24);
@@ -273,52 +273,66 @@ void TukarylSoundEdit::OpenSclFileDialog()
                 TuningTable newTuningTable;
                 auto deserializationResult = ScalaSerializer::deserialize(stringArray, newTuningTable);
 
+                HajuErrorVisualizer::ErrorLevel errorLevel;
+                if (ScalaSerializer::deserializationResultIsError(deserializationResult))
+                {
+                    errorLevel = HajuErrorVisualizer::ErrorLevel::error;
+                }
+                else if (deserializationResult != ScalaSerializer::DeserializationResult::OK)
+                {
+                    errorLevel = HajuErrorVisualizer::ErrorLevel::warning;
+                }
+                else
+                {
+                    errorLevel = HajuErrorVisualizer::ErrorLevel::noError;
+                }
+
                 switch (deserializationResult)
                 {
                 case ScalaSerializer::DeserializationResult::InvalidScalaFile:
                     displayMessage(
                         "The file " + currentFile.getFullPathName() + " is not a valid SCALA file.",
-                        HajuErrorVisualizer::ErrorLevel::error);
+                        errorLevel);
                     break;
 
                 case ScalaSerializer::DeserializationResult::NonAscendingPeriodInterval:
                     displayMessage(
                         "Scale with empty or descending period interval.",
-                        HajuErrorVisualizer::ErrorLevel::error);
+                        errorLevel);
                     break;
 
                 case ScalaSerializer::DeserializationResult::SizeSpecifiedAsZero:
                     displayMessage(
                         "Scale with size 0 specified.",
-                        HajuErrorVisualizer::ErrorLevel::warning);
+                        errorLevel);
                     break;
 
                 case ScalaSerializer::DeserializationResult::NoTunigValuesFound:
                     displayMessage(
                         "No tuning values found.",
-                        HajuErrorVisualizer::ErrorLevel::warning);
+                        errorLevel);
                     break;
 
                 case ScalaSerializer::DeserializationResult::LessTuningValuesThanSize:
                     displayMessage(
                         "Less tuning values specified than specified size.",
-                        HajuErrorVisualizer::ErrorLevel::warning);
+                        errorLevel);
                     break;
 
                 case ScalaSerializer::DeserializationResult::MoreTuningValuesThanSize:
                     displayMessage(
                         "More tuning values specified than specified size.",
-                        HajuErrorVisualizer::ErrorLevel::warning);
+                        errorLevel);
                     break;
 
                  default:
                    displayMessage(
                         currentFile.getFullPathName() + " opened successfully.",
-                        HajuErrorVisualizer::ErrorLevel::noError);
+                        errorLevel);
                     break;
                  };
 
-                 if (!ScalaSerializer::deserializationResultIsError(deserializationResult))
+                 if (errorLevel != HajuErrorVisualizer::ErrorLevel::error)
                  {
                     theInstrument.tuningTable = newTuningTable;
                     repaint();
@@ -366,7 +380,7 @@ BEGIN_JUCER_METADATA
          fontname="Default font" fontsize="12.0" kerning="0.0" bold="0"
          italic="0" justification="33"/>
   <TEXTBUTTON name="btnLoadScalaFile" id="3d4c2ccc04f7e5d2" memberName="btnLoadScalaFile"
-              virtualName="" explicitFocusOrder="0" pos="240 0 150 24" buttonText="Scala FIle"
+              virtualName="" explicitFocusOrder="0" pos="240 0 150 24" buttonText="Scala file"
               connectedEdges="0" needsCallback="1" radioGroupId="0"/>
   <TEXTBUTTON name="btnTuningReset" id="b50a1895561623fe" memberName="btnTuningReset"
               virtualName="" explicitFocusOrder="0" pos="400 0 150 24" buttonText="Reset tuning"

@@ -22,14 +22,14 @@ public:
 
         // Warnings
         SizeSpecifiedAsZero = 12,
-        NoTunigValuesFound = 13,
-        LessTuningValuesThanSize = 14,
-        MoreTuningValuesThanSize = 15,
+        LessTuningValuesThanSize = 13,
+        MoreTuningValuesThanSize = 14,
 
         // Errors
         InvalidScalaFile = -11,
-        InvalidTuningValue = -12,
-        NonAscendingPeriodInterval = -13,
+        NoTunigValuesFound = -12,
+        InvalidTuningValue = -13,
+        NonAscendingPeriodInterval = -14,
 
     };
 
