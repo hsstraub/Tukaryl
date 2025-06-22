@@ -64,9 +64,9 @@ ScalaSerializer::DeserializationResult ScalaSerializer::deserialize(const String
     }
 
     // Errors
-    if (tuningTable.periodInterval().getValueInCents() == 0.0)
+    if (tuningTable.periodInterval().getValueInCents() <= 0.0)
     {
-        return DeserializationResult::EmptyPeriodInterval;
+        return DeserializationResult::NonAscendingPeriodInterval;
     }
 
     // Warnings

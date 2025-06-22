@@ -281,9 +281,9 @@ void TukarylSoundEdit::OpenSclFileDialog()
                         HajuErrorVisualizer::ErrorLevel::error);
                     break;
 
-                case ScalaSerializer::DeserializationResult::EmptyPeriodInterval:
+                case ScalaSerializer::DeserializationResult::NonAscendingPeriodInterval:
                     displayMessage(
-                        "Scale with empty period interval.",
+                        "Scale with empty or descending period interval.",
                         HajuErrorVisualizer::ErrorLevel::error);
                     break;
 

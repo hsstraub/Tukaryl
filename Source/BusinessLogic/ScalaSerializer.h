@@ -29,7 +29,7 @@ public:
         // Errors
         InvalidScalaFile = -11,
         InvalidTuningValue = -12,
-        EmptyPeriodInterval = -13,
+        NonAscendingPeriodInterval = -13,
 
     };
 
