@@ -27,19 +27,20 @@
 //[/MiscUserDefs]
 
 //==============================================================================
-EnvelopeEdit::EnvelopeEdit ()
+EnvelopeEdit::EnvelopeEdit (float& injectedAttackVariable)
+    : attackVariable(injectedAttackVariable)
 {
     //[Constructor_pre] You can add your own custom stuff here..
     //[/Constructor_pre]
 
-    levelSlider.reset (new juce::Slider ("levelSlider"));
-    addAndMakeVisible (levelSlider.get());
-    levelSlider->setRange (0, 2, 0.01);
-    levelSlider->setSliderStyle (juce::Slider::LinearVertical);
-    levelSlider->setTextBoxStyle (juce::Slider::TextBoxBelow, false, 80, 20);
-    levelSlider->addListener (this);
+    sliderAttack.reset (new juce::Slider ("sliderAttack"));
+    addAndMakeVisible (sliderAttack.get());
+    sliderAttack->setRange (0, 2, 0.01);
+    sliderAttack->setSliderStyle (juce::Slider::LinearVertical);
+    sliderAttack->setTextBoxStyle (juce::Slider::TextBoxBelow, false, 80, 20);
+    sliderAttack->addListener (this);
 
-    levelSlider->setBounds (16, 8, 30, 136);
+    sliderAttack->setBounds (16, 0, 30, 128);
 
     labelAttack.reset (new juce::Label ("labelAttack",
                                         TRANS ("Attack")));
@@ -50,16 +51,16 @@ EnvelopeEdit::EnvelopeEdit ()
     labelAttack->setColour (juce::TextEditor::textColourId, juce::Colours::black);
     labelAttack->setColour (juce::TextEditor::backgroundColourId, juce::Colour (0x00000000));
 
-    labelAttack->setBounds (0, 152, 62, 24);
+    labelAttack->setBounds (0, 136, 62, 24);
 
-    levelSlider2.reset (new juce::Slider ("levelSlider"));
-    addAndMakeVisible (levelSlider2.get());
-    levelSlider2->setRange (0, 2, 0.01);
-    levelSlider2->setSliderStyle (juce::Slider::LinearVertical);
-    levelSlider2->setTextBoxStyle (juce::Slider::TextBoxBelow, false, 80, 20);
-    levelSlider2->addListener (this);
+    sliderRelease.reset (new juce::Slider ("sliderRelease"));
+    addAndMakeVisible (sliderRelease.get());
+    sliderRelease->setRange (0, 2, 0.01);
+    sliderRelease->setSliderStyle (juce::Slider::LinearVertical);
+    sliderRelease->setTextBoxStyle (juce::Slider::TextBoxBelow, false, 80, 20);
+    sliderRelease->addListener (this);
 
-    levelSlider2->setBounds (208, 8, 30, 136);
+    sliderRelease->setBounds (208, 0, 30, 128);
 
     labelRelease.reset (new juce::Label ("labelRelease",
                                          TRANS ("Release")));
@@ -70,16 +71,16 @@ EnvelopeEdit::EnvelopeEdit ()
     labelRelease->setColour (juce::TextEditor::textColourId, juce::Colours::black);
     labelRelease->setColour (juce::TextEditor::backgroundColourId, juce::Colour (0x00000000));
 
-    labelRelease->setBounds (192, 152, 62, 24);
+    labelRelease->setBounds (192, 136, 62, 24);
 
-    levelSlider3.reset (new juce::Slider ("levelSlider"));
-    addAndMakeVisible (levelSlider3.get());
-    levelSlider3->setRange (0, 2, 0.01);
-    levelSlider3->setSliderStyle (juce::Slider::LinearVertical);
-    levelSlider3->setTextBoxStyle (juce::Slider::TextBoxBelow, false, 80, 20);
-    levelSlider3->addListener (this);
+    sliderDecay.reset (new juce::Slider ("sliderDecay"));
+    addAndMakeVisible (sliderDecay.get());
+    sliderDecay->setRange (0, 2, 0.01);
+    sliderDecay->setSliderStyle (juce::Slider::LinearVertical);
+    sliderDecay->setTextBoxStyle (juce::Slider::TextBoxBelow, false, 80, 20);
+    sliderDecay->addListener (this);
 
-    levelSlider3->setBounds (80, 8, 30, 136);
+    sliderDecay->setBounds (80, 0, 30, 128);
 
     labelDecay.reset (new juce::Label ("labelDecay",
                                        TRANS ("Decay")));
@@ -90,16 +91,16 @@ EnvelopeEdit::EnvelopeEdit ()
     labelDecay->setColour (juce::TextEditor::textColourId, juce::Colours::black);
     labelDecay->setColour (juce::TextEditor::backgroundColourId, juce::Colour (0x00000000));
 
-    labelDecay->setBounds (64, 152, 62, 24);
+    labelDecay->setBounds (64, 136, 62, 24);
 
-    levelSlider4.reset (new juce::Slider ("levelSlider"));
-    addAndMakeVisible (levelSlider4.get());
-    levelSlider4->setRange (0, 1, 0.01);
-    levelSlider4->setSliderStyle (juce::Slider::LinearVertical);
-    levelSlider4->setTextBoxStyle (juce::Slider::TextBoxBelow, false, 80, 20);
-    levelSlider4->addListener (this);
+    sliderSustain.reset (new juce::Slider ("sliderSustain"));
+    addAndMakeVisible (sliderSustain.get());
+    sliderSustain->setRange (0, 1, 0.01);
+    sliderSustain->setSliderStyle (juce::Slider::LinearVertical);
+    sliderSustain->setTextBoxStyle (juce::Slider::TextBoxBelow, false, 80, 20);
+    sliderSustain->addListener (this);
 
-    levelSlider4->setBounds (144, 8, 30, 136);
+    sliderSustain->setBounds (144, 0, 30, 128);
 
     labelSustain.reset (new juce::Label ("labelSustain",
                                          TRANS ("Sustain")));
@@ -110,13 +111,13 @@ EnvelopeEdit::EnvelopeEdit ()
     labelSustain->setColour (juce::TextEditor::textColourId, juce::Colours::black);
     labelSustain->setColour (juce::TextEditor::backgroundColourId, juce::Colour (0x00000000));
 
-    labelSustain->setBounds (128, 152, 62, 24);
+    labelSustain->setBounds (128, 136, 62, 24);
 
 
     //[UserPreSize]
     //[/UserPreSize]
 
-    setSize (256, 184);
+    setSize (256, 160);
 
 
     //[Constructor] You can add your own custom stuff here..
@@ -128,13 +129,13 @@ EnvelopeEdit::~EnvelopeEdit()
     //[Destructor_pre]. You can add your own custom destruction code here..
     //[/Destructor_pre]
 
-    levelSlider = nullptr;
+    sliderAttack = nullptr;
     labelAttack = nullptr;
-    levelSlider2 = nullptr;
+    sliderRelease = nullptr;
     labelRelease = nullptr;
-    levelSlider3 = nullptr;
+    sliderDecay = nullptr;
     labelDecay = nullptr;
-    levelSlider4 = nullptr;
+    sliderSustain = nullptr;
     labelSustain = nullptr;
 
 
@@ -168,25 +169,26 @@ void EnvelopeEdit::sliderValueChanged (juce::Slider* sliderThatWasMoved)
     //[UsersliderValueChanged_Pre]
     //[/UsersliderValueChanged_Pre]
 
-    if (sliderThatWasMoved == levelSlider.get())
+    if (sliderThatWasMoved == sliderAttack.get())
     {
-        //[UserSliderCode_levelSlider] -- add your slider handling code here..
-        //[/UserSliderCode_levelSlider]
+        //[UserSliderCode_sliderAttack] -- add your slider handling code here..
+        attackVariable = sliderAttack->getValue();
+        //[/UserSliderCode_sliderAttack]
     }
-    else if (sliderThatWasMoved == levelSlider2.get())
+    else if (sliderThatWasMoved == sliderRelease.get())
     {
-        //[UserSliderCode_levelSlider2] -- add your slider handling code here..
-        //[/UserSliderCode_levelSlider2]
+        //[UserSliderCode_sliderRelease] -- add your slider handling code here..
+        //[/UserSliderCode_sliderRelease]
     }
-    else if (sliderThatWasMoved == levelSlider3.get())
+    else if (sliderThatWasMoved == sliderDecay.get())
     {
-        //[UserSliderCode_levelSlider3] -- add your slider handling code here..
-        //[/UserSliderCode_levelSlider3]
+        //[UserSliderCode_sliderDecay] -- add your slider handling code here..
+        //[/UserSliderCode_sliderDecay]
     }
-    else if (sliderThatWasMoved == levelSlider4.get())
+    else if (sliderThatWasMoved == sliderSustain.get())
     {
-        //[UserSliderCode_levelSlider4] -- add your slider handling code here..
-        //[/UserSliderCode_levelSlider4]
+        //[UserSliderCode_sliderSustain] -- add your slider handling code here..
+        //[/UserSliderCode_sliderSustain]
     }
 
     //[UsersliderValueChanged_Post]
@@ -209,47 +211,48 @@ void EnvelopeEdit::sliderValueChanged (juce::Slider* sliderThatWasMoved)
 BEGIN_JUCER_METADATA
 
 <JUCER_COMPONENT documentType="Component" className="EnvelopeEdit" componentName=""
-                 parentClasses="public juce::Component" constructorParams="" variableInitialisers=""
+                 parentClasses="public juce::Component" constructorParams="float&amp; injectedAttackVariable"
+                 variableInitialisers="attackVariable(injectedAttackVariable)"
                  snapPixels="8" snapActive="1" snapShown="1" overlayOpacity="0.330"
-                 fixedSize="1" initialWidth="256" initialHeight="184">
+                 fixedSize="1" initialWidth="256" initialHeight="160">
   <BACKGROUND backgroundColour="ff323e44"/>
-  <SLIDER name="levelSlider" id="a347fb19da583b72" memberName="levelSlider"
-          virtualName="" explicitFocusOrder="0" pos="16 8 30 136" min="0.0"
+  <SLIDER name="sliderAttack" id="a347fb19da583b72" memberName="sliderAttack"
+          virtualName="" explicitFocusOrder="0" pos="16 0 30 128" min="0.0"
           max="2.0" int="0.01" style="LinearVertical" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1.0"
           needsCallback="1"/>
   <LABEL name="labelAttack" id="d3b401035144e02f" memberName="labelAttack"
-         virtualName="" explicitFocusOrder="0" pos="0 152 62 24" edTextCol="ff000000"
+         virtualName="" explicitFocusOrder="0" pos="0 136 62 24" edTextCol="ff000000"
          edBkgCol="0" labelText="Attack" editableSingleClick="0" editableDoubleClick="0"
          focusDiscardsChanges="0" fontname="Default font" fontsize="15.0"
          kerning="0.0" bold="0" italic="0" justification="12"/>
-  <SLIDER name="levelSlider" id="9ff57e166e767502" memberName="levelSlider2"
-          virtualName="" explicitFocusOrder="0" pos="208 8 30 136" min="0.0"
+  <SLIDER name="sliderRelease" id="9ff57e166e767502" memberName="sliderRelease"
+          virtualName="" explicitFocusOrder="0" pos="208 0 30 128" min="0.0"
           max="2.0" int="0.01" style="LinearVertical" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1.0"
           needsCallback="1"/>
   <LABEL name="labelRelease" id="72d6f2a0484a707c" memberName="labelRelease"
-         virtualName="" explicitFocusOrder="0" pos="192 152 62 24" edTextCol="ff000000"
+         virtualName="" explicitFocusOrder="0" pos="192 136 62 24" edTextCol="ff000000"
          edBkgCol="0" labelText="Release" editableSingleClick="0" editableDoubleClick="0"
          focusDiscardsChanges="0" fontname="Default font" fontsize="15.0"
          kerning="0.0" bold="0" italic="0" justification="12"/>
-  <SLIDER name="levelSlider" id="92ef75266e7af86" memberName="levelSlider3"
-          virtualName="" explicitFocusOrder="0" pos="80 8 30 136" min="0.0"
+  <SLIDER name="sliderDecay" id="92ef75266e7af86" memberName="sliderDecay"
+          virtualName="" explicitFocusOrder="0" pos="80 0 30 128" min="0.0"
           max="2.0" int="0.01" style="LinearVertical" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1.0"
           needsCallback="1"/>
   <LABEL name="labelDecay" id="5e0ccbcb5d648017" memberName="labelDecay"
-         virtualName="" explicitFocusOrder="0" pos="64 152 62 24" edTextCol="ff000000"
+         virtualName="" explicitFocusOrder="0" pos="64 136 62 24" edTextCol="ff000000"
          edBkgCol="0" labelText="Decay" editableSingleClick="0" editableDoubleClick="0"
          focusDiscardsChanges="0" fontname="Default font" fontsize="15.0"
          kerning="0.0" bold="0" italic="0" justification="12"/>
-  <SLIDER name="levelSlider" id="9b23709c8504fc47" memberName="levelSlider4"
-          virtualName="" explicitFocusOrder="0" pos="144 8 30 136" min="0.0"
+  <SLIDER name="sliderSustain" id="9b23709c8504fc47" memberName="sliderSustain"
+          virtualName="" explicitFocusOrder="0" pos="144 0 30 128" min="0.0"
           max="1.0" int="0.01" style="LinearVertical" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1.0"
           needsCallback="1"/>
   <LABEL name="labelSustain" id="e71a0400c01b2884" memberName="labelSustain"
-         virtualName="" explicitFocusOrder="0" pos="128 152 62 24" edTextCol="ff000000"
+         virtualName="" explicitFocusOrder="0" pos="128 136 62 24" edTextCol="ff000000"
          edBkgCol="0" labelText="Sustain" editableSingleClick="0" editableDoubleClick="0"
          focusDiscardsChanges="0" fontname="Default font" fontsize="15.0"
          kerning="0.0" bold="0" italic="0" justification="12"/>

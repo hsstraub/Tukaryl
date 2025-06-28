@@ -3,7 +3,7 @@
 
 //==============================================================================
 MainComponent::MainComponent()
-: theInstrument(63, IntervalModel::octave(), 31, TuningTable::standard12Edo())
+: theInstrument(63, IntervalModel::octave(), 31, TuningTable::standard12Edo(), ADSR::Parameters(0.1f, 0.1f, 1.0f, 0.1f))
 , theAudioSource(keyboardState, theInstrument)
 {
     // Make sure you set the size of the component after

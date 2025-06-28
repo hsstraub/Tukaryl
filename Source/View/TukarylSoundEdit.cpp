@@ -35,6 +35,11 @@ TukarylSoundEdit::TukarylSoundEdit (TukarylInstrument& injectedInstrument)
     //[Constructor_pre] You can add your own custom stuff here..
     //[/Constructor_pre]
 
+    groupOscillators.reset (new juce::GroupComponent ("groupOscillators",
+                                                      TRANS ("Oscillators")));
+    addAndMakeVisible (groupOscillators.get());
+    groupOscillators->setTextLabelPosition (juce::Justification::centred);
+
     osc1.reset (new OscSubComponent (theInstrument.baseFrequency, theInstrument.baseOscLevel, false));
     addAndMakeVisible (osc1.get());
     osc1->setName ("osc1");
@@ -79,10 +84,17 @@ TukarylSoundEdit::TukarylSoundEdit (TukarylInstrument& injectedInstrument)
     labelMessageArea->setColour (juce::TextEditor::textColourId, juce::Colours::black);
     labelMessageArea->setColour (juce::TextEditor::backgroundColourId, juce::Colour (0x00000000));
 
-    groupOscillators.reset (new juce::GroupComponent ("groupOscillators",
-                                                      TRANS ("Oscillators")));
-    addAndMakeVisible (groupOscillators.get());
-    groupOscillators->setTextLabelPosition (juce::Justification::centred);
+    groupMainEnvelope.reset (new juce::GroupComponent ("groupMainEnvelope",
+                                                       TRANS ("Main output envelope")));
+    addAndMakeVisible (groupMainEnvelope.get());
+
+    groupMainEnvelope->setBounds (8, 304, 288, 190);
+
+    mainEnvelopeComponent.reset (new EnvelopeEdit (theInstrument.mainEnvelope.attack));
+    addAndMakeVisible (mainEnvelopeComponent.get());
+    mainEnvelopeComponent->setName ("mainEnvelopeComponent");
+
+    mainEnvelopeComponent->setBounds (24, 320, 254, 160);
 
 
     //[UserPreSize]
@@ -101,13 +113,15 @@ TukarylSoundEdit::~TukarylSoundEdit()
     //[Destructor_pre]. You can add your own custom destruction code here..
     //[/Destructor_pre]
 
+    groupOscillators = nullptr;
     osc1 = nullptr;
     osc2 = nullptr;
     lblTuningDescription = nullptr;
     btnLoadScalaFile = nullptr;
     btnTuningReset = nullptr;
     labelMessageArea = nullptr;
-    groupOscillators = nullptr;
+    groupMainEnvelope = nullptr;
+    mainEnvelopeComponent = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -141,9 +155,9 @@ void TukarylSoundEdit::resized()
     // auto area = getLocalBounds();
     //[/UserPreResize]
 
+    groupOscillators->setBounds (8, 32, proportionOfWidth (0.9778f), 263);
     lblTuningDescription->setBounds (8, 0, 200, 24);
     labelMessageArea->setBounds (0, getHeight() - 16, proportionOfWidth (1.0000f), 16);
-    groupOscillators->setBounds (8, 32, proportionOfWidth (0.9778f), 263);
     //[UserResized] Add your own custom resize handling here..
     // labelMessageArea->setBounds(area.removeFromBottom (16));
     //[/UserResized]
@@ -382,6 +396,9 @@ BEGIN_JUCER_METADATA
                  snapPixels="8" snapActive="1" snapShown="1" overlayOpacity="0.330"
                  fixedSize="0" initialWidth="608" initialHeight="400">
   <BACKGROUND backgroundColour="ff323e44"/>
+  <GROUPCOMPONENT name="groupOscillators" id="b9219965a445713c" memberName="groupOscillators"
+                  virtualName="" explicitFocusOrder="0" pos="8 32 97.775% 263"
+                  title="Oscillators" textpos="36"/>
   <GENERICCOMPONENT name="osc1" id="5752b2c7ddf48ad8" memberName="osc1" virtualName="OscSubComponent"
                     explicitFocusOrder="0" pos="16 88 62 200" class="OscSubComponent"
                     params="theInstrument.baseFrequency, theInstrument.baseOscLevel, false"/>
@@ -405,9 +422,11 @@ BEGIN_JUCER_METADATA
          edBkgCol="0" labelText="Message area&#10;" editableSingleClick="0"
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
          fontsize="15.0" kerning="0.0" bold="0" italic="0" justification="33"/>
-  <GROUPCOMPONENT name="groupOscillators" id="b9219965a445713c" memberName="groupOscillators"
-                  virtualName="" explicitFocusOrder="0" pos="8 32 97.775% 263"
-                  title="Oscillators" textpos="36"/>
+  <GROUPCOMPONENT name="groupMainEnvelope" id="2207b5aab078b03e" memberName="groupMainEnvelope"
+                  virtualName="" explicitFocusOrder="0" pos="8 304 288 190" title="Main output envelope"/>
+  <GENERICCOMPONENT name="mainEnvelopeComponent" id="dd5a17cc34537eab" memberName="mainEnvelopeComponent"
+                    virtualName="" explicitFocusOrder="0" pos="24 320 254 160" class="EnvelopeEdit"
+                    params="theInstrument.mainEnvelope.attack"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

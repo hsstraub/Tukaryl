@@ -23,6 +23,7 @@
 #include <JuceHeader.h>
 
 #include "OscSubComponent.h"
+#include "EnvelopeEdit.h"
 #include "../Model/TukarylInstrument.h"
 #include "../Model/IntervalModel.h"
 #include "../HajuLib/HajuErrorVisualizer.h"
@@ -86,13 +87,15 @@ private:
     //[/UserVariables]
 
     //==============================================================================
+    std::unique_ptr<juce::GroupComponent> groupOscillators;
     std::unique_ptr<OscSubComponent> osc1;
     std::unique_ptr<OscSubComponent> osc2;
     std::unique_ptr<juce::Label> lblTuningDescription;
     std::unique_ptr<juce::TextButton> btnLoadScalaFile;
     std::unique_ptr<juce::TextButton> btnTuningReset;
     std::unique_ptr<juce::Label> labelMessageArea;
-    std::unique_ptr<juce::GroupComponent> groupOscillators;
+    std::unique_ptr<juce::GroupComponent> groupMainEnvelope;
+    std::unique_ptr<EnvelopeEdit> mainEnvelopeComponent;
 
 
     //==============================================================================

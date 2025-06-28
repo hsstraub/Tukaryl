@@ -38,7 +38,7 @@ class EnvelopeEdit  : public juce::Component,
 {
 public:
     //==============================================================================
-    EnvelopeEdit ();
+    EnvelopeEdit (float& injectedAttackVariable);
     ~EnvelopeEdit() override;
 
     //==============================================================================
@@ -53,16 +53,17 @@ public:
 
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
+    float& attackVariable;
     //[/UserVariables]
 
     //==============================================================================
-    std::unique_ptr<juce::Slider> levelSlider;
+    std::unique_ptr<juce::Slider> sliderAttack;
     std::unique_ptr<juce::Label> labelAttack;
-    std::unique_ptr<juce::Slider> levelSlider2;
+    std::unique_ptr<juce::Slider> sliderRelease;
     std::unique_ptr<juce::Label> labelRelease;
-    std::unique_ptr<juce::Slider> levelSlider3;
+    std::unique_ptr<juce::Slider> sliderDecay;
     std::unique_ptr<juce::Label> labelDecay;
-    std::unique_ptr<juce::Slider> levelSlider4;
+    std::unique_ptr<juce::Slider> sliderSustain;
     std::unique_ptr<juce::Label> labelSustain;
 
 
