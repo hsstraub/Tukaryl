@@ -39,13 +39,13 @@ TukarylSoundEdit::TukarylSoundEdit (TukarylInstrument& injectedInstrument)
     addAndMakeVisible (osc1.get());
     osc1->setName ("osc1");
 
-    osc1->setBounds (24, 88, 70, 200);
+    osc1->setBounds (16, 88, 62, 200);
 
     osc2.reset (new OscSubComponent (theInstrument.partial1Frequency, theInstrument.partial1Level, true));
     addAndMakeVisible (osc2.get());
     osc2->setName ("osc2");
 
-    osc2->setBounds (104, 88, 70, 200);
+    osc2->setBounds (88, 88, 62, 200);
 
     lblTuningDescription.reset (new juce::Label ("lblTuningDescription",
                                                  TRANS ("Tuning description")));
@@ -127,9 +127,11 @@ void TukarylSoundEdit::paint (juce::Graphics& g)
 
     lblTuningDescription->setText(theInstrument.tuningTable.getDescription(), NotificationType::dontSendNotification);
 
-    osc1->setTopLeftPosition(getXPosOfFrequency(IntervalModel::perfectPrime()) - osc1->getWidth() / 2, OSCTOP);
+    auto oscYPos = groupOscillators->getY() + OSCPADTOP;
 
-    osc2->setTopLeftPosition(getXPosOfFrequency(theInstrument.partial1Frequency) - osc2->getWidth() / 2, OSCTOP);
+    osc1->setTopLeftPosition(getXPosOfFrequency(IntervalModel::perfectPrime()) - osc1->getWidth() / 2, oscYPos);
+
+    osc2->setTopLeftPosition(getXPosOfFrequency(theInstrument.partial1Frequency) - osc2->getWidth() / 2, oscYPos);
     //[/UserPaint]
 }
 
@@ -141,7 +143,7 @@ void TukarylSoundEdit::resized()
 
     lblTuningDescription->setBounds (8, 0, 200, 24);
     labelMessageArea->setBounds (0, getHeight() - 16, proportionOfWidth (1.0000f), 16);
-    groupOscillators->setBounds (8, 32, proportionOfWidth (0.9778f), 271);
+    groupOscillators->setBounds (8, 32, proportionOfWidth (0.9778f), 263);
     //[UserResized] Add your own custom resize handling here..
     // labelMessageArea->setBounds(area.removeFromBottom (16));
     //[/UserResized]
@@ -213,7 +215,7 @@ void TukarylSoundEdit::paintRuler(juce::Graphics& g)
     auto rulerYPos = groupOscillators->getY() + RULERPADFROMTOP;
 
     g.setColour(getLookAndFeel().findColour(juce::TextEditor::textColourId));
-    g.drawLine(0, rulerYPos, getRight(), rulerYPos);
+    g.drawLine(groupOscillators-> getX(), rulerYPos, groupOscillators->getRight(), rulerYPos);
 
     auto baseInterval = IntervalModel::perfectPrime();
 
@@ -253,17 +255,17 @@ void TukarylSoundEdit::paintRulerMark(juce::Graphics& g, int rulerYPos, Interval
 
 int TukarylSoundEdit::getXPosOfFrequency(IntervalModel frequency)
 {
-    auto leftXPos = groupOscillators->getX();
+    auto leftXPos = groupOscillators->getX() + OSCHORIZMARGIN;
     auto width = groupOscillators->getWidth();
-    return leftXPos + (width - 2 * leftXPos) * frequency.getValueInCents() / maxFrequency.getValueInCents();
+    return leftXPos + (width - 2 * OSCHORIZMARGIN) * frequency.getValueInCents() / maxFrequency.getValueInCents();
 }
 
 IntervalModel TukarylSoundEdit::getFrequencyOfXPos(double xPos)
 {
-    auto leftXPos = groupOscillators->getX();
+    auto leftXPos = groupOscillators->getX() + OSCHORIZMARGIN;
     auto width = groupOscillators->getWidth();
     return IntervalModel(
-        maxFrequency.getValueInCents() * (xPos - leftXPos) / (width- 2 * leftXPos));
+        maxFrequency.getValueInCents() * (xPos - leftXPos) / (width- 2 * OSCHORIZMARGIN));
 }
 
 void TukarylSoundEdit::OpenSclFileDialog()
@@ -381,10 +383,10 @@ BEGIN_JUCER_METADATA
                  fixedSize="0" initialWidth="608" initialHeight="400">
   <BACKGROUND backgroundColour="ff323e44"/>
   <GENERICCOMPONENT name="osc1" id="5752b2c7ddf48ad8" memberName="osc1" virtualName="OscSubComponent"
-                    explicitFocusOrder="0" pos="24 88 70 200" class="OscSubComponent"
+                    explicitFocusOrder="0" pos="16 88 62 200" class="OscSubComponent"
                     params="theInstrument.baseFrequency, theInstrument.baseOscLevel, false"/>
   <GENERICCOMPONENT name="osc2" id="8b807cc720421151" memberName="osc2" virtualName="OscSubComponent"
-                    explicitFocusOrder="0" pos="104 88 70 200" class="OscSubComponent"
+                    explicitFocusOrder="0" pos="88 88 62 200" class="OscSubComponent"
                     params="theInstrument.partial1Frequency, theInstrument.partial1Level, true"/>
   <LABEL name="lblTuningDescription" id="2fa3694df70d7ee4" memberName="lblTuningDescription"
          virtualName="" explicitFocusOrder="0" pos="8 0 200 24" posRelativeW="3d4c2ccc04f7e5d2"
@@ -404,7 +406,7 @@ BEGIN_JUCER_METADATA
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
          fontsize="15.0" kerning="0.0" bold="0" italic="0" justification="33"/>
   <GROUPCOMPONENT name="groupOscillators" id="b9219965a445713c" memberName="groupOscillators"
-                  virtualName="" explicitFocusOrder="0" pos="8 32 97.775% 271"
+                  virtualName="" explicitFocusOrder="0" pos="8 32 97.775% 263"
                   title="Oscillators" textpos="36"/>
 </JUCER_COMPONENT>
 

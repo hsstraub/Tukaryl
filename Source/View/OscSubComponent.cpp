@@ -42,8 +42,6 @@ OscSubComponent::OscSubComponent (IntervalModel& injectedFrequencyVariable, unsi
     levelSlider->setTextBoxStyle (juce::Slider::TextBoxBelow, false, 80, 20);
     levelSlider->addListener (this);
 
-    levelSlider->setBounds (8, 48, 38, 136);
-
     descriptionLabel.reset (new juce::Label ("descriptionLabel",
                                              TRANS ("Partial")));
     addAndMakeVisible (descriptionLabel.get());
@@ -52,8 +50,6 @@ OscSubComponent::OscSubComponent (IntervalModel& injectedFrequencyVariable, unsi
     descriptionLabel->setEditable (false, false, false);
     descriptionLabel->setColour (juce::TextEditor::textColourId, juce::Colours::black);
     descriptionLabel->setColour (juce::TextEditor::backgroundColourId, juce::Colour (0x00000000));
-
-    descriptionLabel->setBounds (0, 24, 54, 24);
 
 
     //[UserPreSize]
@@ -110,6 +106,8 @@ void OscSubComponent::resized()
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
 
+    levelSlider->setBounds ((getWidth() / 2) - (38 / 2), 48, 38, 136);
+    descriptionLabel->setBounds (0, 36 - (24 / 2), proportionOfWidth (1.0333f), 24);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -214,15 +212,15 @@ BEGIN_JUCER_METADATA
   </METHODS>
   <BACKGROUND backgroundColour="ff323e44"/>
   <SLIDER name="levelSlider" id="a347fb19da583b72" memberName="levelSlider"
-          virtualName="" explicitFocusOrder="0" pos="8 48 38 136" min="0.0"
+          virtualName="" explicitFocusOrder="0" pos="0Cc 48 38 136" min="0.0"
           max="127.0" int="1.0" style="LinearVertical" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1.0"
           needsCallback="1"/>
   <LABEL name="descriptionLabel" id="d3b401035144e02f" memberName="descriptionLabel"
-         virtualName="" explicitFocusOrder="0" pos="0 24 54 24" edTextCol="ff000000"
-         edBkgCol="0" labelText="Partial" editableSingleClick="0" editableDoubleClick="0"
-         focusDiscardsChanges="0" fontname="Default font" fontsize="15.0"
-         kerning="0.0" bold="0" italic="0" justification="12"/>
+         virtualName="" explicitFocusOrder="0" pos="0 36c 100% 24"
+         edTextCol="ff000000" edBkgCol="0" labelText="Partial" editableSingleClick="0"
+         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
+         fontsize="15.0" kerning="0.0" bold="0" italic="0" justification="12"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA
