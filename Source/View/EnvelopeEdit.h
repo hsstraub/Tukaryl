@@ -21,7 +21,6 @@
 
 //[Headers]     -- You can add your own extra header files here --
 #include <JuceHeader.h>
-#include "../Model/IntervalModel.h"
 //[/Headers]
 
 
@@ -34,69 +33,41 @@
     Describe your class and how it works here!
                                                                     //[/Comments]
 */
-class OscSubComponent  : public juce::Component,
-                         public juce::ChangeBroadcaster,
-                         public juce::Slider::Listener
+class EnvelopeEdit  : public juce::Component,
+                      public juce::Slider::Listener
 {
 public:
     //==============================================================================
-    OscSubComponent (IntervalModel& injectedFrequencyVariable, unsigned short& injectedLevelVariable, bool isDraggable);
-    ~OscSubComponent() override;
+    EnvelopeEdit ();
+    ~EnvelopeEdit() override;
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
-    // Types
-public:
-    // Listener class, to notify changes
-    class Listener
-    {
-    public:
-        // Destructor
-        virtual ~Listener() {}
-
-        virtual void OnDrag(OscSubComponent* component) = 0;
-    };
-
-    void addListener(Listener* listenerToAdd);
-    void removeListener(Listener* listenerToRemove);
-
-    juce::Point<float> getDragStart() const { return dragStart; }
-    juce::Point<float> getDragEnd() const { return dragEnd; }
-
-    void setFrequency(IntervalModel newFrequency);
-
     //[/UserMethods]
 
     void paint (juce::Graphics& g) override;
     void resized() override;
     void sliderValueChanged (juce::Slider* sliderThatWasMoved) override;
-    void mouseDown (const juce::MouseEvent& e) override;
-    void mouseDrag (const juce::MouseEvent& e) override;
-    void mouseUp (const juce::MouseEvent& e) override;
 
 
 
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
-    IntervalModel& frequencyVariable;
-    unsigned short& levelVariable;
-
-    bool draggingEnabled;
-    juce::Point<float> dragStart;
-    juce::Point<float> dragEnd;
-    bool isDragging;
-    juce::ListenerList<Listener> listeners;
-
-    juce::Path thePointer;
     //[/UserVariables]
 
     //==============================================================================
     std::unique_ptr<juce::Slider> levelSlider;
-    std::unique_ptr<juce::Label> descriptionLabel;
+    std::unique_ptr<juce::Label> labelAttack;
+    std::unique_ptr<juce::Slider> levelSlider2;
+    std::unique_ptr<juce::Label> labelRelease;
+    std::unique_ptr<juce::Slider> levelSlider3;
+    std::unique_ptr<juce::Label> labelDecay;
+    std::unique_ptr<juce::Slider> levelSlider4;
+    std::unique_ptr<juce::Label> labelSustain;
 
 
     //==============================================================================
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (OscSubComponent)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (EnvelopeEdit)
 };
 
 //[EndFile] You can add extra defines here...

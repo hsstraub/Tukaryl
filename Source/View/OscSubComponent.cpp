@@ -29,10 +29,8 @@
 
 //==============================================================================
 OscSubComponent::OscSubComponent (IntervalModel& injectedFrequencyVariable, unsigned short& injectedLevelVariable, bool isDraggable)
-    : frequencyVariable(injectedFrequencyVariable)
-    , levelVariable(injectedLevelVariable)
-    , draggingEnabled(isDraggable)
-    , isDragging(false)
+    : frequencyVariable(injectedFrequencyVariable), levelVariable(injectedLevelVariable), draggingEnabled(isDraggable),
+      isDragging(false)
 {
     //[Constructor_pre] You can add your own custom stuff here..
     //[/Constructor_pre]
@@ -44,7 +42,7 @@ OscSubComponent::OscSubComponent (IntervalModel& injectedFrequencyVariable, unsi
     levelSlider->setTextBoxStyle (juce::Slider::TextBoxBelow, false, 80, 20);
     levelSlider->addListener (this);
 
-    levelSlider->setBounds (16, 64, 38, 152);
+    levelSlider->setBounds (8, 48, 38, 136);
 
     descriptionLabel.reset (new juce::Label ("descriptionLabel",
                                              TRANS ("Partial")));
@@ -55,13 +53,14 @@ OscSubComponent::OscSubComponent (IntervalModel& injectedFrequencyVariable, unsi
     descriptionLabel->setColour (juce::TextEditor::textColourId, juce::Colours::black);
     descriptionLabel->setColour (juce::TextEditor::backgroundColourId, juce::Colour (0x00000000));
 
-    descriptionLabel->setBounds (8, 32, 62, 24);
+    descriptionLabel->setBounds (0, 24, 54, 24);
+
 
     //[UserPreSize]
     levelSlider->setValue(levelVariable);
     //[/UserPreSize]
 
-    setSize (32, 216);
+    setSize (60, 184);
 
 
     //[Constructor] You can add your own custom stuff here..
@@ -132,39 +131,44 @@ void OscSubComponent::sliderValueChanged (juce::Slider* sliderThatWasMoved)
     //[/UsersliderValueChanged_Post]
 }
 
-void OscSubComponent::mouseDown(const juce::MouseEvent& event)
+void OscSubComponent::mouseDown (const juce::MouseEvent& e)
 {
+    //[UserCode_mouseDown] -- Add your code here...
     if (draggingEnabled)
     {
-		juce::Point<float> localPoint = getLocalPoint(event.eventComponent, event.position);
+        juce::Point<float> localPoint = getLocalPoint(e.eventComponent, e.position);
         if (thePointer.contains(localPoint))
         {
-            dragStart = event.position;
-            dragEnd = event.position;
+            dragStart = e.position;
+            dragEnd = e.position;
             isDragging = true;
         }
-
     }
+    //[/UserCode_mouseDown]
 }
 
-void OscSubComponent::mouseDrag(const juce::MouseEvent& event)
+void OscSubComponent::mouseDrag (const juce::MouseEvent& e)
 {
+    //[UserCode_mouseDrag] -- Add your code here...
     if (isDragging)
     {
-        dragEnd = event.position;
+        dragEnd = e.position;
 
         this->listeners.call(&Listener::OnDrag, this);
     }
-
+    //[/UserCode_mouseDrag]
 }
 
-void OscSubComponent::mouseUp(const juce::MouseEvent& event)
+void OscSubComponent::mouseUp (const juce::MouseEvent& e)
 {
+    //[UserCode_mouseUp] -- Add your code here...
     if (isDragging)
     {
         isDragging = false;
     }
+    //[/UserCode_mouseUp]
 }
+
 
 
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
@@ -199,19 +203,23 @@ BEGIN_JUCER_METADATA
 
 <JUCER_COMPONENT documentType="Component" className="OscSubComponent" componentName=""
                  parentClasses="public juce::Component, public juce::ChangeBroadcaster"
-                 constructorParams="juce::String labelText, unsigned short&amp; injectedLevelVariable"
-                 variableInitialisers="levelVariable(injectedLevelVariable)" snapPixels="8"
-                 snapActive="1" snapShown="1" overlayOpacity="0.330" fixedSize="0"
-                 initialWidth="32" initialHeight="216">
-  <BACKGROUND backgroundColour="ff323e44">
-  </BACKGROUND>
+                 constructorParams="IntervalModel&amp; injectedFrequencyVariable, unsigned short&amp; injectedLevelVariable, bool isDraggable"
+                 variableInitialisers="frequencyVariable(injectedFrequencyVariable), levelVariable(injectedLevelVariable), draggingEnabled(isDraggable),&#10;isDragging(false)"
+                 snapPixels="8" snapActive="1" snapShown="1" overlayOpacity="0.330"
+                 fixedSize="1" initialWidth="60" initialHeight="184">
+  <METHODS>
+    <METHOD name="mouseDown (const juce::MouseEvent&amp; e)"/>
+    <METHOD name="mouseDrag (const juce::MouseEvent&amp; e)"/>
+    <METHOD name="mouseUp (const juce::MouseEvent&amp; e)"/>
+  </METHODS>
+  <BACKGROUND backgroundColour="ff323e44"/>
   <SLIDER name="levelSlider" id="a347fb19da583b72" memberName="levelSlider"
-          virtualName="" explicitFocusOrder="0" pos="16 64 38 152" min="0.0"
+          virtualName="" explicitFocusOrder="0" pos="8 48 38 136" min="0.0"
           max="127.0" int="1.0" style="LinearVertical" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1.0"
           needsCallback="1"/>
   <LABEL name="descriptionLabel" id="d3b401035144e02f" memberName="descriptionLabel"
-         virtualName="" explicitFocusOrder="0" pos="8 32 62 24" edTextCol="ff000000"
+         virtualName="" explicitFocusOrder="0" pos="0 24 54 24" edTextCol="ff000000"
          edBkgCol="0" labelText="Partial" editableSingleClick="0" editableDoubleClick="0"
          focusDiscardsChanges="0" fontname="Default font" fontsize="15.0"
          kerning="0.0" bold="0" italic="0" justification="12"/>

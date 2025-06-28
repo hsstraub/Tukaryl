@@ -55,7 +55,7 @@ public:
 
 private:
     void paintRuler(juce::Graphics& g);
-    void paintRulerMark(juce::Graphics& g, IntervalModel frequency);
+    void paintRulerMark(juce::Graphics& g, int rulerYPos, IntervalModel frequency);
 
     int getXPosOfFrequency(IntervalModel frequency);
     IntervalModel getFrequencyOfXPos(double xPos);
@@ -92,6 +92,7 @@ private:
     std::unique_ptr<juce::TextButton> btnLoadScalaFile;
     std::unique_ptr<juce::TextButton> btnTuningReset;
     std::unique_ptr<juce::Label> labelMessageArea;
+    std::unique_ptr<juce::GroupComponent> groupOscillators;
 
 
     //==============================================================================

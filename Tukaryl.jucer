@@ -2,7 +2,7 @@
 
 <JUCERPROJECT id="v7odDj" name="Tukaryl" projectType="guiapp" useAppConfig="0"
               displaySplashScreen="1" jucerFormatVersion="1" companyName="Hans Straub"
-              version="0.1.4">
+              version="0.1.5">
   <MAINGROUP id="kOasHK" name="Tukaryl">
     <GROUP id="{DA080E50-8B91-F8CF-4614-C7654924B3CB}" name="Source">
       <GROUP id="{DED70166-9714-7552-ECA9-D6A724CF0D5F}" name="BusinessLogic">
@@ -43,6 +43,9 @@
         <FILE id="vfAz1v" name="TuningTable.h" compile="0" resource="0" file="Source/Model/TuningTable.h"/>
       </GROUP>
       <GROUP id="{E9E9A777-8DA5-36D5-A2EB-B9125DF2CCEE}" name="View">
+        <FILE id="KkWxAG" name="EnvelopeEdit.cpp" compile="1" resource="0"
+              file="Source/View/EnvelopeEdit.cpp"/>
+        <FILE id="CLxZzw" name="EnvelopeEdit.h" compile="0" resource="0" file="Source/View/EnvelopeEdit.h"/>
         <FILE id="PqNXWo" name="OscSubComponent.h" compile="0" resource="0"
               file="Source/View/OscSubComponent.h"/>
         <FILE id="lSai6V" name="OscSubComponent.cpp" compile="1" resource="0"
