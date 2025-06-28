@@ -38,7 +38,7 @@ class EnvelopeEdit  : public juce::Component,
 {
 public:
     //==============================================================================
-    EnvelopeEdit (float& injectedAttackVariable);
+    EnvelopeEdit (float& injectedAttackVariable, float& injectedDecayVariable, float& injectedSustainVariable, float& injectedReleaseVariable);
     ~EnvelopeEdit() override;
 
     //==============================================================================
@@ -54,6 +54,9 @@ public:
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
     float& attackVariable;
+    float& decayVariable;
+    float& sustainVariable;
+    float& releaseVariable;
     //[/UserVariables]
 
     //==============================================================================

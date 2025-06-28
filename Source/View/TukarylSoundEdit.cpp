@@ -90,7 +90,7 @@ TukarylSoundEdit::TukarylSoundEdit (TukarylInstrument& injectedInstrument)
 
     groupMainEnvelope->setBounds (8, 304, 288, 190);
 
-    mainEnvelopeComponent.reset (new EnvelopeEdit (theInstrument.mainEnvelope.attack));
+    mainEnvelopeComponent.reset (new EnvelopeEdit (theInstrument.mainEnvelope.attack, theInstrument.mainEnvelope.decay, theInstrument.mainEnvelope.sustain, theInstrument.mainEnvelope.release));
     addAndMakeVisible (mainEnvelopeComponent.get());
     mainEnvelopeComponent->setName ("mainEnvelopeComponent");
 
@@ -426,7 +426,7 @@ BEGIN_JUCER_METADATA
                   virtualName="" explicitFocusOrder="0" pos="8 304 288 190" title="Main output envelope"/>
   <GENERICCOMPONENT name="mainEnvelopeComponent" id="dd5a17cc34537eab" memberName="mainEnvelopeComponent"
                     virtualName="" explicitFocusOrder="0" pos="24 320 254 160" class="EnvelopeEdit"
-                    params="theInstrument.mainEnvelope.attack"/>
+                    params="theInstrument.mainEnvelope.attack, theInstrument.mainEnvelope.decay, theInstrument.mainEnvelope.sustain, theInstrument.mainEnvelope.release"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA
