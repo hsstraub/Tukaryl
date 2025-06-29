@@ -107,7 +107,7 @@ void OscSubComponent::resized()
     //[/UserPreResize]
 
     levelSlider->setBounds ((getWidth() / 2) - (38 / 2), 48, 38, 136);
-    descriptionLabel->setBounds (0, 36 - (24 / 2), proportionOfWidth (1.0333f), 24);
+    descriptionLabel->setBounds (0, 36 - (24 / 2), proportionOfWidth (1.0000f), 24);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -217,10 +217,10 @@ BEGIN_JUCER_METADATA
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1.0"
           needsCallback="1"/>
   <LABEL name="descriptionLabel" id="d3b401035144e02f" memberName="descriptionLabel"
-         virtualName="" explicitFocusOrder="0" pos="0 36c 100% 24"
-         edTextCol="ff000000" edBkgCol="0" labelText="Partial" editableSingleClick="0"
-         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
-         fontsize="15.0" kerning="0.0" bold="0" italic="0" justification="12"/>
+         virtualName="" explicitFocusOrder="0" pos="0 36c 100% 24" edTextCol="ff000000"
+         edBkgCol="0" labelText="Partial" editableSingleClick="0" editableDoubleClick="0"
+         focusDiscardsChanges="0" fontname="Default font" fontsize="15.0"
+         kerning="0.0" bold="0" italic="0" justification="12"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

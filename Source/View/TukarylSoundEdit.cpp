@@ -193,8 +193,10 @@ void TukarylSoundEdit::buttonClicked (juce::Button* buttonThatWasClicked)
 
 void TukarylSoundEdit::addChangeListener (juce::ChangeListener* const listener)
 {
+    ChangeBroadcaster::addChangeListener(listener);
     osc1->addChangeListener(listener);
     osc2->addChangeListener(listener);
+    mainEnvelopeComponent->addChangeListener(listener);
 }
 
 void TukarylSoundEdit::OnDrag(OscSubComponent* component)
@@ -390,7 +392,7 @@ void TukarylSoundEdit::displayMessage(String message, HajuErrorVisualizer::Error
 BEGIN_JUCER_METADATA
 
 <JUCER_COMPONENT documentType="Component" className="TukarylSoundEdit" componentName=""
-                 parentClasses="public juce::Component, public OscSubComponent::Listener"
+                 parentClasses="public juce::Component, public OscSubComponent::Listener, public juce::ChangeBroadcaster"
                  constructorParams="TukarylInstrument&amp; injectedInstrument"
                  variableInitialisers="theInstrument(injectedInstrument), errorVisualizer(getLookAndFeel())"
                  snapPixels="8" snapActive="1" snapShown="1" overlayOpacity="0.330"

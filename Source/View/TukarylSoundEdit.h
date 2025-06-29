@@ -41,6 +41,7 @@
 */
 class TukarylSoundEdit  : public juce::Component,
                           public OscSubComponent::Listener,
+                          public juce::ChangeBroadcaster,
                           public juce::Button::Listener
 {
 public:
@@ -52,7 +53,7 @@ public:
     //[UserMethods]     -- You can add your own custom methods in this section.
     void addChangeListener (juce::ChangeListener* const listener);
 
-    void OnDrag(OscSubComponent* component);
+    void OnDrag(OscSubComponent* component) override;
 
 private:
     void paintRuler(juce::Graphics& g);

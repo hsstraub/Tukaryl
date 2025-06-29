@@ -115,6 +115,10 @@ EnvelopeEdit::EnvelopeEdit (float& injectedAttackVariable, float& injectedDecayV
 
 
     //[UserPreSize]
+    sliderAttack->setValue(attackVariable);
+    sliderDecay->setValue(decayVariable);
+    sliderSustain->setValue(sustainVariable);
+    sliderRelease->setValue(releaseVariable);
     //[/UserPreSize]
 
     setSize (256, 160);
@@ -173,24 +177,28 @@ void EnvelopeEdit::sliderValueChanged (juce::Slider* sliderThatWasMoved)
     {
         //[UserSliderCode_sliderAttack] -- add your slider handling code here..
         attackVariable = sliderAttack->getValue();
+        sendChangeMessage();
         //[/UserSliderCode_sliderAttack]
     }
     else if (sliderThatWasMoved == sliderRelease.get())
     {
         //[UserSliderCode_sliderRelease] -- add your slider handling code here..
         releaseVariable = sliderRelease->getValue();
+        sendChangeMessage();
         //[/UserSliderCode_sliderRelease]
     }
     else if (sliderThatWasMoved == sliderDecay.get())
     {
         //[UserSliderCode_sliderDecay] -- add your slider handling code here..
         decayVariable = sliderDecay->getValue();
+        sendChangeMessage();
         //[/UserSliderCode_sliderDecay]
     }
     else if (sliderThatWasMoved == sliderSustain.get())
     {
         //[UserSliderCode_sliderSustain] -- add your slider handling code here..
         sustainVariable = sliderSustain->getValue();
+        sendChangeMessage();
         //[/UserSliderCode_sliderSustain]
     }
 
@@ -214,7 +222,8 @@ void EnvelopeEdit::sliderValueChanged (juce::Slider* sliderThatWasMoved)
 BEGIN_JUCER_METADATA
 
 <JUCER_COMPONENT documentType="Component" className="EnvelopeEdit" componentName=""
-                 parentClasses="public juce::Component" constructorParams="float&amp; injectedAttackVariable, float&amp; injectedDecayVariable, float&amp; injectedSustainVariable, float&amp; injectedReleaseVariable"
+                 parentClasses="public juce::Component, public juce::ChangeBroadcaster"
+                 constructorParams="float&amp; injectedAttackVariable, float&amp; injectedDecayVariable, float&amp; injectedSustainVariable, float&amp; injectedReleaseVariable"
                  variableInitialisers="attackVariable(injectedAttackVariable), decayVariable(injectedDecayVariable), sustainVariable(injectedSustainVariable), releaseVariable(injectedReleaseVariable)"
                  snapPixels="8" snapActive="1" snapShown="1" overlayOpacity="0.330"
                  fixedSize="1" initialWidth="256" initialHeight="160">

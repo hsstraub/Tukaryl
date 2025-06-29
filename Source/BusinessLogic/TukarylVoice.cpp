@@ -14,7 +14,9 @@
 TukarylVoice::TukarylVoice(TukarylInstrument& tukarylInstrument)
 : theInstrument(tukarylInstrument)
 {
-    updateFromInstrument();
+    updateTuning();
+    updateOscillators();
+    updateMainEnvelope();
 }
 
 bool TukarylVoice::canPlaySound(juce::SynthesiserSound* sound)
@@ -29,12 +31,15 @@ void TukarylVoice::startNote(
     currentVelocity = velocity;
     currentAngle1 = currentAngle2 = 0.0;
 
-    updateFromInstrument();
+    updateOscillators();
+
+    mainEnvelope.noteOn();
 }
 
 void TukarylVoice::stopNote(float /*velocity*/, bool allowTailOff)
 {
     clearCurrentNote();
+    mainEnvelope.noteOff();
     angleDelta1 = angleDelta2 = 0.0;
 }
 
@@ -51,7 +56,7 @@ void TukarylVoice::renderNextBlock (juce::AudioSampleBuffer& outputBuffer, int s
             auto currentSample1 = (float) std::sin (currentAngle1);
             auto currentSample2 = (float) std::sin (currentAngle2);
 
-            auto alloverSample = (currentSample1 * level1 + currentSample2 * level2) * currentVelocity;
+            auto alloverSample = (currentSample1 * level1 + currentSample2 * level2) * currentVelocity * mainEnvelope.getNextSample();
 
             for (auto i = outputBuffer.getNumChannels(); --i >= 0;)
                 outputBuffer.addSample(i, startSample, alloverSample);
@@ -63,10 +68,19 @@ void TukarylVoice::renderNextBlock (juce::AudioSampleBuffer& outputBuffer, int s
     }
 }
 
-void TukarylVoice::updateFromInstrument()
+void TukarylVoice::setCurrentPlaybackSampleRate (double newRate)
+{
+    juce::SynthesiserVoice::setCurrentPlaybackSampleRate(newRate);
+    mainEnvelope.setSampleRate(newRate);
+}
+
+void TukarylVoice::updateTuning()
 {
     tuningTableSize = (int)theInstrument.tuningTable.size();
+}
 
+void TukarylVoice::updateOscillators()
+{
     if (getSampleRate() > 0.0)
     {
         auto cyclesPerSample1 = currentBaseFrequency / getSampleRate();
@@ -75,6 +89,16 @@ void TukarylVoice::updateFromInstrument()
         auto cyclesPerSample2 = cyclesPerSample1 * theInstrument.partial1Frequency.getValueAsFrequencyRatio();
         angleDelta2 = cyclesPerSample2 * 2.0 * juce::MathConstants<double>::pi;
     }
+}
+
+void TukarylVoice::updateMainEnvelope()
+{
+    if (mainEnvelope.isActive())
+    {
+        mainEnvelope.reset();
+    }
+
+    mainEnvelope.setParameters(theInstrument.mainEnvelope);
 }
 
 double TukarylVoice::getMidiNoteInHertz (int midiNoteNumber)

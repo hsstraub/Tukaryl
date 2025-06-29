@@ -11,6 +11,9 @@
 #include "TukarylAudioSource.h"
 #include "TukarylVoice.h"
 #include"TukarylSound.h"
+#include "../View/OscSubComponent.h"
+#include "../View/EnvelopeEdit.h"
+#include "../View/TukarylSoundEdit.h"
 
 TukarylAudioSource::TukarylAudioSource(juce::MidiKeyboardState& keyState, TukarylInstrument& tukarylInstrument)
 : keyboardState (keyState)
@@ -47,7 +50,19 @@ void TukarylAudioSource::changeListenerCallback(juce::ChangeBroadcaster *source)
 {
     for (auto i = 0; i < synth.getNumVoices(); ++i)
     {
-        ((TukarylVoice*)synth.getVoice(i))->updateFromInstrument();
+        if (dynamic_cast<OscSubComponent*>(source) != nullptr)
+        {
+            ((TukarylVoice*)synth.getVoice(i))->updateOscillators();
+        }
+        else if (dynamic_cast<TukarylSoundEdit*>(source) != nullptr)
+        {
+            ((TukarylVoice*)synth.getVoice(i))->updateTuning();
+        }
+        else if (dynamic_cast<EnvelopeEdit*>(source) != nullptr)
+        {
+            ((TukarylVoice*)synth.getVoice(i))->updateMainEnvelope();
+        }
+
     }
 }
 

@@ -33,7 +33,11 @@ public:
 
     void renderNextBlock (juce::AudioSampleBuffer& outputBuffer, int startSample, int numSamples) override;
 
-    void updateFromInstrument();
+    void setCurrentPlaybackSampleRate (double newRate) override;
+
+    void updateTuning();
+    void updateOscillators();
+    void updateMainEnvelope();
 
 private:
     double getMidiNoteInHertz (int midiNoteNumber);
@@ -43,6 +47,8 @@ private:
     TukarylInstrument& theInstrument;
 
     int tuningTableSize;
+
+    ADSR mainEnvelope;
 
     double currentBaseFrequency = 440.0;
     double currentVelocity = 0.0;

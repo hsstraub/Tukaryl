@@ -34,6 +34,7 @@
                                                                     //[/Comments]
 */
 class EnvelopeEdit  : public juce::Component,
+                      public juce::ChangeBroadcaster,
                       public juce::Slider::Listener
 {
 public:
