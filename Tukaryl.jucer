@@ -2,7 +2,7 @@
 
 <JUCERPROJECT id="v7odDj" name="Tukaryl" projectType="guiapp" useAppConfig="0"
               displaySplashScreen="1" jucerFormatVersion="1" companyName="Hans Straub"
-              version="0.1.5">
+              version="0.1.6">
   <MAINGROUP id="kOasHK" name="Tukaryl">
     <GROUP id="{DA080E50-8B91-F8CF-4614-C7654924B3CB}" name="Source">
       <GROUP id="{DED70166-9714-7552-ECA9-D6A724CF0D5F}" name="BusinessLogic">

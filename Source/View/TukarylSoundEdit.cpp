@@ -163,7 +163,7 @@ void TukarylSoundEdit::resized()
     // auto area = getLocalBounds();
     //[/UserPreResize]
 
-    groupOscillators->setBounds (8, 32, proportionOfWidth (0.9778f), 263);
+    groupOscillators->setBounds (8, 32, proportionOfWidth (0.9780f), 263);
     lblTuningDescription->setBounds (8, 0, 200, 24);
     labelMessageArea->setBounds (0, getHeight() - 16, proportionOfWidth (1.0000f), 16);
     //[UserResized] Add your own custom resize handling here..
@@ -429,7 +429,7 @@ BEGIN_JUCER_METADATA
                  fixedSize="0" initialWidth="608" initialHeight="400">
   <BACKGROUND backgroundColour="ff323e44"/>
   <GROUPCOMPONENT name="groupOscillators" id="b9219965a445713c" memberName="groupOscillators"
-                  virtualName="" explicitFocusOrder="0" pos="8 32 97.804% 263"
+                  virtualName="" explicitFocusOrder="0" pos="8 32 97.834% 263"
                   title="Oscillators" textpos="36"/>
   <GENERICCOMPONENT name="osc1" id="5752b2c7ddf48ad8" memberName="osc1" virtualName="OscSubComponent"
                     explicitFocusOrder="0" pos="16 88 62 200" class="OscSubComponent"
