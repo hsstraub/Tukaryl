@@ -38,9 +38,12 @@ void TukarylVoice::startNote(
 
 void TukarylVoice::stopNote(float /*velocity*/, bool allowTailOff)
 {
-    clearCurrentNote();
     mainEnvelope.noteOff();
-    angleDelta1 = angleDelta2 = 0.0;
+    if (!mainEnvelope.isActive())
+    {
+        clearCurrentNote();
+        angleDelta1 = angleDelta2 = 0.0;
+    }
 }
 
 

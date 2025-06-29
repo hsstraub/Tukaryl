@@ -366,6 +366,7 @@ void TukarylSoundEdit::OpenSclFileDialog()
                  if (errorLevel != HajuErrorVisualizer::ErrorLevel::error)
                  {
                     theInstrument.tuningTable = newTuningTable;
+                    sendChangeMessage();
                     repaint();
                  }
              }
