@@ -29,7 +29,7 @@ void TukarylVoice::startNote(
 {
     currentBaseFrequency = getMidiNoteInHertz(midiNoteNumber);
     currentVelocity = velocity;
-    currentAngle1 = currentAngle2 = 0.0;
+    currentAngle1 = currentAngle2 = currentAngle3 = 0.0;
 
     updateOscillators();
 
@@ -42,7 +42,7 @@ void TukarylVoice::stopNote(float /*velocity*/, bool allowTailOff)
     if (!mainEnvelope.isActive())
     {
         clearCurrentNote();
-        angleDelta1 = angleDelta2 = 0.0;
+        angleDelta1 = angleDelta2 = angleDelta3 = 0.0;
     }
 }
 
@@ -53,19 +53,24 @@ void TukarylVoice::renderNextBlock (juce::AudioSampleBuffer& outputBuffer, int s
     {
         auto level1 = ((float)theInstrument.baseOscLevel)/1000.0f;
         auto level2 = ((float)theInstrument.partial1Level)/1000.0f;
+        auto level3 = ((float)theInstrument.partial2Level)/1000.0f;
 
         for (auto sample = 0; sample < numSamples; ++sample)
         {
             auto currentSample1 = (float) std::sin (currentAngle1);
             auto currentSample2 = (float) std::sin (currentAngle2);
+            auto currentSample3 = (float) std::sin (currentAngle3);
 
-            auto alloverSample = (currentSample1 * level1 + currentSample2 * level2) * currentVelocity * mainEnvelope.getNextSample();
+            auto alloverSample =
+                (currentSample1 * level1 + currentSample2 * level2 + currentSample3 * level3)
+                * currentVelocity * mainEnvelope.getNextSample();
 
             for (auto i = outputBuffer.getNumChannels(); --i >= 0;)
                 outputBuffer.addSample(i, startSample, alloverSample);
 
             currentAngle1 += angleDelta1;
             currentAngle2 += angleDelta2;
+            currentAngle3 += angleDelta3;
             ++startSample;
         }
     }
@@ -91,6 +96,9 @@ void TukarylVoice::updateOscillators()
 
         auto cyclesPerSample2 = cyclesPerSample1 * theInstrument.partial1Frequency.getValueAsFrequencyRatio();
         angleDelta2 = cyclesPerSample2 * 2.0 * juce::MathConstants<double>::pi;
+
+        auto cyclesPerSample3 = cyclesPerSample1 * theInstrument.partial2Frequency.getValueAsFrequencyRatio();
+        angleDelta3 = cyclesPerSample3 * 2.0 * juce::MathConstants<double>::pi;
     }
 }
 

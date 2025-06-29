@@ -97,6 +97,7 @@ private:
     std::unique_ptr<juce::Label> labelMessageArea;
     std::unique_ptr<juce::GroupComponent> groupMainEnvelope;
     std::unique_ptr<EnvelopeEdit> mainEnvelopeComponent;
+    std::unique_ptr<OscSubComponent> osc3;
 
 
     //==============================================================================

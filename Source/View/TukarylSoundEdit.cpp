@@ -96,6 +96,12 @@ TukarylSoundEdit::TukarylSoundEdit (TukarylInstrument& injectedInstrument)
 
     mainEnvelopeComponent->setBounds (24, 320, 254, 160);
 
+    osc3.reset (new OscSubComponent (theInstrument.partial2Frequency, theInstrument.partial2Level, true));
+    addAndMakeVisible (osc3.get());
+    osc3->setName ("osc3");
+
+    osc3->setBounds (160, 88, 62, 200);
+
 
     //[UserPreSize]
     //[/UserPreSize]
@@ -105,6 +111,7 @@ TukarylSoundEdit::TukarylSoundEdit (TukarylInstrument& injectedInstrument)
 
     //[Constructor] You can add your own custom stuff here..
     osc2->addListener(this);
+    osc3->addListener(this);
     //[/Constructor]
 }
 
@@ -122,6 +129,7 @@ TukarylSoundEdit::~TukarylSoundEdit()
     labelMessageArea = nullptr;
     groupMainEnvelope = nullptr;
     mainEnvelopeComponent = nullptr;
+    osc3 = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -144,8 +152,8 @@ void TukarylSoundEdit::paint (juce::Graphics& g)
     auto oscYPos = groupOscillators->getY() + OSCPADTOP;
 
     osc1->setTopLeftPosition(getXPosOfFrequency(IntervalModel::perfectPrime()) - osc1->getWidth() / 2, oscYPos);
-
     osc2->setTopLeftPosition(getXPosOfFrequency(theInstrument.partial1Frequency) - osc2->getWidth() / 2, oscYPos);
+    osc3->setTopLeftPosition(getXPosOfFrequency(theInstrument.partial2Frequency) - osc3->getWidth() / 2, oscYPos);
     //[/UserPaint]
 }
 
@@ -196,6 +204,7 @@ void TukarylSoundEdit::addChangeListener (juce::ChangeListener* const listener)
     ChangeBroadcaster::addChangeListener(listener);
     osc1->addChangeListener(listener);
     osc2->addChangeListener(listener);
+    osc3->addChangeListener(listener);
     mainEnvelopeComponent->addChangeListener(listener);
 }
 
@@ -207,7 +216,6 @@ void TukarylSoundEdit::OnDrag(OscSubComponent* component)
         auto dragEnd = getLocalPoint(this, component->getDragEnd());
         auto displacement = dragEnd.getX() - dragStart.getX();
 
-        auto thisWidth = getWidth();
         auto oscWidth = osc2->getWidth();
 
         double newLeftPos = osc2->getX() + displacement;
@@ -215,14 +223,35 @@ void TukarylSoundEdit::OnDrag(OscSubComponent* component)
         {
             newLeftPos = osc1->getRight() + 1;
         }
+        else if (newLeftPos >= osc3->getX() - oscWidth)
+        {
+            newLeftPos = osc3->getX() - oscWidth - 1;
+        }
+
+        osc2->setFrequency(getFrequencyOfXPos(newLeftPos + oscWidth / 2));
+        repaint();
+    }
+    else if (component == osc3.get())
+    {
+        auto dragStart = getLocalPoint(this, component->getDragStart());
+        auto dragEnd = getLocalPoint(this, component->getDragEnd());
+        auto displacement = dragEnd.getX() - dragStart.getX();
+
+        auto thisWidth = getWidth();
+        auto oscWidth = osc3->getWidth();
+
+        double newLeftPos = osc3->getX() + displacement;
+        if (newLeftPos <= osc2->getRight())
+        {
+            newLeftPos = osc2->getRight() + 1;
+        }
         else if (newLeftPos >= thisWidth - oscWidth)
         {
             newLeftPos = thisWidth - oscWidth - 1;
         }
 
-        osc2->setFrequency(getFrequencyOfXPos(newLeftPos + oscWidth / 2));
+        osc3->setFrequency(getFrequencyOfXPos(newLeftPos + oscWidth / 2));
         repaint();
-
     }
 }
 
@@ -400,7 +429,7 @@ BEGIN_JUCER_METADATA
                  fixedSize="0" initialWidth="608" initialHeight="400">
   <BACKGROUND backgroundColour="ff323e44"/>
   <GROUPCOMPONENT name="groupOscillators" id="b9219965a445713c" memberName="groupOscillators"
-                  virtualName="" explicitFocusOrder="0" pos="8 32 97.775% 263"
+                  virtualName="" explicitFocusOrder="0" pos="8 32 97.804% 263"
                   title="Oscillators" textpos="36"/>
   <GENERICCOMPONENT name="osc1" id="5752b2c7ddf48ad8" memberName="osc1" virtualName="OscSubComponent"
                     explicitFocusOrder="0" pos="16 88 62 200" class="OscSubComponent"
@@ -430,6 +459,9 @@ BEGIN_JUCER_METADATA
   <GENERICCOMPONENT name="mainEnvelopeComponent" id="dd5a17cc34537eab" memberName="mainEnvelopeComponent"
                     virtualName="" explicitFocusOrder="0" pos="24 320 254 160" class="EnvelopeEdit"
                     params="theInstrument.mainEnvelope.attack, theInstrument.mainEnvelope.decay, theInstrument.mainEnvelope.sustain, theInstrument.mainEnvelope.release"/>
+  <GENERICCOMPONENT name="osc3" id="961fa27822f595c3" memberName="osc3" virtualName="OscSubComponent"
+                    explicitFocusOrder="0" pos="160 88 62 200" class="OscSubComponent"
+                    params="theInstrument.partial2Frequency, theInstrument.partial2Level, true"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA
