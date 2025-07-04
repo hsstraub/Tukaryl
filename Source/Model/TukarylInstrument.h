@@ -24,6 +24,9 @@ struct TukarylInstrument
     IntervalModel partial2Frequency;
     unsigned short partial2Level;
 
+    IntervalModel partial3Frequency;
+    unsigned short partial3Level;
+
     TuningTable tuningTable = TuningTable::standard12Edo();
 
     ADSR::Parameters mainEnvelope = ADSR::Parameters(0.1f, 0.1f, 1.0f, 0.1f);
@@ -34,6 +37,8 @@ struct TukarylInstrument
         unsigned short newPartial1Level,
         IntervalModel newPartial2Frequency,
         unsigned short newPartial2Level,
+        IntervalModel newPartial3Frequency,
+        unsigned short newPartial3Level,
         TuningTable newTuningTable,
         ADSR::Parameters newMainEnvelope)
     : baseOscLevel(newBaseOscLevel)
@@ -41,6 +46,8 @@ struct TukarylInstrument
     , partial1Level(newPartial1Level)
     , partial2Frequency(newPartial2Frequency)
     , partial2Level(newPartial2Level)
+    , partial3Frequency(newPartial2Frequency)
+    , partial3Level(newPartial2Level)
     , tuningTable(newTuningTable)
     , mainEnvelope(newMainEnvelope)
     {

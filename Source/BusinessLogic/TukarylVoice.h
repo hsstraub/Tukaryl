@@ -56,4 +56,5 @@ private:
     double currentAngle1 = 0.0, angleDelta1 = 0.0;
     double currentAngle2 = 0.0, angleDelta2 = 0.0;
     double currentAngle3 = 0.0, angleDelta3 = 0.0;
+    double currentAngle4 = 0.0, angleDelta4 = 0.0;
 };
