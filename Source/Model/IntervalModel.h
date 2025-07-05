@@ -18,7 +18,7 @@ class IntervalModel
 {
 public:
     IntervalModel(RationalNumber intervalRatio);
-    IntervalModel(float valueInCents);
+    IntervalModel(double valueInCents);
 
     double getValueInCents() const;
     double getValueAsFrequencyRatio() const;
@@ -34,6 +34,6 @@ public:
     static IntervalModel doubleOctave() { return IntervalModel(RationalNumber(4, 1)); }
 
 private:
-    std::variant<RationalNumber, float> value;
+    std::variant<RationalNumber, double> value;
 };
 

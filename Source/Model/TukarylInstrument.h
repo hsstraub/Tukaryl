@@ -46,8 +46,8 @@ struct TukarylInstrument
     , partial1Level(newPartial1Level)
     , partial2Frequency(newPartial2Frequency)
     , partial2Level(newPartial2Level)
-    , partial3Frequency(newPartial2Frequency)
-    , partial3Level(newPartial2Level)
+    , partial3Frequency(newPartial3Frequency)
+    , partial3Level(newPartial3Level)
     , tuningTable(newTuningTable)
     , mainEnvelope(newMainEnvelope)
     {

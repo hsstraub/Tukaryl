@@ -33,7 +33,7 @@ public:
     }
 
 public:
-    const int numberOfVoices = 4;
+    const int numberOfVoices = 6;
 
 
 private:

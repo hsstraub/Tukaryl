@@ -15,17 +15,17 @@ IntervalModel::IntervalModel(RationalNumber intervalRatio)
 {
 }
 
-IntervalModel::IntervalModel(float valueInCents)
+IntervalModel::IntervalModel(double valueInCents)
     : value(valueInCents)
 {
 }
 
 double IntervalModel::getValueInCents() const
 {
-    if (std::holds_alternative<float>(value))
+    if (std::holds_alternative<double>(value))
     {
         // Value is in cents
-        return std::get<float>(value);
+        return std::get<double>(value);
     }
     else
     {
@@ -37,10 +37,10 @@ double IntervalModel::getValueInCents() const
 
 double IntervalModel::getValueAsFrequencyRatio() const
 {
-    if (std::holds_alternative<float>(value))
+    if (std::holds_alternative<double>(value))
     {
         // Value is in cents
-        auto valueInCents = std::get<float>(value);
+        auto valueInCents = std::get<double>(value);
         return std::exp2(valueInCents/1200.0);
     }
     else
@@ -53,10 +53,10 @@ double IntervalModel::getValueAsFrequencyRatio() const
 
 juce::String IntervalModel::toString()
 {
-    if (std::holds_alternative<float>(value))
+    if (std::holds_alternative<double>(value))
     {
         // Value is in cents
-        auto valueInCents = std::get<float>(value);
+        auto valueInCents = std::get<double>(value);
         return juce::String(valueInCents);
     }
     else
@@ -69,7 +69,7 @@ juce::String IntervalModel::toString()
 
 IntervalModel IntervalModel::add(IntervalModel const& second) const
 {
-    if (std::holds_alternative<float>(value) || std::holds_alternative<float>(second.value))
+    if (std::holds_alternative<double>(value) || std::holds_alternative<double>(second.value))
     {
         // At least one of the values is in cents
         return IntervalModel(getValueInCents() + second.getValueInCents());
@@ -83,10 +83,10 @@ IntervalModel IntervalModel::add(IntervalModel const& second) const
 
 IntervalModel IntervalModel::getInverse() const
 {
-    if (std::holds_alternative<float>(value))
+    if (std::holds_alternative<double>(value))
     {
         // Value is in cents
-        auto valueInCents = std::get<float>(value);
+        auto valueInCents = std::get<double>(value);
         return IntervalModel(-valueInCents);
     }
     else
@@ -99,7 +99,7 @@ IntervalModel IntervalModel::getInverse() const
 
 bool IntervalModel::operator<(const IntervalModel& second) const
 {
-    if (std::holds_alternative<float>(value) || std::holds_alternative<float>(second.value))
+    if (std::holds_alternative<double>(value) || std::holds_alternative<double>(second.value))
     {
         // At least one of the values is in cents
         return getValueInCents() < second.getValueInCents();
