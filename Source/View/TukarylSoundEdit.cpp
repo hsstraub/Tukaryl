@@ -196,6 +196,7 @@ void TukarylSoundEdit::buttonClicked (juce::Button* buttonThatWasClicked)
         //[UserButtonCode_btnTuningReset] -- add your button handler code here..
         displayMessage("Tuning reset to 12edo.", HajuErrorVisualizer::ErrorLevel::noError);
         theInstrument.tuningTable = TuningTable::standard12Edo();
+        sendChangeMessage();
         repaint();
         //[/UserButtonCode_btnTuningReset]
     }
