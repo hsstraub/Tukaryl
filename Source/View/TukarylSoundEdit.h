@@ -79,7 +79,7 @@ private:
     //[UserVariables]   -- You can add your own custom variables in this section.
     TukarylInstrument& theInstrument;
 
-    const IntervalModel maxFrequency = IntervalModel(RationalNumber(5,1));
+    const IntervalModel maxFrequency = IntervalModel(RationalNumber(6,1));
 
     std::unique_ptr<FileChooser> chooser;
     File	currentFile;
@@ -100,6 +100,7 @@ private:
     std::unique_ptr<OscSubComponent> osc3;
     std::unique_ptr<OscSubComponent> osc4;
     std::unique_ptr<OscSubComponent> osc5;
+    std::unique_ptr<OscSubComponent> osc6;
 
 
     //==============================================================================
