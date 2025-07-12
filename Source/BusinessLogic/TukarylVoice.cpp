@@ -29,7 +29,7 @@ void TukarylVoice::startNote(
 {
     currentBaseFrequency = getMidiNoteInHertz(midiNoteNumber);
     currentVelocity = velocity;
-    currentAngle1 = currentAngle2 = currentAngle3 = currentAngle4 = 0.0;
+    currentAngle1 = currentAngle2 = currentAngle3 = currentAngle4 = currentAngle5 = 0.0;
 
     updateOscillators();
 
@@ -42,19 +42,20 @@ void TukarylVoice::stopNote(float /*velocity*/, bool allowTailOff)
     if (!mainEnvelope.isActive())
     {
         clearCurrentNote();
-        angleDelta1 = angleDelta2 = angleDelta3 = angleDelta4 = 0.0;
+        angleDelta1 = angleDelta2 = angleDelta3 = angleDelta4 = angleDelta5 = 0.0;
     }
 }
 
 
 void TukarylVoice::renderNextBlock (juce::AudioSampleBuffer& outputBuffer, int startSample, int numSamples)
 {
-    if (angleDelta1 != 0.0 || angleDelta2 != 0.0)
+    if (angleDelta1 != 0.0 || angleDelta2 != 0.0 || angleDelta3 != 0.0 || angleDelta4 != 0.0 || angleDelta5 != 0.0)
     {
         auto level1 = ((float)theInstrument.baseOscLevel)/1000.0f;
         auto level2 = ((float)theInstrument.partial1Level)/1000.0f;
         auto level3 = ((float)theInstrument.partial2Level)/1000.0f;
         auto level4 = ((float)theInstrument.partial3Level)/1000.0f;
+        auto level5 = ((float)theInstrument.partial4Level)/1000.0f;
 
         for (auto sample = 0; sample < numSamples; ++sample)
         {
@@ -62,13 +63,15 @@ void TukarylVoice::renderNextBlock (juce::AudioSampleBuffer& outputBuffer, int s
             auto currentSample2 = (float) std::sin (currentAngle2);
             auto currentSample3 = (float) std::sin (currentAngle3);
             auto currentSample4 = (float) std::sin (currentAngle4);
+            auto currentSample5 = (float) std::sin (currentAngle5);
 
 
             auto alloverSample =
                 (currentSample1 * level1
                     + currentSample2 * level2
                     + currentSample3 * level3
-                    + currentSample4 * level4)
+                    + currentSample4 * level4
+                    + currentSample5 * level5)
                 * currentVelocity * mainEnvelope.getNextSample();
 
             for (auto i = outputBuffer.getNumChannels(); --i >= 0;)
@@ -78,6 +81,7 @@ void TukarylVoice::renderNextBlock (juce::AudioSampleBuffer& outputBuffer, int s
             currentAngle2 += angleDelta2;
             currentAngle3 += angleDelta3;
             currentAngle4 += angleDelta4;
+            currentAngle5 += angleDelta5;
             ++startSample;
         }
     }
@@ -112,6 +116,9 @@ void TukarylVoice::updateOscillators()
 
         auto cyclesPerSample4 = cyclesPerSample1 * theInstrument.partial3Frequency.getValueAsFrequencyRatio();
         angleDelta4 = cyclesPerSample4 * 2.0 * juce::MathConstants<double>::pi;
+
+        auto cyclesPerSample5 = cyclesPerSample1 * theInstrument.partial4Frequency.getValueAsFrequencyRatio();
+        angleDelta5 = cyclesPerSample5 * 2.0 * juce::MathConstants<double>::pi;
     }
 }
 

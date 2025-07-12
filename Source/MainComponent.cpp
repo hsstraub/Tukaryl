@@ -11,6 +11,8 @@ MainComponent::MainComponent()
     15,
     IntervalModel(RationalNumber(4, 1)),
     7,
+    IntervalModel(RationalNumber(5, 1)),
+    5,
     TuningTable::standard12Edo(),
     ADSR::Parameters(0.1f, 0.1f, 1.0f, 0.1f))
 , theAudioSource(keyboardState, theInstrument)

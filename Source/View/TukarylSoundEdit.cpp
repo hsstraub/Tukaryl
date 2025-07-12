@@ -108,6 +108,12 @@ TukarylSoundEdit::TukarylSoundEdit (TukarylInstrument& injectedInstrument)
 
     osc4->setBounds (232, 88, 62, 200);
 
+    osc5.reset (new OscSubComponent (theInstrument.partial4Frequency, theInstrument.partial4Level, true));
+    addAndMakeVisible (osc5.get());
+    osc5->setName ("osc5");
+
+    osc5->setBounds (304, 88, 62, 200);
+
 
     //[UserPreSize]
     //[/UserPreSize]
@@ -119,6 +125,7 @@ TukarylSoundEdit::TukarylSoundEdit (TukarylInstrument& injectedInstrument)
     osc2->addListener(this);
     osc3->addListener(this);
     osc4->addListener(this);
+    osc5->addListener(this);
     //[/Constructor]
 }
 
@@ -138,6 +145,7 @@ TukarylSoundEdit::~TukarylSoundEdit()
     mainEnvelopeComponent = nullptr;
     osc3 = nullptr;
     osc4 = nullptr;
+    osc5 = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -163,6 +171,7 @@ void TukarylSoundEdit::paint (juce::Graphics& g)
     osc2->setTopLeftPosition(getXPosOfFrequency(theInstrument.partial1Frequency) - osc2->getWidth() / 2, oscYPos);
     osc3->setTopLeftPosition(getXPosOfFrequency(theInstrument.partial2Frequency) - osc3->getWidth() / 2, oscYPos);
     osc4->setTopLeftPosition(getXPosOfFrequency(theInstrument.partial3Frequency) - osc4->getWidth() / 2, oscYPos);
+    osc5->setTopLeftPosition(getXPosOfFrequency(theInstrument.partial4Frequency) - osc5->getWidth() / 2, oscYPos);
     //[/UserPaint]
 }
 
@@ -172,7 +181,7 @@ void TukarylSoundEdit::resized()
     // auto area = getLocalBounds();
     //[/UserPreResize]
 
-    groupOscillators->setBounds (8, 32, proportionOfWidth (0.9783f), 263);
+    groupOscillators->setBounds (8, 32, proportionOfWidth (0.9777f), 263);
     lblTuningDescription->setBounds (8, 0, 200, 24);
     labelMessageArea->setBounds (0, getHeight() - 16, proportionOfWidth (1.0000f), 16);
     //[UserResized] Add your own custom resize handling here..
@@ -216,6 +225,7 @@ void TukarylSoundEdit::addChangeListener (juce::ChangeListener* const listener)
     osc2->addChangeListener(listener);
     osc3->addChangeListener(listener);
     osc4->addChangeListener(listener);
+    osc5->addChangeListener(listener);
     mainEnvelopeComponent->addChangeListener(listener);
 }
 
@@ -269,7 +279,6 @@ void TukarylSoundEdit::OnDrag(OscSubComponent* component)
         auto dragEnd = getLocalPoint(this, component->getDragEnd());
         auto displacement = dragEnd.getX() - dragStart.getX();
 
-        auto thisWidth = getWidth();
         auto oscWidth = osc4->getWidth();
 
         double newLeftPos = osc4->getX() + displacement;
@@ -277,12 +286,34 @@ void TukarylSoundEdit::OnDrag(OscSubComponent* component)
         {
             newLeftPos = osc3->getRight() + 1;
         }
+        else if (newLeftPos >= osc5->getX() - oscWidth)
+        {
+            newLeftPos = osc5->getX() - oscWidth - 1;
+        }
+
+        osc4->setFrequency(getFrequencyOfXPos(newLeftPos + oscWidth / 2));
+        repaint();
+    }
+    else if (component == osc5.get())
+    {
+        auto dragStart = getLocalPoint(this, component->getDragStart());
+        auto dragEnd = getLocalPoint(this, component->getDragEnd());
+        auto displacement = dragEnd.getX() - dragStart.getX();
+
+        auto thisWidth = getWidth();
+        auto oscWidth = osc5->getWidth();
+
+        double newLeftPos = osc5->getX() + displacement;
+        if (newLeftPos <= osc4->getRight())
+        {
+            newLeftPos = osc4->getRight() + 1;
+        }
         else if (newLeftPos >= thisWidth - oscWidth)
         {
             newLeftPos = thisWidth - oscWidth - 1;
         }
 
-        osc4->setFrequency(getFrequencyOfXPos(newLeftPos + oscWidth / 2));
+        osc5->setFrequency(getFrequencyOfXPos(newLeftPos + oscWidth / 2));
         repaint();
     }
 }
@@ -497,6 +528,9 @@ BEGIN_JUCER_METADATA
   <GENERICCOMPONENT name="osc4" id="5adac0e78771dc3a" memberName="osc4" virtualName="OscSubComponent"
                     explicitFocusOrder="0" pos="232 88 62 200" class="OscSubComponent"
                     params="theInstrument.partial3Frequency, theInstrument.partial3Level, true"/>
+  <GENERICCOMPONENT name="osc5" id="41d7ecd49034da33" memberName="osc5" virtualName="OscSubComponent"
+                    explicitFocusOrder="0" pos="304 88 62 200" class="OscSubComponent"
+                    params="theInstrument.partial4Frequency, theInstrument.partial4Level, true"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA
