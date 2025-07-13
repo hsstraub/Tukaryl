@@ -5,16 +5,23 @@
 MainComponent::MainComponent()
 : theInstrument(
     63,
+
     IntervalModel::octave(),
     31,
+    ADSR::Parameters(1.0f, 1.0f, 0.3f, 1.0f),
+
     IntervalModel(RationalNumber(3, 1)),
     15,
+    ADSR::Parameters(1.0f, 1.0f, 0.3f, 1.0f),
+
     IntervalModel::doubleOctave(),
     9,
+
     IntervalModel(RationalNumber(5, 1)),
     7,
     IntervalModel(RationalNumber(6, 1)),
     5,
+
     TuningTable::standard12Edo(),
     ADSR::Parameters(0.1f, 0.1f, 1.0f, 0.1f))
 , theAudioSource(keyboardState, theInstrument)

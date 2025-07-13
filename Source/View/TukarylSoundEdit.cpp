@@ -128,11 +128,23 @@ TukarylSoundEdit::TukarylSoundEdit (TukarylInstrument& injectedInstrument)
 
     partial1EnvelopeComponent->setBounds (16, 312, 158, 152);
 
+    groupPartial2Envelope.reset (new juce::GroupComponent ("groupPartial2Envelope",
+                                                           TRANS ("Partial 2 envelope")));
+    addAndMakeVisible (groupPartial2Envelope.get());
+
+    groupPartial2Envelope->setBounds (191, 296, 176, 174);
+
+    partial2EnvelopeComponent.reset (new EnvelopeEdit (theInstrument.partial2Envelope.attack, theInstrument.partial2Envelope.decay, theInstrument.partial2Envelope.sustain, theInstrument.partial2Envelope.release));
+    addAndMakeVisible (partial2EnvelopeComponent.get());
+    partial2EnvelopeComponent->setName ("partial2EnvelopeComponent");
+
+    partial2EnvelopeComponent->setBounds (199, 312, 158, 152);
+
 
     //[UserPreSize]
     //[/UserPreSize]
 
-    setSize (640, 416);
+    setSize (800, 416);
 
 
     //[Constructor] You can add your own custom stuff here..
@@ -164,6 +176,8 @@ TukarylSoundEdit::~TukarylSoundEdit()
     osc6 = nullptr;
     groupPartial1Envelope = nullptr;
     partial1EnvelopeComponent = nullptr;
+    groupPartial2Envelope = nullptr;
+    partial2EnvelopeComponent = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -251,6 +265,7 @@ void TukarylSoundEdit::addChangeListener (juce::ChangeListener* const listener)
     osc6->addChangeListener(listener);
 
     partial1EnvelopeComponent->addChangeListener(listener);
+    partial2EnvelopeComponent->addChangeListener(listener);
     mainEnvelopeComponent->addChangeListener(listener);
 }
 
@@ -535,7 +550,7 @@ BEGIN_JUCER_METADATA
                  constructorParams="TukarylInstrument&amp; injectedInstrument"
                  variableInitialisers="theInstrument(injectedInstrument), errorVisualizer(getLookAndFeel())"
                  snapPixels="8" snapActive="1" snapShown="1" overlayOpacity="0.330"
-                 fixedSize="0" initialWidth="640" initialHeight="416">
+                 fixedSize="0" initialWidth="800" initialHeight="416">
   <BACKGROUND backgroundColour="ff323e44"/>
   <GROUPCOMPONENT name="groupOscillators" id="b9219965a445713c" memberName="groupOscillators"
                   virtualName="" explicitFocusOrder="0" pos="8 32 97.778% 255"
@@ -586,6 +601,11 @@ BEGIN_JUCER_METADATA
   <GENERICCOMPONENT name="partial1EnvelopeComponent" id="d789084c41bbd8f5" memberName="partial1EnvelopeComponent"
                     virtualName="" explicitFocusOrder="0" pos="16 312 158 152" class="EnvelopeEdit"
                     params="theInstrument.partial1Envelope.attack, theInstrument.partial1Envelope.decay, theInstrument.partial1Envelope.sustain, theInstrument.partial1Envelope.release"/>
+  <GROUPCOMPONENT name="groupPartial2Envelope" id="17a9f113c1dc9ab0" memberName="groupPartial2Envelope"
+                  virtualName="" explicitFocusOrder="0" pos="191 296 176 174" title="Partial 2 envelope"/>
+  <GENERICCOMPONENT name="partial2EnvelopeComponent" id="90e8ef3f73eedd18" memberName="partial2EnvelopeComponent"
+                    virtualName="" explicitFocusOrder="0" pos="199 312 158 152" class="EnvelopeEdit"
+                    params="theInstrument.partial2Envelope.attack, theInstrument.partial2Envelope.decay, theInstrument.partial2Envelope.sustain, theInstrument.partial2Envelope.release"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

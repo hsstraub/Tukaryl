@@ -34,12 +34,14 @@ void TukarylVoice::startNote(
     updateOscillators();
 
     partial1Envelope.noteOn();
+    partial2Envelope.noteOn();
     mainEnvelope.noteOn();
 }
 
 void TukarylVoice::stopNote(float /*velocity*/, bool allowTailOff)
 {
     partial1Envelope.noteOff();
+    partial2Envelope.noteOff();
     mainEnvelope.noteOff();
 
     if (!mainEnvelope.isActive())
@@ -74,7 +76,7 @@ void TukarylVoice::renderNextBlock (juce::AudioSampleBuffer& outputBuffer, int s
             auto alloverSample =
                 (currentSample1 * level1
                     + currentSample2 * level2 * partial1Envelope.getNextSample()
-                    + currentSample3 * level3
+                    + currentSample3 * level3 * partial2Envelope.getNextSample()
                     + currentSample4 * level4
                     + currentSample5 * level5
                     + currentSample6 * level6)
@@ -139,14 +141,18 @@ void TukarylVoice::updateEnvelopes()
     {
         partial1Envelope.reset();
     }
-
     partial1Envelope.setParameters(theInstrument.partial1Envelope);
+
+    if (partial2Envelope.isActive())
+    {
+        partial2Envelope.reset();
+    }
+    partial2Envelope.setParameters(theInstrument.partial2Envelope);
 
     if (mainEnvelope.isActive())
     {
         mainEnvelope.reset();
     }
-
     mainEnvelope.setParameters(theInstrument.mainEnvelope);
 }
 

@@ -49,6 +49,7 @@ private:
     int tuningTableSize;
 
     ADSR partial1Envelope;
+    ADSR partial2Envelope;
 
     ADSR mainEnvelope;
 
