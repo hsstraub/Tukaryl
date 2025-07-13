@@ -60,7 +60,7 @@ void TukarylAudioSource::changeListenerCallback(juce::ChangeBroadcaster *source)
         }
         else if (dynamic_cast<EnvelopeEdit*>(source) != nullptr)
         {
-            ((TukarylVoice*)synth.getVoice(i))->updateMainEnvelope();
+            ((TukarylVoice*)synth.getVoice(i))->updateEnvelopes();
         }
 
     }

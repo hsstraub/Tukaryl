@@ -16,7 +16,7 @@ TukarylVoice::TukarylVoice(TukarylInstrument& tukarylInstrument)
 {
     updateTuning();
     updateOscillators();
-    updateMainEnvelope();
+    updateEnvelopes();
 }
 
 bool TukarylVoice::canPlaySound(juce::SynthesiserSound* sound)
@@ -33,12 +33,15 @@ void TukarylVoice::startNote(
 
     updateOscillators();
 
+    partial1Envelope.noteOn();
     mainEnvelope.noteOn();
 }
 
 void TukarylVoice::stopNote(float /*velocity*/, bool allowTailOff)
 {
+    partial1Envelope.noteOff();
     mainEnvelope.noteOff();
+
     if (!mainEnvelope.isActive())
     {
         clearCurrentNote();
@@ -70,7 +73,7 @@ void TukarylVoice::renderNextBlock (juce::AudioSampleBuffer& outputBuffer, int s
 
             auto alloverSample =
                 (currentSample1 * level1
-                    + currentSample2 * level2
+                    + currentSample2 * level2 * partial1Envelope.getNextSample()
                     + currentSample3 * level3
                     + currentSample4 * level4
                     + currentSample5 * level5
@@ -96,6 +99,7 @@ void TukarylVoice::setCurrentPlaybackSampleRate (double newRate)
     if (newRate > 0.0)
     {
         juce::SynthesiserVoice::setCurrentPlaybackSampleRate(newRate);
+        partial1Envelope.setSampleRate(newRate);
         mainEnvelope.setSampleRate(newRate);
     }
 }
@@ -129,8 +133,16 @@ void TukarylVoice::updateOscillators()
     }
 }
 
-void TukarylVoice::updateMainEnvelope()
+void TukarylVoice::updateEnvelopes()
 {
+    if (partial1Envelope.isActive())
+    {
+        partial1Envelope.reset();
+    }
+
+    // ToDo partial envelopes from instrument
+    partial1Envelope.setParameters(ADSR::Parameters(1.0f, 1.0f, 0.5f, 1.0f));
+
     if (mainEnvelope.isActive())
     {
         mainEnvelope.reset();

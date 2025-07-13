@@ -37,7 +37,7 @@ public:
 
     void updateTuning();
     void updateOscillators();
-    void updateMainEnvelope();
+    void updateEnvelopes();
 
 private:
     double getMidiNoteInHertz (int midiNoteNumber);
@@ -47,6 +47,8 @@ private:
     TukarylInstrument& theInstrument;
 
     int tuningTableSize;
+
+    ADSR partial1Envelope;
 
     ADSR mainEnvelope;
 
