@@ -140,8 +140,7 @@ void TukarylVoice::updateEnvelopes()
         partial1Envelope.reset();
     }
 
-    // ToDo partial envelopes from instrument
-    partial1Envelope.setParameters(ADSR::Parameters(1.0f, 1.0f, 0.5f, 1.0f));
+    partial1Envelope.setParameters(theInstrument.partial1Envelope);
 
     if (mainEnvelope.isActive())
     {

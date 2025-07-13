@@ -101,6 +101,8 @@ private:
     std::unique_ptr<OscSubComponent> osc4;
     std::unique_ptr<OscSubComponent> osc5;
     std::unique_ptr<OscSubComponent> osc6;
+    std::unique_ptr<juce::GroupComponent> groupPartial1Envelope;
+    std::unique_ptr<EnvelopeEdit> partial1EnvelopeComponent;
 
 
     //==============================================================================

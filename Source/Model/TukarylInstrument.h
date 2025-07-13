@@ -20,6 +20,7 @@ struct TukarylInstrument
 
     IntervalModel partial1Frequency;
     unsigned short partial1Level;
+    ADSR::Parameters partial1Envelope = ADSR::Parameters(1.0f, 1.0f, 0.3f, 1.0f);
 
     IntervalModel partial2Frequency;
     unsigned short partial2Level;

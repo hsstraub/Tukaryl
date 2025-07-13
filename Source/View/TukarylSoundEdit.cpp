@@ -88,13 +88,9 @@ TukarylSoundEdit::TukarylSoundEdit (TukarylInstrument& injectedInstrument)
                                                        TRANS ("Main output envelope")));
     addAndMakeVisible (groupMainEnvelope.get());
 
-    groupMainEnvelope->setBounds (8, 296, 288, 190);
-
     mainEnvelopeComponent.reset (new EnvelopeEdit (theInstrument.mainEnvelope.attack, theInstrument.mainEnvelope.decay, theInstrument.mainEnvelope.sustain, theInstrument.mainEnvelope.release));
     addAndMakeVisible (mainEnvelopeComponent.get());
     mainEnvelopeComponent->setName ("mainEnvelopeComponent");
-
-    mainEnvelopeComponent->setBounds (24, 312, 254, 160);
 
     osc3.reset (new OscSubComponent (theInstrument.partial2Frequency, theInstrument.partial2Level, true));
     addAndMakeVisible (osc3.get());
@@ -120,11 +116,23 @@ TukarylSoundEdit::TukarylSoundEdit (TukarylInstrument& injectedInstrument)
 
     osc6->setBounds (392, 80, 54, 200);
 
+    groupPartial1Envelope.reset (new juce::GroupComponent ("groupPartial1Envelope",
+                                                           TRANS ("Partial 1 envelope")));
+    addAndMakeVisible (groupPartial1Envelope.get());
+
+    groupPartial1Envelope->setBounds (8, 296, 176, 174);
+
+    partial1EnvelopeComponent.reset (new EnvelopeEdit (theInstrument.partial1Envelope.attack, theInstrument.partial1Envelope.decay, theInstrument.partial1Envelope.sustain, theInstrument.partial1Envelope.release));
+    addAndMakeVisible (partial1EnvelopeComponent.get());
+    partial1EnvelopeComponent->setName ("partial1EnvelopeComponent");
+
+    partial1EnvelopeComponent->setBounds (16, 312, 158, 152);
+
 
     //[UserPreSize]
     //[/UserPreSize]
 
-    setSize (608, 400);
+    setSize (640, 416);
 
 
     //[Constructor] You can add your own custom stuff here..
@@ -154,6 +162,8 @@ TukarylSoundEdit::~TukarylSoundEdit()
     osc4 = nullptr;
     osc5 = nullptr;
     osc6 = nullptr;
+    groupPartial1Envelope = nullptr;
+    partial1EnvelopeComponent = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -193,7 +203,9 @@ void TukarylSoundEdit::resized()
 
     groupOscillators->setBounds (8, 32, proportionOfWidth (0.9777f), 255);
     lblTuningDescription->setBounds (8, 0, 200, 24);
-    labelMessageArea->setBounds (0, getHeight() - 16, proportionOfWidth (1.0000f), 16);
+    labelMessageArea->setBounds (0, getHeight() - 23, proportionOfWidth (1.0000f), 16);
+    groupMainEnvelope->setBounds (getWidth() - 184, 296, 172, 174);
+    mainEnvelopeComponent->setBounds (getWidth() - 176, 312, 154, 152);
     //[UserResized] Add your own custom resize handling here..
     // labelMessageArea->setBounds(area.removeFromBottom (16));
     //[/UserResized]
@@ -237,6 +249,8 @@ void TukarylSoundEdit::addChangeListener (juce::ChangeListener* const listener)
     osc4->addChangeListener(listener);
     osc5->addChangeListener(listener);
     osc6->addChangeListener(listener);
+
+    partial1EnvelopeComponent->addChangeListener(listener);
     mainEnvelopeComponent->addChangeListener(listener);
 }
 
@@ -521,10 +535,10 @@ BEGIN_JUCER_METADATA
                  constructorParams="TukarylInstrument&amp; injectedInstrument"
                  variableInitialisers="theInstrument(injectedInstrument), errorVisualizer(getLookAndFeel())"
                  snapPixels="8" snapActive="1" snapShown="1" overlayOpacity="0.330"
-                 fixedSize="0" initialWidth="608" initialHeight="400">
+                 fixedSize="0" initialWidth="640" initialHeight="416">
   <BACKGROUND backgroundColour="ff323e44"/>
   <GROUPCOMPONENT name="groupOscillators" id="b9219965a445713c" memberName="groupOscillators"
-                  virtualName="" explicitFocusOrder="0" pos="8 32 97.765% 255"
+                  virtualName="" explicitFocusOrder="0" pos="8 32 97.778% 255"
                   title="Oscillators" textpos="36"/>
   <GENERICCOMPONENT name="osc1" id="5752b2c7ddf48ad8" memberName="osc1" virtualName="OscSubComponent"
                     explicitFocusOrder="0" pos="24 80 54 200" class="OscSubComponent"
@@ -545,15 +559,16 @@ BEGIN_JUCER_METADATA
               virtualName="" explicitFocusOrder="0" pos="400 0 150 24" buttonText="Reset tuning"
               connectedEdges="0" needsCallback="1" radioGroupId="0"/>
   <LABEL name="labelMessageArea" id="7851234199cd91c" memberName="labelMessageArea"
-         virtualName="" explicitFocusOrder="0" pos="0 16R 100% 16" edTextCol="ff000000"
+         virtualName="" explicitFocusOrder="0" pos="0 23R 100% 16" edTextCol="ff000000"
          edBkgCol="0" labelText="Message area&#10;" editableSingleClick="0"
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
          fontsize="15.0" kerning="0.0" bold="0" italic="0" justification="33"/>
   <GROUPCOMPONENT name="groupMainEnvelope" id="2207b5aab078b03e" memberName="groupMainEnvelope"
-                  virtualName="" explicitFocusOrder="0" pos="8 296 288 190" title="Main output envelope"/>
+                  virtualName="" explicitFocusOrder="0" pos="184R 296 172 174"
+                  title="Main output envelope"/>
   <GENERICCOMPONENT name="mainEnvelopeComponent" id="dd5a17cc34537eab" memberName="mainEnvelopeComponent"
-                    virtualName="" explicitFocusOrder="0" pos="24 312 254 160" class="EnvelopeEdit"
-                    params="theInstrument.mainEnvelope.attack, theInstrument.mainEnvelope.decay, theInstrument.mainEnvelope.sustain, theInstrument.mainEnvelope.release"/>
+                    virtualName="" explicitFocusOrder="0" pos="176R 312 154 152"
+                    class="EnvelopeEdit" params="theInstrument.mainEnvelope.attack, theInstrument.mainEnvelope.decay, theInstrument.mainEnvelope.sustain, theInstrument.mainEnvelope.release"/>
   <GENERICCOMPONENT name="osc3" id="961fa27822f595c3" memberName="osc3" virtualName="OscSubComponent"
                     explicitFocusOrder="0" pos="168 80 54 200" class="OscSubComponent"
                     params="theInstrument.partial2Frequency, theInstrument.partial2Level, true"/>
@@ -566,6 +581,11 @@ BEGIN_JUCER_METADATA
   <GENERICCOMPONENT name="osc6" id="6442b58e8861c42b" memberName="osc6" virtualName="OscSubComponent"
                     explicitFocusOrder="0" pos="392 80 54 200" class="OscSubComponent"
                     params="theInstrument.partial5Frequency, theInstrument.partial5Level, true"/>
+  <GROUPCOMPONENT name="groupPartial1Envelope" id="bea9d3bd84d27d86" memberName="groupPartial1Envelope"
+                  virtualName="" explicitFocusOrder="0" pos="8 296 176 174" title="Partial 1 envelope"/>
+  <GENERICCOMPONENT name="partial1EnvelopeComponent" id="d789084c41bbd8f5" memberName="partial1EnvelopeComponent"
+                    virtualName="" explicitFocusOrder="0" pos="16 312 158 152" class="EnvelopeEdit"
+                    params="theInstrument.partial1Envelope.attack, theInstrument.partial1Envelope.decay, theInstrument.partial1Envelope.sustain, theInstrument.partial1Envelope.release"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA
